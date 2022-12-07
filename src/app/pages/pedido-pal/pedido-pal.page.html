@@ -1,0 +1,66 @@
+<ion-app>
+    <app-header [titulo]="titulo"> </app-header>
+    <ion-item class="ion-no-border">
+        <ion-label class="ion-text-center">
+            <h2>Presentación:{{pedido.c_codigo_pre}}</h2>
+            <p *ngIf="this.palletpedido.length > 0"> {{this.palletpedido[0].v_nombre_pro}}</p>
+            <p *ngIf="this.palletpedido.length > 0"> {{this.palletpedido[0].v_nombre_eti}}</p>
+            <p *ngIf="this.palletpedido.length > 0"> {{this.palletpedido[0].v_nombre_col}}</p>
+        </ion-label>
+    </ion-item>
+
+    <ion-content [fullscreen]="true"   class="ion-padding">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content> </ion-refresher-content>
+        </ion-refresher>
+        <ion-list>
+            <ion-grid class="ion-text-sm" fixed="true">
+                <ion-row>
+                    <ion-col id="col-cab" size="4" class="ion-text-start">
+                        <ion-label>Pallet</ion-label>
+                    </ion-col>
+                    <ion-col id="col-cab" size="3" class="ion-text-center">
+                        <ion-label>Cajas</ion-label>
+                    </ion-col>
+                    <ion-col id="col-cab" size="3" class="ion-text-center">
+                        <ion-label>Kilos</ion-label>
+                    </ion-col>
+                    <ion-col id="col-cab" vsize="2" class="ion-text-center" class="ion-text-left">
+                    </ion-col>
+                </ion-row>
+                <ion-row *ngFor="let pal of palletpedido">
+                    <ion-col id="col-det" size="4" class="ion-text-start">
+                        <ion-label> {{pal.c_codigo_pal}}</ion-label>
+                    </ion-col>
+                    <ion-col id="col-det" size="3" class="ion-text-center">
+                        <ion-label> {{pal.n_bulxpa_pal }}</ion-label>
+                    </ion-col>
+                    <ion-col id="col-det" size="3" class="ion-text-center">
+                        <ion-label> {{pal.n_peso_pal}}</ion-label>
+                    </ion-col>
+                    <ion-col id="col-det" size="2" class="ion-text-center">
+                        <ion-button (click)="trashClick()" fill="clear" size="small">
+                            <ion-icon name="trash-outline" color="danger"></ion-icon>
+                        </ion-button>
+
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col id="col-cab" size="4" class="ion-text-start">
+                        <ion-label>Totales:</ion-label>
+                    </ion-col>
+                    <ion-col id="col-cab" size="3" class="ion-text-center">
+                        <ion-label>{{ palletpedido | total:'n_bulxpa_pal' | number }}</ion-label>
+                    </ion-col>
+                    <ion-col id="col-cab" size="3" class="ion-text-center">
+                        <ion-label>{{ palletpedido | total:'n_peso_pal' | number}}</ion-label>
+                    </ion-col>
+                    <ion-col id="col-cab" vsize="2" class="ion-text-center">
+
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+        </ion-list>
+    </ion-content>
+</ion-app>

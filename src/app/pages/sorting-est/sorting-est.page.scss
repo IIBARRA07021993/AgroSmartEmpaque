@@ -1,0 +1,34 @@
+form.grupo {
+  border: solid 5px green;
+}
+
+.etiquetas{
+  font-size: 20px;
+}
+
+ion-grid {
+    --ion-grid-column-padding: 5px;
+    border-collapse: collapse;
+    border-style: hidden;
+    
+    ion-row:first-child {
+      background-color:  lightgray;
+      font-weight: bold;
+    }
+    ion-col {
+      border: 1px solid black;
+      border-bottom: 0;
+      border-right: 0;
+      size:"3";
+    }
+    ion-col:last-child {
+      border-right: 1px solid black;
+    }
+    
+    ion-row:last-child {
+      border-bottom: 1px solid black;
+    }
+    ion-label{
+        font-weight: bold;
+    }
+  }

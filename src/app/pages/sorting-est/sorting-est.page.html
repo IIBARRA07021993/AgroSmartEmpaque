@@ -1,0 +1,53 @@
+
+<app-header [titulo] =  "titulo"> </app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form #formulario="ngForm">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating" class="etiquetas" >Área de Sorting</ion-label>
+      <ion-select interface="popover" placeholder="Área">
+        <ion-select-option value="area1">Área 1</ion-select-option>
+        <ion-select-option value="area2">Área 2</ion-select-option>
+        <ion-select-option value="area3">Área 3</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <form #formulario="ngForm" class="ion-padding" class="grupo">
+      <ion-item>
+        <ion-label position="floating" class="etiquetas" >Estibas para Sorting</ion-label>
+        <ion-select interface="popover" placeholder="Estibas">
+          <ion-select-option value="Estiba1">Estiba 1</ion-select-option>
+          <ion-select-option value="Estiba2">Estiba 2</ion-select-option>
+          <ion-select-option value="Estiba3">Estiba 3</ion-select-option>
+        </ion-select>
+      </ion-item>
+  
+      <ion-item>
+        <ion-button shape="round" color="success" >Finaliza vaciado</ion-button>
+        <ion-icon (click)="fn_agregar()" slot="end" name="checkmark-circle-outline" size="large"></ion-icon>
+      </ion-item>
+    </form>
+
+    <ion-item> 
+      <ion-input name="estibas" [(ngModel)]="tabla.estibas" readonly="true"></ion-input>
+      <ion-input name="kgs" [(ngModel)]="tabla.kgs" readonly="true"></ion-input>
+    </ion-item>
+
+  </form>
+
+    <ion-item>
+      <ion-grid >
+        <ion-row>
+          <ion-col size="5">Estiba</ion-col>
+          <ion-col size="3">Lote</ion-col>
+          <ion-col size="4" class="ion-text-end">Kgs</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let estiba of estibas; index as i">
+          <ion-col size="5">{{ estiba.est }}</ion-col>
+          <ion-col size="3">{{ estiba.lot }}</ion-col>
+          <ion-col size="4" class="ion-text-end">{{ estiba.kgs }}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+</ion-content>

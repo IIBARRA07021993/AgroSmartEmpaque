@@ -1,0 +1,51 @@
+<ion-app>
+
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar class="ion-text-center" color="success">
+      <ion-buttons >
+        <ion-back-button >
+        </ion-back-button>
+      </ion-buttons>
+      <ion-avatar slot="start" class="ion-margin-horizontal ion-margin-vertical">
+        <img src="assets\icon\as.jpg">
+      </ion-avatar>
+      <ion-title class="ion-text-center">
+        <h1>AgroSmart <br>
+            Empaque</h1>
+      </ion-title>
+      <ion-icon (click)="fn_configuraciones()" class="ion-padding" slot="end" name="settings-outline" size="large">
+      </ion-icon>
+    </ion-toolbar>  
+  </ion-header>
+
+
+  <ion-content [fullscreen]="true" class="ion-padding">
+    <ion-img src="assets\icon\agrosmartlogo.jpg"> </ion-img>
+    <form #formulario="ngForm" class="ion-padding">
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="floating">Usuario</ion-label>
+        <ion-input class="ion-text-uppercase" type="text" name="user" [(ngModel)]="usuario.c_codigo_usu" placeholder="Usuario"
+          required>
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="usuario.v_passwo_usu" placeholder="Contraseña" required>
+        </ion-input>
+      </ion-item>
+
+
+      <ion-button disabled={{!formulario.valid}} color="success" class="ion-margin-top" (click)="login()" expand="full"
+        shape="round" style="height: 50px;">
+        <ion-label>Inicial Sección</ion-label>
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
+
+
+    </form>
+
+  </ion-content>
+
+
+</ion-app>

@@ -1,0 +1,32 @@
+[ 
+    {
+      "icon":"push-outline",
+      "name":"Surtir Pedidos",
+      "url":"/pedidos/1"
+    },
+    {
+      "icon":"location-outline",
+      "name":"Posición en Cuarto Frio",
+      "url":"/palet-ubi"
+    },
+    {
+      "icon":"layers-outline",
+      "name":"Manifiesto Virtual",
+      "url":"/man-virtual"
+    },
+    {
+      "icon":"layers-outline",
+      "name":"Sorting de Maduración de Estiba",
+      "url":"/sorting-est"
+    },
+    {
+      "icon":"layers-outline",
+      "name":"Sorting de Maduración de pallet",
+      "url":"/sorting-pal"
+    },
+    {
+      "icon":"layers-outline",
+      "name":"Creacíon de palet temporal",
+      "url":"/palet-temp"
+    }
+]

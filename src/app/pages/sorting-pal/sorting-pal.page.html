@@ -1,0 +1,57 @@
+
+<app-header [titulo] =  "titulo"> </app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form #formulario="ngForm" >
+    <ion-item class="ion-margin-bottom">
+      <ion-label class="etiquetas" position="floating">Área de Sorting</ion-label>
+      <ion-select interface="popover" placeholder="Área">
+        <ion-select-option value="area1">Área 1</ion-select-option>
+        <ion-select-option value="area2">Área 2</ion-select-option>
+        <ion-select-option value="area3">Área 3</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <form #formulario="ngForm" class="ion-padding" class="grupo">
+      <ion-item>
+        <ion-icon slot="start" name="qr-code-outline" size="large"></ion-icon>
+        <ion-input class="custom"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Kilos: </ion-label>
+        <ion-input class="custom2" type="number" (ionChange)="formataNumero($event)"></ion-input>
+        <ion-label>Cajas: </ion-label>
+        <ion-input class="custom2" type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-button shape="round" color="success" >Finaliza vaciado</ion-button>
+        <ion-icon (click)="fn_agregar()" slot="end" name="checkmark-circle-outline" size="large"></ion-icon>
+      </ion-item>
+    </form>
+
+    <ion-item> 
+      <ion-input name="estibas" [(ngModel)]="tabla.paletas" readonly="true"></ion-input>
+      <ion-input name="cajas" [(ngModel)]="tabla.cajas" readonly="true" class="ion-text-center"></ion-input>
+      <ion-input name="kgs" [(ngModel)]="tabla.kgs" readonly="true" class="ion-text-end" ></ion-input>
+    </ion-item>
+
+  </form>
+
+    <ion-item>
+      <ion-grid >
+        <ion-row>
+          <ion-col size="5">Pallets</ion-col>
+          <ion-col size="3" class="ion-text-end">Cajas</ion-col>
+          <ion-col size="4" class="ion-text-end">Kgs</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let palet of pallets; index as i">
+          <ion-col size="5">{{ palet.pal }}</ion-col>
+          <ion-col size="3" class="ion-text-end">{{ palet.caj }}</ion-col>
+          <ion-col size="4" class="ion-text-end">{{ palet.kgs }}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+</ion-content>

@@ -1,0 +1,30 @@
+<app-menu [componentes]="componentes"></app-menu>
+
+
+<ion-app id="main">
+  <ion-header>
+    <ion-toolbar color="success" class="ion-padding-top">
+      <ion-buttons slot="start">
+        <ion-menu-button menu="first"></ion-menu-button>
+      </ion-buttons>
+      <ion-title slot="start" class="ion-text-center ion-text-capitalize">
+        <h3>Control de Pedidos</h3>
+      </ion-title>
+      <ion-avatar slot="end" class="ion-padding">
+        <img src="assets\icon\as.jpg">
+      </ion-avatar>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true">
+    <ion-list>
+      <ion-card *ngFor="let c of componentes | async">
+        <ion-item class="ion-no-border" detail="true" [routerLink]="c.url">
+          <ion-icon slot="start" [name]="c.icon"></ion-icon>
+          {{c.name}}
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </ion-content>
+
+</ion-app>

@@ -1,0 +1,43 @@
+<ion-app>
+
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar class="ion-text-center" color="success">
+      <ion-avatar slot="start" class="ion-margin-horizontal ion-margin-vertical">
+        <img src="assets\icon\as.jpg">
+      </ion-avatar>
+      <ion-title class="ion-text-center">
+        <h2>Configuraciones</h2>
+      </ion-title>
+      <ion-icon (click)="fn_cargar_modelo()" slot="end" name="phone-portrait-outline" color="light" size="large"
+        class="ion-padding"></ion-icon>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true" class="ion-padding">
+    <form #formulario="ngForm" class="ion-padding ion-margin-top ">
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="floating">URL Api</ion-label>
+        <ion-input type="url" name="url_api_app" [(ngModel)]="configSer.url_api_app"
+          placeholder="http://192.175.112.100:7001/api/" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Terminal</ion-label>
+        <ion-input type="text" name="terminal_app" [(ngModel)]="configSer.terminal_app" placeholder="Numero de Terminal"
+          required>
+        </ion-input>
+
+      </ion-item>
+
+
+      <ion-button disabled={{!formulario.valid}} color="success" class="ion-margin-top" (click)="of_save_appconfig()"
+        expand="full" shape="round" style="height: 50px;">
+        <ion-label>Guardar</ion-label>
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
+
+    </form>
+
+  </ion-content>
+</ion-app>

@@ -1,0 +1,128 @@
+<ion-app>
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar color="success">
+      <ion-buttons slot="start">
+        <ion-back-button mode="md" defaultHref="/">
+        </ion-back-button>
+      </ion-buttons>
+      <ion-title class="ion-text-capitalize">
+        <ion-label>
+          <h1>Pedidos <ion-icon slot="icon-only" [name]="icono" size="small"></ion-icon>
+          </h1>
+          <h3> <strong>Estatus: </strong> {{titulo}} </h3>
+        </ion-label>
+      </ion-title>
+      <ion-icon (click)="presentActionSheet()" class="ion-padding" size="large" slot="end" name="funnel-outline">
+      </ion-icon>
+    </ion-toolbar>
+    <ion-searchbar placeholder="Buscar Pedido" animated mode="md" (ionChange)="fn_filtro_pedido($event)" debounce="250"
+      type="tel" >
+
+    </ion-searchbar>
+  </ion-header>
+  <ion-content [fullscreen]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content> </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list #listasliding>
+      <ion-card (click)="fn_surtir_ped(ped)" *ngFor="let ped of pedidos |async 
+                                            | filtro:texto_filtro:'c_codigo_pdo'
+                                            | filtro:ls_estatus:'c_estatus_pdo'">
+
+        <ion-item-sliding>
+          <ion-item-options *ngIf="ls_estatus != '3'" (click)="fn_estatus_surtido_ped(ped)" side="start">
+            <ion-item-option   color="success">
+              <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item-options  *ngIf="ls_estatus == '3'" (click)="fn_estatus_surtido_ped(ped)" side="end">
+            <ion-item-option   color="danger">
+              <ion-icon slot="icon-only" name="duplicate-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item class="itemapp" lines="full">
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label>
+                    <h1><strong>{{ped.c_codigo_pdo}}</strong></h1>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="8">
+                  <ion-label class="ion-text-start">
+                    <p><strong>{{ped.v_nombre_dis}}</strong></p>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-label class="ion-text-end">
+                    <p><strong>{{ped.d_fecha_pdo | date:'dd/MM/yyyy'}}</strong></p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6">
+                  <ion-badge color="secondary">Pedidas:{{ped.n_cajaspedidas_pdd}}</ion-badge>
+                </ion-col>
+                <ion-col size="6">
+                  <ion-badge color="warning">Surtidad:{{ped.n_cajasempacadas_pdd}}</ion-badge>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        
+        </ion-item-sliding>
+      </ion-card>
+
+    </ion-list>
+
+    <ion-list *ngIf="(pedidos|async) == null">
+      <ion-card *ngFor="let ped of [1,1,1,1,1,1] ">
+        <ion-item class="itemapp" lines="full">
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="12">
+                <ion-label>
+                  <h1>
+                    <ion-skeleton-text animated style="width: 90% ; height:25px"> </ion-skeleton-text>
+                  </h1>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="8">
+                <ion-label class="ion-text-start">
+                  <p>
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                  </p>
+                </ion-label>
+              </ion-col>
+              <ion-col size="4">
+                <ion-label class="ion-text-end">
+                  <p>
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                  </p>
+                </ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+
+
+  </ion-content>
+
+</ion-app>

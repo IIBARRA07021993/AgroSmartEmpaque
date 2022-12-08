@@ -13,7 +13,10 @@
         <h1>AgroSmart <br>
             Empaque</h1>
       </ion-title>
+      
       <ion-icon (click)="fn_configuraciones()" class="ion-padding" slot="end" name="settings-outline" size="large">
+        
+     
       </ion-icon>
     </ion-toolbar>  
   </ion-header>
@@ -43,19 +46,33 @@
         </ion-item>
       </ion-list> -->
 
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-icon slot="start" name="reload-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+     
+          <ion-item   class="ion-padding-top"  >
+            
+             
+                <ion-select mode="ios" interface="popover"  class="ion-text-center"
+                placeholder="Seleccionar Empresa"
+                (ionChange)="handleChange($event)"
+                (ionCancel)="pushLog('ionCancel fired')"
+                (ionDismiss)="pushLog('ionDismiss fired')"
+              >
+                <ion-select-option value="01">Empresa 01</ion-select-option>
+                <ion-select-option value="02">Empresa 02</ion-select-option>
+                <ion-select-option value="03">Empresa 03</ion-select-option>
+              </ion-select>
+             
+          </ion-item>
+         
+        
+
    
-      <ion-item    class="ion-padding-top" >
-        <ion-select mode="ios" interface="popover"  class="ion-text-center"
-          placeholder="Seleccionar Empresa"
-          (ionChange)="handleChange($event)"
-          (ionCancel)="pushLog('ionCancel fired')"
-          (ionDismiss)="pushLog('ionDismiss fired')"
-        >
-          <ion-select-option value="01">Empresa 01</ion-select-option>
-          <ion-select-option value="02">Empresa 02</ion-select-option>
-          <ion-select-option value="03">Empresa 03</ion-select-option>
-        </ion-select>
-      </ion-item>
+      
 
 
       <ion-button disabled={{!formulario.valid}} color="success" class="ion-margin-top" (click)="login()" expand="full"

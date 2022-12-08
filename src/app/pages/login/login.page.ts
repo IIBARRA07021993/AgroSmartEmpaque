@@ -40,14 +40,6 @@ export class LoginPage implements OnInit {
   }
 
 
-  pushLog(msg) {
-    this.logs.unshift(msg);
-  }
-
-  handleChange(e) {
-    console.log(e.detail.value);
-  }
-
   async login() {
     await this.ultilService.showLoading('Validando Usuario...')
     console.log('showLoading');
@@ -107,6 +99,16 @@ export class LoginPage implements OnInit {
   }
 
   
+
+  
+  pushLog(msg) {
+    this.logs.unshift(msg);
+  }
+
+  handleChange(e) {
+    console.log(e.detail.value);
+  }
+
 
 
 }

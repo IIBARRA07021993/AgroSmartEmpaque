@@ -85,3 +85,10 @@ export interface Palletpedido {
    n_bulxpa_pal: number;
    n_peso_pal: number;
 }
+
+
+
+export interface Empresas {
+   C_codigo_emp: string;
+   V_nombre_emp: string
+}

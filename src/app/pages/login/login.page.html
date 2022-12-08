@@ -35,6 +35,28 @@
         </ion-input>
       </ion-item>
 
+      <!-- <ion-list>
+        <ion-item>
+          <ion-select mode="ios" interface="popover"   [(ngModel)]="selected" placeholder="Select" [(ngModel)]="selected">
+            <ion-select-option *ngFor="let item of empresas" [value]="item">{{item}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list> -->
+
+   
+      <ion-item    class="ion-padding-top" >
+        <ion-select mode="ios" interface="popover"  class="ion-text-center"
+          placeholder="Seleccionar Empresa"
+          (ionChange)="handleChange($event)"
+          (ionCancel)="pushLog('ionCancel fired')"
+          (ionDismiss)="pushLog('ionDismiss fired')"
+        >
+          <ion-select-option value="01">Empresa 01</ion-select-option>
+          <ion-select-option value="02">Empresa 02</ion-select-option>
+          <ion-select-option value="03">Empresa 03</ion-select-option>
+        </ion-select>
+      </ion-item>
+
 
       <ion-button disabled={{!formulario.valid}} color="success" class="ion-margin-top" (click)="login()" expand="full"
         shape="round" style="height: 50px;">

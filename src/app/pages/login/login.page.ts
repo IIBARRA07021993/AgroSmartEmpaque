@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Empresas } from 'src/app/interfaces/interfaces';
 
 
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
@@ -19,6 +21,7 @@ export class LoginPage implements OnInit {
     c_codigo_usu: 'ADMIN',
     v_passwo_usu: 'ccons'
   }
+  logs: string[] = [];
 
   constructor(
     private router: Router,
@@ -26,10 +29,23 @@ export class LoginPage implements OnInit {
     private ultilService: UtilService,
     private configServ: ConfiguracionService
 
-  ) { }
+  ) { 
+
+
+   
+  }
 
   ngOnInit() {
 
+  }
+
+
+  pushLog(msg) {
+    this.logs.unshift(msg);
+  }
+
+  handleChange(e) {
+    console.log(e.detail.value);
   }
 
   async login() {

@@ -88,7 +88,13 @@ export interface Palletpedido {
 
 
 
-export interface Empresas {
+export interface Empresas{
    C_codigo_emp: string;
    V_nombre_emp: string
+}
+
+
+export interface Areas{
+   c_codigo_are: string;
+   v_nombre_are: string;
 }

@@ -5,7 +5,9 @@ import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx'
 import { AlertController, IonInput } from '@ionic/angular';
 import { Pedidosdet, Pellet } from 'src/app/interfaces/interfaces';
 import { ApiService } from 'src/app/services/api.service';
+import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -32,6 +34,7 @@ export class PedidoEditPage implements OnInit {
 
   constructor(
     private apiserv: ApiService,
+    private getdatoserv: GetdatosService,
     private ultilService: UtilService,
     private barcodeScanner: BarcodeScanner,
     public alertController: AlertController,
@@ -47,9 +50,7 @@ export class PedidoEditPage implements OnInit {
 
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
-    await this.fn_getPedidos_det(this.pedido.c_codigo_tem.trim()
-      + this.pedido.c_codigo_emp.trim()
-      + this.pedido.c_codigo_pdo.trim());
+    await this.fn_getPedidos_det();
     await this.codpal.setFocus()
 
   }
@@ -60,10 +61,7 @@ export class PedidoEditPage implements OnInit {
     await this.f_get_parametros();
     console.log('f_get_parametros')
     await this.ultilService.showLoading('Cargando detalle..')
-    await this.fn_getPedidos_det(this.pedido.c_codigo_tem.trim()
-      + this.pedido.c_codigo_emp.trim()
-      + this.pedido.c_codigo_pdo.trim());
-
+    await this.fn_getPedidos_det();
     await this.ultilService.loading.dismiss();
     console.log('f_get_parametros')
     await this.codpal.setFocus()
@@ -85,7 +83,6 @@ export class PedidoEditPage implements OnInit {
   fn_get_pallet_pededito_det(det: Pedidosdet) {
     let ls_precentacion = det.c_codigo_pro.trim() + det.c_codigo_eti.trim() + det.c_codigo_col.trim()
     console.log(ls_precentacion);
-
     if (det.n_pallets_emp > 0) {
       this.router.navigateByUrl(
         'pedido-pal/'
@@ -167,9 +164,7 @@ export class PedidoEditPage implements OnInit {
               'checkmark-outline',
               'success');
 
-            this.fn_getPedidos_det(this.pedido.c_codigo_tem.trim()
-              + this.pedido.c_codigo_emp.trim()
-              + this.pedido.c_codigo_pdo.trim());
+            this.fn_getPedidos_det();
 
             this.codigo = ""
             this.codpal.setFocus()
@@ -252,37 +247,45 @@ export class PedidoEditPage implements OnInit {
   }
 
 
-  fn_getPedidos_det(id: string) {
+  
+
+  fn_getPedidos_det() {
     return new Promise((resolve) => {
-      this.pedidos_det = [];
-      this.apiserv.getapi('v_pedidosappdet/' + id).subscribe((resp: Pedidosdet[]) => {
-        if (resp.length > 0) {
-          resp.forEach(element => {
-            this.pedidos_det.push(element)
-          });
-          console.log(this.pedidos_det);
-        }
-        resolve(true)
-
-
-
-      }, (error) => {
-
-        console.error(JSON.stringify(error))
-        this.ultilService.presentToast(
-          'Error',
-          'Ocurrio un error en la Peticion al API',
-          1500,
-          'warning-outline',
-          'danger');
-        resolve(false)
-
+      var json = {
+        c_codigo_pdo: this.pedido.c_codigo_pdo,
+        c_codigo_tem: this.pedido.c_codigo_tem,
+        c_codigo_emp: this.pedido.c_codigo_emp
       }
-      )
-    })
 
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=4&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.pedidos_det = JSON.parse(resp);
+            console.log(this.pedidos_det);
+            resolve(true);
+            
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              500,
+              'warning-outline',
+              'danger'
+            );
+            resolve(false);
+          }
+        );
+    });
   }
-
 
 
   async Alerta_exedecajas() {

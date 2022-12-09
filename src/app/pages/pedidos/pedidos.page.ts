@@ -34,6 +34,7 @@ export class PedidosPage implements OnInit {
     private modalController: ModalController,
     public alertController: AlertController,
     private ultilService: UtilService,
+    private apiserv : ApiService
   ) { }
 
   async ionViewWillEnter() {
@@ -47,17 +48,19 @@ export class PedidosPage implements OnInit {
     console.log('ngOnInit');
     this.usuario_login = environment.usuario_login
     this.ls_estatus = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(this.ls_estatus);
   }
 
 
 
-  getPedidos() {
+   getPedidos() {
     return new Promise((resolve) => {
+      this.setTitulo();
+      
       var json = {  }
-
       this.getdatoserv
         .sp_AppGetDatos(
-          '/resolve?as_empresa=' +
+          '/GetDatos?as_empresa=' +
             environment.codempresa +
             '&as_operation=3&as_json=' +
             JSON.stringify(json)
@@ -67,18 +70,8 @@ export class PedidosPage implements OnInit {
             console.log(resp);
             this.pedidos = JSON.parse(resp);
             console.log(this.pedidos);
-
-            /*
-            if (this.opcionesmenu.length == 0) {
-              this.ultilService.presentToast(
-                'Atención!',
-                'No tiene Permisos a ninguna Opción.',
-                500,
-                'warning-outline',
-                'warning'
-              );
-              resolve(false);
-            }*/
+            resolve(true);
+            
           },
           (error) => {
             console.error(JSON.stringify(error));
@@ -95,21 +88,7 @@ export class PedidosPage implements OnInit {
     });
   }
 
-  /*
-
-  async getPedidos() {
-    return new Promise((resolve) => {
-      this.setTitulo();
-
-
-
-      this.pedidos = this.apiserv.getapi('v_pedidosapp')
-
-
-
-      resolve(true)
-    })
-  }*/
+  
 
   async doRefresh(event) {
 
@@ -143,7 +122,7 @@ export class PedidosPage implements OnInit {
     }
   }
 
-  /*
+  
 
   async fn_estatus_surtido_ped(pedido: any) {
     this.lb_godetalle = false
@@ -155,7 +134,7 @@ export class PedidosPage implements OnInit {
       await this.Alerta_update_estatus(pedido , '2');
     }
   
-  }*/
+  }
 
   fn_surtir_ped(pedido: any) {
     console.log(pedido);
@@ -237,7 +216,7 @@ export class PedidosPage implements OnInit {
 
   }
 
-/*
+
   async Alerta_update_estatus(pedido: any , estatus_new :string ) {
     let msj =  ''
     if (this.ls_estatus =='1' || this.ls_estatus =='2') {
@@ -284,9 +263,9 @@ export class PedidosPage implements OnInit {
     const { role } = await alert.onDidDismiss();
     console.log(`Dismissed with role: ${role}`);
   }
-*/
 
-/*
+
+
   fn_update_estatus_ped(pedido: any , estatus :string) {
     return new Promise(async (resolve) => {
       var json = {
@@ -353,7 +332,7 @@ export class PedidosPage implements OnInit {
     )
 
   }
-*/
+
 
 }
 

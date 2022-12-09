@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Componentes, OpcionesMenu } from 'src/app/interfaces/interfaces';
+import {  OpcionesMenu } from 'src/app/interfaces/interfaces';
 import { MenuService } from 'src/app/services/menu.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, IonList, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Pedidos } from 'src/app/interfaces/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
@@ -16,7 +17,7 @@ export class PedidosPage implements OnInit {
 
   @ViewChild('listasliding') listapedido: IonList
 
-  pedidos: Observable<any>
+  pedidos: Pedidos[] = [];
   ls_estatus: string;
   titulo: string = ''
   icono: string = ''
@@ -26,7 +27,7 @@ export class PedidosPage implements OnInit {
 
 
   constructor(private router: Router,
-    private apiserv: ApiService,
+    private getdatoserv: ApiService,
     private activatedRoute: ActivatedRoute,
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
@@ -53,7 +54,7 @@ export class PedidosPage implements OnInit {
     return new Promise((resolve) => {
       var json = {  }
 
-      this.menuserv
+      this.getdatoserv
         .sp_AppOpcionesMenu(
           '/resolve?as_empresa=' +
             environment.codempresa +
@@ -64,7 +65,7 @@ export class PedidosPage implements OnInit {
           (resp: string) => {
             console.log(resp);
             this.pedidos = JSON.parse(resp);
-            console.log(this.opcionesmenu);
+            console.log(this.pedidos);
 
             /*
             if (this.opcionesmenu.length == 0) {

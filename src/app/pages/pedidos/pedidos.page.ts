@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, IonList, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Pedidos } from 'src/app/interfaces/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
@@ -16,7 +17,7 @@ export class PedidosPage implements OnInit {
 
   @ViewChild('listasliding') listapedido: IonList
 
-  pedidos: Observable<any>
+  pedidos: Pedidos[] = [];
   ls_estatus: string;
   titulo: string = ''
   icono: string = ''
@@ -26,7 +27,7 @@ export class PedidosPage implements OnInit {
 
 
   constructor(private router: Router,
-    private apiserv: ApiService,
+    private getdatoserv: ApiService,
     private activatedRoute: ActivatedRoute,
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
@@ -45,17 +46,69 @@ export class PedidosPage implements OnInit {
     console.log('ngOnInit');
     this.usuario_login = environment.usuario_login
     this.ls_estatus = this.activatedRoute.snapshot.paramMap.get('id');
-
-
   }
+
+
+
+  getPedidos() {
+    return new Promise((resolve) => {
+      var json = {  }
+
+      this.getdatoserv
+        .sp_AppOpcionesMenu(
+          '/resolve?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=3&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.pedidos = JSON.parse(resp);
+            console.log(this.pedidos);
+
+            /*
+            if (this.opcionesmenu.length == 0) {
+              this.ultilService.presentToast(
+                'Atención!',
+                'No tiene Permisos a ninguna Opción.',
+                500,
+                'warning-outline',
+                'warning'
+              );
+              resolve(false);
+            }*/
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              500,
+              'warning-outline',
+              'danger'
+            );
+            resolve(false);
+          }
+        );
+    });
+  }
+
+  /*
 
   async getPedidos() {
     return new Promise((resolve) => {
       this.setTitulo();
+
+
+
       this.pedidos = this.apiserv.getapi('v_pedidosapp')
+
+
+
       resolve(true)
     })
-  }
+  }*/
 
   async doRefresh(event) {
 

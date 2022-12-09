@@ -4,6 +4,7 @@ import { ActionSheetController, AlertController, IonList, ModalController } from
 import { Observable } from 'rxjs';
 import { Pedidos } from 'src/app/interfaces/interfaces';
 import { ApiService } from 'src/app/services/api.service';
+import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 import { PedidoEditPage } from '../pedido-edit/pedido-edit.page';
@@ -27,7 +28,7 @@ export class PedidosPage implements OnInit {
 
 
   constructor(private router: Router,
-    private getdatoserv: ApiService,
+    private getdatoserv: GetdatosService,
     private activatedRoute: ActivatedRoute,
     private actionSheetController: ActionSheetController,
     private modalController: ModalController,
@@ -55,7 +56,7 @@ export class PedidosPage implements OnInit {
       var json = {  }
 
       this.getdatoserv
-        .sp_AppOpcionesMenu(
+        .sp_AppGetDatos(
           '/resolve?as_empresa=' +
             environment.codempresa +
             '&as_operation=3&as_json=' +
@@ -142,6 +143,7 @@ export class PedidosPage implements OnInit {
     }
   }
 
+  /*
 
   async fn_estatus_surtido_ped(pedido: any) {
     this.lb_godetalle = false
@@ -153,7 +155,7 @@ export class PedidosPage implements OnInit {
       await this.Alerta_update_estatus(pedido , '2');
     }
   
-  }
+  }*/
 
   fn_surtir_ped(pedido: any) {
     console.log(pedido);
@@ -235,7 +237,7 @@ export class PedidosPage implements OnInit {
 
   }
 
-
+/*
   async Alerta_update_estatus(pedido: any , estatus_new :string ) {
     let msj =  ''
     if (this.ls_estatus =='1' || this.ls_estatus =='2') {
@@ -282,9 +284,9 @@ export class PedidosPage implements OnInit {
     const { role } = await alert.onDidDismiss();
     console.log(`Dismissed with role: ${role}`);
   }
+*/
 
-
-
+/*
   fn_update_estatus_ped(pedido: any , estatus :string) {
     return new Promise(async (resolve) => {
       var json = {
@@ -351,6 +353,8 @@ export class PedidosPage implements OnInit {
     )
 
   }
+*/
+
 }
 
 

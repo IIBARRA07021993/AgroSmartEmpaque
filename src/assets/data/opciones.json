@@ -3,6 +3,7 @@
       "icon":"push-outline",
       "name":"Surtir Pedidos",
       "url":"/pedidos/1"
+  
     },
     {
       "icon":"location-outline",
@@ -29,4 +30,11 @@
       "name":"Creacíon de palet temporal",
       "url":"/palet-temp"
     }
+    ,
+    {
+      "icon":"layers-outline",
+      "name":"Armado de Pallet (Control Estibe)",
+      "url":"/armado-pal"
+    }
+    
 ]

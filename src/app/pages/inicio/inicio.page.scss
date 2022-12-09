@@ -1,5 +1,6 @@
 ion-card {
     border-radius: 15px;
+    height: 50px;
 }
 
 ion-item {
@@ -7,11 +8,19 @@ ion-item {
     --color: #248b47;
     font-family:Arial, Helvetica, sans-serif;
     --detail-icon-color:   #248b47;
+    
 }
+
+
 
 
 ion-icon {
     color:  #248b47;
     font-size: 24px;
+
+}
+
+ion-menu-button{
+    font-size: 200px;
 
 }

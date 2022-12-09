@@ -8,11 +8,11 @@
 
 
     <ion-list>
-      <ion-menu-toggle *ngFor="let c of componentes | async">
+      <ion-menu-toggle *ngFor="let c of opcionesmenu ">
         <ion-card>
-          <ion-item class="ion-no-border" detail="true" [routerLink]="c.url">
-            <ion-icon slot="start" [name]="c.icon"></ion-icon>
-            {{c.name}}
+          <ion-item class="ion-no-border" detail="true" [routerLink]="c.v_nombreclase_sme">
+            <ion-icon slot="start" [name]="c.v_imagetile"></ion-icon>
+            {{c.v_nombre_sme}}
           </ion-item>
         </ion-card>
       </ion-menu-toggle>

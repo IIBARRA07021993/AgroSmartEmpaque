@@ -98,3 +98,11 @@ export interface Areas{
    c_codigo_are: string;
    v_nombre_are: string;
 }
+
+
+export interface OpcionesMenu {
+   c_codigo_sme:      string;
+   v_nombre_sme:      string;
+   v_imagetile:       string;
+   v_nombreclase_sme: string;
+}

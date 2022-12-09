@@ -30,7 +30,7 @@ export class UtilService {
       message: mensaje,
       duration: timpo,
       icon: icon,
-      position: 'middle',
+      position: 'bottom',
       color: color,
     });
     toast.present();
@@ -88,4 +88,9 @@ export class UtilService {
 
     await alert.present();
   }
+
+
+
+
+
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {  Empresas } from 'src/app/interfaces/interfaces';
+import { Empresas } from 'src/app/interfaces/interfaces';
 
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { LoginService } from 'src/app/services/login.service';
@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
     v_passwo_usu: 'ccons',
   };
   empresas: Empresas[] = [];
-  versionapp : string =''
+  versionapp: string = '';
 
   constructor(
     private router: Router,
@@ -27,9 +27,8 @@ export class LoginPage implements OnInit {
     private configServ: ConfiguracionService
   ) {}
 
-   ngOnInit() {
-    this.versionapp = environment.version
-    
+  ngOnInit() {
+    this.versionapp = environment.version;
   }
 
   async login() {
@@ -68,6 +67,7 @@ export class LoginPage implements OnInit {
 
   fn_login() {
     return new Promise((resolve) => {
+      environment.usuario_login = '';
       var json = {
         c_codigo_usu: this.usuario.c_codigo_usu,
         v_passwo_usu: this.usuario.v_passwo_usu,
@@ -87,13 +87,14 @@ export class LoginPage implements OnInit {
               console.log(arrayresp[0]);
               switch (arrayresp[0]) {
                 case '1':
-                  this.ultilService.presentToast(
+                  this.ultilService.presentToastok(
                     'Inicio!',
                     arrayresp[1],
                     1500,
                     'checkmark-done-outline',
                     'success'
                   );
+                  environment.usuario_login = this.usuario.c_codigo_usu;
                   resolve(true);
                   break;
                 case '0':
@@ -191,10 +192,8 @@ export class LoginPage implements OnInit {
     });
   }
 
-
   handleChange(evento) {
     environment.codempresa = evento.detail.value;
     console.log(environment.codempresa);
-   
   }
 }

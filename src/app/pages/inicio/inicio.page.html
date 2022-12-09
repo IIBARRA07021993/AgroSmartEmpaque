@@ -1,12 +1,12 @@
-<app-menu [componentes]="componentes"></app-menu>
+<app-menu [opcionesmenu]="opcionesmenu"></app-menu>
 
 <ion-app id="main">
   <ion-header>
     <ion-toolbar color="success" class="ion-padding-top">
       <ion-buttons slot="start">
-        <ion-menu-button menu="first"></ion-menu-button>
+        <ion-menu-button menu="first"  ite> </ion-menu-button>
       </ion-buttons>
-      <ion-title slot="start" class="ion-text-center ion-text-capitalize">
+      <ion-title class="ion-text-center ion-text-capitalize">
         <h1>
           AgroSmart <br />
           Empaque
@@ -20,10 +20,14 @@
 
   <ion-content [fullscreen]="true">
     <ion-list>
-      <ion-card *ngFor="let c of componentes | async">
-        <ion-item class="ion-no-border" detail="true" [routerLink]="c.url">
-          <ion-icon slot="start" [name]="c.icon"></ion-icon>
-          {{c.name}}
+      <ion-card *ngFor="let c of opcionesmenu">
+        <ion-item
+          class="ion-no-border"
+          detail="true"
+          [routerLink]="c.v_nombreclase_sme"
+        >
+          <ion-icon slot="start" [name]="c.v_imagetile"></ion-icon>
+          {{c.v_nombre_sme}}
         </ion-item>
       </ion-card>
     </ion-list>

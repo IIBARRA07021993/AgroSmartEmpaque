@@ -1,5 +1,3 @@
-
-
 export interface Pedidos {
    c_codigo_pdo:         string;
    c_codigo_tem:         string;
@@ -20,7 +18,6 @@ export interface Pedidos {
 
 
 export interface Pedidosdet {
-   $id: string;
    c_codigo_pdo: string;
    c_codigo_tem: string;
    v_nombre_tem: string;
@@ -46,7 +43,6 @@ export interface Pedidosdet {
 
 
 export interface Pellet {
-   $id: string;
    c_codigo_tem: string;
    c_codigo_emp: string;
    c_codigo_pal: string;

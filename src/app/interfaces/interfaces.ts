@@ -80,12 +80,15 @@ export interface Empresas{
    V_nombre_emp: string
 }
 
-
 export interface Areas{
    c_codigo_are: string;
    v_nombre_are: string;
 }
 
+export interface Cajas {
+   c_codigo_tcj: string;
+   v_nombre_tcj: string;
+}
 
 export interface OpcionesMenu {
    c_codigo_sme:      string;

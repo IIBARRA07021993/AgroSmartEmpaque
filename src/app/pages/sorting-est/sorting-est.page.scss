@@ -32,3 +32,26 @@ ion-grid {
         font-weight: bold;
     }
   }
+  ion-input.custom {
+    border: solid 1px darkgray;
+    background-color: rgb(232, 232, 232);
+    margin-left: 10px;
+    margin-right: 10px;
+    
+    --padding-bottom: 5px;
+    --padding-end: 5px;
+    --padding-start: 5px;
+    --padding-top: 5px;
+  }
+  ion-input.custom2 {
+    border: solid 1px darkgray;
+    background-color: rgb(232, 232, 232);
+    margin-left: 20px;
+    margin-right: 10px;
+    text-align: right;
+    
+    --padding-bottom: 5px;
+    --padding-end: 5px;
+    --padding-start: 5px;
+    --padding-top: 5px;
+  }

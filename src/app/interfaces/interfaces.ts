@@ -92,3 +92,13 @@ export interface Empresas {
    C_codigo_emp: string;
    V_nombre_emp: string
 }
+
+export interface Areas {
+   c_codigo_are: string;
+   v_nombre_are: string;
+}
+
+export interface Cajas {
+   c_codigo_tcj: string;
+   v_nombre_tcj: string;
+}

@@ -15,17 +15,17 @@
       "url":"/man-virtual"
     },
     {
-      "icon":"layers-outline",
+      "icon":"options",
       "name":"Sorting de Maduración de Estiba",
       "url":"/sorting-est"
     },
     {
-      "icon":"layers-outline",
+      "icon":"options",
       "name":"Sorting de Maduración de pallet",
       "url":"/sorting-pal"
     },
     {
-      "icon":"layers-outline",
+      "icon":"grid",
       "name":"Creacíon de palet temporal",
       "url":"/palet-temp"
     }

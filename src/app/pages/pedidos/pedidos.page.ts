@@ -45,17 +45,69 @@ export class PedidosPage implements OnInit {
     console.log('ngOnInit');
     this.usuario_login = environment.usuario_login
     this.ls_estatus = this.activatedRoute.snapshot.paramMap.get('id');
-
-
   }
+
+
+
+  getPedidos() {
+    return new Promise((resolve) => {
+      var json = {  }
+
+      this.menuserv
+        .sp_AppOpcionesMenu(
+          '/resolve?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=3&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.pedidos = JSON.parse(resp);
+            console.log(this.opcionesmenu);
+
+            /*
+            if (this.opcionesmenu.length == 0) {
+              this.ultilService.presentToast(
+                'Atención!',
+                'No tiene Permisos a ninguna Opción.',
+                500,
+                'warning-outline',
+                'warning'
+              );
+              resolve(false);
+            }*/
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              500,
+              'warning-outline',
+              'danger'
+            );
+            resolve(false);
+          }
+        );
+    });
+  }
+
+  /*
 
   async getPedidos() {
     return new Promise((resolve) => {
       this.setTitulo();
+
+
+
       this.pedidos = this.apiserv.getapi('v_pedidosapp')
+
+
+
       resolve(true)
     })
-  }
+  }*/
 
   async doRefresh(event) {
 

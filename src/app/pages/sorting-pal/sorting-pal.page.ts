@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Areas } from 'src/app/interfaces/interfaces';
+import { Areas, Cajas } from 'src/app/interfaces/interfaces';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { environment } from 'src/environments/environment';
 
@@ -15,6 +15,8 @@ export class SortingPalPage implements OnInit {
   totalkgs: any;
   totalcajas: any;
   areas: Areas[] = [];
+  cajas : Cajas [] = [];
+  tarimas : Cajas [] = [];
   tabla = {
     paletas: 'Pallets: 0',
     cajas: 'Cajas: 0',
@@ -22,7 +24,10 @@ export class SortingPalPage implements OnInit {
   };
 
   ngOnInit() {
-    fetch('./assets/data/pallets.json')
+    this.fn_cargarareas();
+    this.fn_cargarcajas();
+    this.fn_cargartarimas();
+    /*fetch('./assets/data/pallets.json')
       .then((res) => res.json()) //Cambiar esto por lo de la base de datos
       .then((json) => {
         this.pallets = json;
@@ -42,9 +47,7 @@ export class SortingPalPage implements OnInit {
         console.log(this.tabla.paletas);
         console.log(this.tabla.cajas);
         console.log(this.tabla.kgs);
-        
-        this.fn_cargarareas();
-      });
+      });*/
   }
 
   fn_cargarareas() {
@@ -62,6 +65,42 @@ export class SortingPalPage implements OnInit {
       ).subscribe((resp: any) => {
         this.areas = JSON.parse(resp);
         console.log(this.areas);
+      });
+    });
+  }
+
+  fn_cargarcajas() {
+    var json = {
+      c_tipo_tcj:  'C' // CAJAS
+    }
+    //llenar drop down de cajas para seleccionar.
+    return new Promise((resolve) => {
+      this.getdatos.sp_AppGetDatos(
+        '/GetDatos?as_empresa=' +
+          environment.codempresa +
+          '&as_operation=2&as_json=' +
+          JSON.stringify(json)
+      ).subscribe((resp: any) => {
+        this.cajas = JSON.parse(resp);
+        console.log(this.cajas);
+      });
+    });
+  }
+
+  fn_cargartarimas() {
+    var json = {
+      c_tipo_tcj:  'T' // CAJAS
+    }
+    //llenar drop down de cajas para seleccionar.
+    return new Promise((resolve) => {
+      this.getdatos.sp_AppGetDatos(
+        '/GetDatos?as_empresa=' +
+          environment.codempresa +
+          '&as_operation=2&as_json=' +
+          JSON.stringify(json)
+      ).subscribe((resp: any) => {
+        this.tarimas = JSON.parse(resp);
+        console.log(this.tarimas);
       });
     });
   }

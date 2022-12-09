@@ -33,6 +33,32 @@
       </ion-item>
 
       <ion-item>
+        <ion-label position="floating" class="etiquetas"
+          >Tipo de Caja</ion-label
+        >
+        <ion-select interface="popover" placeholder="caja">
+          <ion-select-option
+            *ngFor="let caja of cajas"
+            [value]="caja.c_codigo_tcj"
+            >{{caja.v_nombre_tcj}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="floating" class="etiquetas"
+          >Tipo de tarima</ion-label
+        >
+        <ion-select interface="popover" placeholder="tarima">
+          <ion-select-option
+            *ngFor="let tarima of tarimas"
+            [value]="tarima.c_codigo_tcj"
+            >{{tarima.v_nombre_tcj}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
         <ion-button shape="round" color="success">Finaliza vaciado</ion-button>
         <ion-icon
           (click)="fn_agregar()"

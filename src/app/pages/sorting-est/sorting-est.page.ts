@@ -24,7 +24,10 @@ export class SortingEstPage implements OnInit {
   };
 
   ngOnInit() {
-    fetch('./assets/data/estibas.json')
+    this.fn_cargarareas();
+    this.fn_cargarcajas();
+    this.fn_cargartarimas();
+    /*fetch('./assets/data/estibas.json')
       .then((res) => res.json()) //Cambiar esto por lo de la base de datos
       .then((json) => {
         this.estibas = json;
@@ -40,10 +43,7 @@ export class SortingEstPage implements OnInit {
 
         console.log(this.tabla.estibas);
         console.log(this.tabla.kgs);
-        this.fn_cargarareas();
-        this.fn_cargarcajas();
-        this.fn_cargartarimas();
-      });
+      });*/
   }
 
   fn_cargarareas() {

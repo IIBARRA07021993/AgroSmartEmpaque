@@ -52,6 +52,10 @@ const routes: Routes = [
   {
     path: 'palet-temp',
     loadChildren: () => import('./pages/palet-temp/palet-temp.module').then( m => m.PaletTempPageModule)
+  },
+  {
+    path: 'armado-pal',
+    loadChildren: () => import('./pages/armado-pal/armado-pal.module').then( m => m.ArmadoPalPageModule)
   }
 ];
 

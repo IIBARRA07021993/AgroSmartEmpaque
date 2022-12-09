@@ -1,81 +1,95 @@
 import { Injectable } from '@angular/core';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  ToastController,
+} from '@ionic/angular';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilService {
+  loading: HTMLIonLoadingElement;
 
-
-  loading:HTMLIonLoadingElement;
-
-  constructor(public toastController: ToastController,
+  constructor(
+    public toastController: ToastController,
     public alertController: AlertController,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController
+  ) {}
 
-
-  async presentToast( header:string , mensaje :string  , timpo :number , icon:string  , color : string ) {
+  async presentToast(
+    header: string,
+    mensaje: string,
+    timpo: number,
+    icon: string,
+    color: string
+  ) {
     const toast = await this.toastController.create({
-      mode :'ios',
+      mode: 'ios',
       header: header,
       message: mensaje,
       duration: timpo,
-      icon: icon ,
-      position: 'middle',
-      color: color
+      icon: icon,
+      position: 'bottom',
+      color: color,
     });
     toast.present();
   }
 
-
-
-
-  async presentToastok( header:string , mensaje :string  , timpo :number , icon:string  , color : string ) {
+  async presentToastok(
+    header: string,
+    mensaje: string,
+    timpo: number,
+    icon: string,
+    color: string
+  ) {
     const toast = await this.toastController.create({
       header: header,
-      mode :'ios',
+      mode: 'ios',
       message: mensaje,
       duration: timpo,
-      icon: icon ,
-      position:'middle' ,
+      icon: icon,
+      position: 'middle',
       color: color,
       buttons: [
         {
-          text: 'OK'
-        }
+          text: 'OK',
+        },
       ],
     });
     toast.present();
   }
 
-
-  async showLoading(  message :string    ) {
+  async showLoading(message: string) {
     this.loading = await this.loadingCtrl.create({
       message,
       spinner: 'circles',
-      mode:'ios',
-      
+      mode: 'ios',
     });
 
-
-   return  this.loading.present();
+    return this.loading.present();
   }
 
-  
-  async AlertaOK(header:string , subHeader :string ,mensaje :string , buttons:string  ) {
+  async AlertaOK(
+    header: string,
+    subHeader: string,
+    mensaje: string,
+    buttons: string
+  ) {
     const alert = await this.alertController.create({
-      mode :'ios',
-      cssClass:'alerta',
+      mode: 'ios',
+      cssClass: 'alerta',
       header: header,
       subHeader: subHeader,
-      message: mensaje ,
+      message: mensaje,
       backdropDismiss: false,
       buttons: [buttons],
     });
 
     await alert.present();
-    
   }
+
+
 
 
 

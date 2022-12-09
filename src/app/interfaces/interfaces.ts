@@ -88,12 +88,12 @@ export interface Palletpedido {
 
 
 
-export interface Empresas {
+export interface Empresas{
    C_codigo_emp: string;
    V_nombre_emp: string
 }
 
-export interface Areas {
+export interface Areas{
    c_codigo_are: string;
    v_nombre_are: string;
 }
@@ -101,4 +101,11 @@ export interface Areas {
 export interface Cajas {
    c_codigo_tcj: string;
    v_nombre_tcj: string;
+}
+
+export interface OpcionesMenu {
+   c_codigo_sme:      string;
+   v_nombre_sme:      string;
+   v_imagetile:       string;
+   v_nombreclase_sme: string;
 }

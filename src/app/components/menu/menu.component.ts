@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Componentes } from 'src/app/interfaces/interfaces';
+import {  OpcionesMenu } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-menu',
@@ -8,7 +7,7 @@ import { Componentes } from 'src/app/interfaces/interfaces';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent  {
-  @Input() componentes :Observable<Componentes[]>
+  @Input()   opcionesmenu: OpcionesMenu[] = [];
 
 
 

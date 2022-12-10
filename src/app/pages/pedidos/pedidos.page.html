@@ -26,7 +26,7 @@
     </ion-refresher>
 
     <ion-list #listasliding>
-      <ion-card (click)="fn_surtir_ped(ped)" *ngFor="let ped of pedidos |async 
+      <ion-card (click)="fn_surtir_ped(ped)" *ngFor="let ped of pedidos  
                                             | filtro:texto_filtro:'c_codigo_pdo'
                                             | filtro:ls_estatus:'c_estatus_pdo'">
 
@@ -80,7 +80,7 @@
 
     </ion-list>
 
-    <ion-list *ngIf="(pedidos|async) == null">
+    <ion-list *ngIf="(pedidos) == null">
       <ion-card *ngFor="let ped of [1,1,1,1,1,1] ">
         <ion-item class="itemapp" lines="full">
           <ion-grid fixed>

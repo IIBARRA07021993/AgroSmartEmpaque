@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Palletpedido } from 'src/app/interfaces/interfaces';
-import { ApiService } from 'src/app/services/api.service';
+import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-pedido-pal',
@@ -21,7 +22,9 @@ export class PedidoPalPage implements OnInit {
   palletpedido :Palletpedido[] = [];
   
   constructor(private activatedRoute: ActivatedRoute,
-    private ultilService: UtilService, private apiserv: ApiService,) { }
+    private getdatoserv: GetdatosService,
+    private ultilService: UtilService
+    ) { }
 
   async ngOnInit() {
     console.log('ngOnInit');
@@ -46,35 +49,46 @@ export class PedidoPalPage implements OnInit {
 
   }
 
-  fn_get_pallet_pedido() {
-    return new Promise(async (resolve) => {
 
-      console.log(this.pedido)
-      this.apiserv.StoredProcedureGET(
-        'usp_control_pedidos_app/palets?as_operation=4&as_json=' + JSON.stringify(this.pedido)
-      ).subscribe((resp: string) => {
-        
-        console.log(resp);
-        console.log(JSON.parse(resp));
-        this.palletpedido = JSON.parse(resp);
-        console.log(this.palletpedido[0].v_nombre_pro);
-        resolve(true);
-
-
-      },(error)=>{
-
-        console.error(JSON.stringify(error))
-        this.ultilService.presentToast( 
-          'Error' ,
-          'Ocurrio un error en la Peticion al API' ,  
-          1500 ,
-          'warning-outline' ,
-          'danger');
-          resolve(false)
   
-       })
+  fn_get_pallet_pedido() {
+    return new Promise((resolve) => {
+      var json = {
+        c_codigo_pdo: this.pedido.c_codigo_pdo,
+        c_codigo_tem: this.pedido.c_codigo_tem,
+        c_codigo_emp: this.pedido.c_codigo_emp,
+        c_codigo_pre: this.pedido.c_codigo_pre
+      }
 
-})}
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=5&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.palletpedido = JSON.parse(resp);
+            console.log(this.palletpedido);
+            resolve(true);
+            
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              500,
+              'warning-outline',
+              'danger'
+            );
+            resolve(false);
+          }
+        );
+    });
+  }
 
 
 trashClick(){

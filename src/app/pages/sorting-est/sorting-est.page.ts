@@ -22,20 +22,19 @@ export class SortingEstPage implements OnInit {
   tarimas: Cajas[] = [];
   lotes : Lotes[] = [];
   tabla = {
-    estibas: 'Estibas: 0',
+    pallets: 'Pallets: 0',
     kgs: 'KGS: 0.000',
     c_codigo_are: '',
     c_codigo_rec: '',
     c_concecutivo_dso: '',
-    c_codigo_est: '',
-    c_codigo_lot: '',
-    n_kilos_dso: 0.0,
+    n_kilos_dso: 0.000,
     n_cajas_dso: 0,
     c_codigocaja_tcj: '',
     c_codigotarima_tcj: '',
     c_codigo_usu: environment.usuario_login,
     c_codigo: '',
   };
+
 
   ngOnInit() {
     this.fn_cargarareas();
@@ -124,8 +123,8 @@ export class SortingEstPage implements OnInit {
   fn_guardarsorteo() {
     var json = {
       c_codigo_are: this.tabla.c_codigo_are,
-      c_codigo_rec: this.tabla.c_codigo.substring(0, 10),
-      c_concecutivo_dso: this.tabla.c_codigo.substring(10, 12),
+      c_codigo_rec: this.tabla.c_codigo.substring(0, 6),
+      c_concecutivo_dso: this.tabla.c_codigo.substring(6, 9),
       n_kilos_dso: this.tabla.n_kilos_dso,
       n_cajas_dso: this.tabla.n_cajas_dso,
       c_codigocaja_tcj: this.tabla.c_codigocaja_tcj,
@@ -209,9 +208,10 @@ export class SortingEstPage implements OnInit {
 
   fn_cargarlistado(){
     var json = {
-      c_codigo_rec: this.tabla.c_codigo.substring(0, 10),
-      c_concecutivo_dso: this.tabla.c_codigo.substring(10, 12)
+      c_codigo_rec: this.tabla.c_codigo.substring(0, 6),
+      c_concecutivo_dso: this.tabla.c_codigo.substring(6, 9)
     };
+    console.log(json)
 
     return new Promise((resolve) => {
       this.getdatos
@@ -224,8 +224,7 @@ export class SortingEstPage implements OnInit {
         .subscribe((resp: any) => {
           this.lotes = JSON.parse(resp);
           console.log(this.lotes);
-
-          //this.tabla.kgs = 'KGS: ' + this.lotes.c_idestiba_red;
+          this.estibas= this.lotes;
         });
     });
 

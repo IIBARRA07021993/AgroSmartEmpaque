@@ -224,7 +224,9 @@ export class SortingEstPage implements OnInit {
         .subscribe((resp: any) => {
           this.lotes = JSON.parse(resp);
           console.log(this.lotes);
-          this.estibas= this.lotes;
+          this.lotes[0].n_kilos_dso = this.tabla.n_kilos_dso;
+          this.estibas = this.lotes;
+          
         });
     });
 

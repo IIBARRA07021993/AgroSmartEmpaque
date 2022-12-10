@@ -6,7 +6,7 @@
       <ion-label position="floating" class="etiquetas"
         >Área de Sorting</ion-label
       >
-      <ion-select interface="popover" placeholder="Área">
+      <ion-select interface="popover" placeholder="Área"  [(ngModel)] = "tabla.c_codigo_are" name="c_area">
         <ion-select-option
           *ngFor="let area of areas"
           [value]="area.c_codigo_are"
@@ -18,7 +18,7 @@
     <form #formulario="ngForm" class="ion-padding" class="grupo">
       <ion-item>
         <ion-icon slot="start" name="barcode-outline" size="large"></ion-icon>
-        <ion-input class="custom"></ion-input>
+        <ion-input class="custom" [(ngModel)] = "tabla.c_codigo" name="c_reccon"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -26,17 +26,23 @@
         <ion-input
           class="custom2"
           type="number"
-          (ionChange)="formataNumero($event)"
+          [(ngModel)] = "tabla.n_kilos_dso" 
+          name="n_kilos"
         ></ion-input>
         <ion-label>Cajas: </ion-label>
-        <ion-input class="custom2" type="number"></ion-input>
+        <ion-input 
+        class="custom2" 
+        type="number" 
+        [(ngModel)] = "tabla.n_cajas_dso" 
+        name="n_cajas"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating" class="etiquetas"
           >Tipo de Caja</ion-label
         >
-        <ion-select interface="popover" placeholder="caja">
+        <ion-select interface="popover" placeholder="caja" [(ngModel)] = "tabla.c_codigocaja_tcj" name="c_tipocaja">
           <ion-select-option
             *ngFor="let caja of cajas"
             [value]="caja.c_codigo_tcj"
@@ -48,7 +54,7 @@
         <ion-label position="floating" class="etiquetas"
           >Tipo de tarima</ion-label
         >
-        <ion-select interface="popover" placeholder="tarima">
+        <ion-select interface="popover" placeholder="tarima" [(ngModel)] = "tabla.c_codigotarima_tcj" name="c_tipotarima">
           <ion-select-option
             *ngFor="let tarima of tarimas"
             [value]="tarima.c_codigo_tcj"
@@ -60,7 +66,7 @@
       <ion-item>
         <ion-button shape="round" color="success">Finaliza vaciado</ion-button>
         <ion-icon
-          (click)="fn_agregar()"
+          (click)="fn_guardarsorteo()"
           slot="end"
           name="checkmark-circle-outline"
           size="large"

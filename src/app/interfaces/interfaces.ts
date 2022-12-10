@@ -96,3 +96,8 @@ export interface OpcionesMenu {
    v_imagetile:       string;
    v_nombreclase_sme: string;
 }
+
+export interface Lotes {
+   c_codigo_rec: string;
+   c_concecutivo_dso: string;
+}

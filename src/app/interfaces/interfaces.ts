@@ -103,3 +103,8 @@ export interface Lotes {
    c_codigo_lot: string;
    n_kilos_dso: number
 }
+
+export interface Grado {
+   c_codigo_gdm: string;
+   v_nombre_gdm: string;
+}

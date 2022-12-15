@@ -2,23 +2,39 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <form #formulario="ngForm">
-    <ion-item class="ion-margin-bottom">
-      <ion-label position="floating" class="etiquetas"
-        >Área de Sorting</ion-label
-      >
-      <ion-select interface="popover" placeholder="Área"  [(ngModel)] = "tabla.c_codigo_are" name="c_area">
-        <ion-select-option
-          *ngFor="let area of areas"
-          [value]="area.c_codigo_are"
-          >{{area.v_nombre_are}}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-
+      <ion-item class="ion-margin-bottom">
+        <ion-label position="floating" class="etiquetas"
+          >Área de Sorting</ion-label
+        >
+        <ion-select
+          interface="popover"
+          placeholder="Área"
+          [(ngModel)]="tabla.c_codigo_are"
+          name="c_area"
+          (ionChange)="fn_cargarlistado()"
+          required
+        >
+          <ion-select-option
+            *ngFor="let area of areas"
+            [value]="area.c_codigo_are"
+            >{{area.v_nombre_are}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
     <form #formulario="ngForm" class="ion-padding" class="grupo">
       <ion-item>
-        <ion-icon slot="start" name="barcode-outline" size="large"></ion-icon>
-        <ion-input class="custom" [(ngModel)] = "tabla.c_codigo" name="c_reccon"></ion-input>
+        <ion-icon
+          slot="start"
+          name="barcode-outline"
+          size="large"
+          (click)="scanBarcode()"
+        ></ion-icon>
+        <ion-input
+          class="custom"
+          [(ngModel)]="tabla.c_codigo"
+          name="c_reccon"
+          maxlength="9"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
@@ -26,15 +42,15 @@
         <ion-input
           class="custom2"
           type="number"
-          [(ngModel)] = "tabla.n_kilos_dso" 
+          [(ngModel)]="tabla.n_kilos_dso"
           name="n_kilos"
         ></ion-input>
         <ion-label>Cajas: </ion-label>
-        <ion-input 
-        class="custom2" 
-        type="number" 
-        [(ngModel)] = "tabla.n_cajas_dso" 
-        name="n_cajas"
+        <ion-input
+          class="custom2"
+          type="number"
+          [(ngModel)]="tabla.n_cajas_dso"
+          name="n_cajas"
         ></ion-input>
       </ion-item>
 
@@ -42,7 +58,12 @@
         <ion-label position="floating" class="etiquetas"
           >Tipo de Caja</ion-label
         >
-        <ion-select interface="popover" placeholder="caja" [(ngModel)] = "tabla.c_codigocaja_tcj" name="c_tipocaja">
+        <ion-select
+          interface="popover"
+          placeholder="caja"
+          [(ngModel)]="tabla.c_codigocaja_tcj"
+          name="c_tipocaja"
+        >
           <ion-select-option
             *ngFor="let caja of cajas"
             [value]="caja.c_codigo_tcj"
@@ -50,11 +71,16 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-    <ion-item>
+      <ion-item>
         <ion-label position="floating" class="etiquetas"
           >Tipo de tarima</ion-label
         >
-        <ion-select interface="popover" placeholder="tarima" [(ngModel)] = "tabla.c_codigotarima_tcj" name="c_tipotarima">
+        <ion-select
+          interface="popover"
+          placeholder="tarima"
+          [(ngModel)]="tabla.c_codigotarima_tcj"
+          name="c_tipotarima"
+        >
           <ion-select-option
             *ngFor="let tarima of tarimas"
             [value]="tarima.c_codigo_tcj"
@@ -64,20 +90,27 @@
       </ion-item>
 
       <ion-item>
-        <ion-button shape="round" color="success">Finaliza vaciado</ion-button>
+        <ion-button
+          shape="round"
+          color="success"
+          (click)="fn_finvaciado()"
+          disabled="{{!formulario.valid}}"
+          >Finaliza vaciado</ion-button
+        >
         <ion-icon
           (click)="fn_guardarsorteo()"
           slot="end"
           name="checkmark-circle-outline"
           size="large"
+          disabled="{{!formulario.valid}}"
         ></ion-icon>
       </ion-item>
     </form>
 
     <ion-item>
       <ion-input
-        name="estibas"
-        [(ngModel)]="tabla.estibas"
+        name="pallets"
+        [(ngModel)]="tabla.pallets"
         readonly="true"
       ></ion-input>
       <ion-input name="kgs" [(ngModel)]="tabla.kgs" readonly="true"></ion-input>
@@ -92,9 +125,13 @@
         <ion-col size="4" class="ion-text-end">Kgs</ion-col>
       </ion-row>
       <ion-row *ngFor="let estiba of estibas; index as i">
-        <ion-col size="5">{{ estiba.c_idestiba_red }}</ion-col>
+        <ion-col size="5"
+          >{{ estiba.c_codigo_rec }}{{ estiba.c_concecutivo_dso }}
+        </ion-col>
         <ion-col size="3">{{ estiba.c_codigo_lot }}</ion-col>
-        <ion-col size="4" class="ion-text-end">{{ estiba.n_kilos_dso }}</ion-col>
+        <ion-col size="4" class="ion-text-end"
+          >{{ estiba.n_kilos_dso }}</ion-col
+        >
       </ion-row>
     </ion-grid>
   </ion-item>

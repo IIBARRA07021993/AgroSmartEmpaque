@@ -98,7 +98,8 @@ export interface OpcionesMenu {
 }
 
 export interface Lotes {
-   c_idestiba_red: string;
+   c_codigo_rec: string;
+   c_concecutivo_dso: string;
    c_codigo_lot: string;
    n_kilos_dso: number
 }

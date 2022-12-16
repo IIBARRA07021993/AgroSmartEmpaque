@@ -30,6 +30,14 @@
 
       </ion-item>
 
+      <ion-item>
+        <ion-label position="floating">Codigo Empaque</ion-label>
+        <ion-input type="tel" name="c_codigo_emp" [(ngModel)]="configSer.c_codigo_emp" placeholder="Codigo Empaque"
+          required>
+        </ion-input>
+
+      </ion-item>
+
 
       <ion-button disabled={{!formulario.valid}} color="success" class="ion-margin-top" (click)="of_save_appconfig()"
         expand="full" shape="round" style="height: 50px;">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {  OpcionesMenu } from 'src/app/interfaces/interfaces';
+import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { MenuService } from 'src/app/services/menu.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
@@ -14,11 +15,24 @@ export class InicioPage implements OnInit {
 
   constructor(
     private menuserv: MenuService,
-    private ultilService: UtilService
+    private ultilService: UtilService,
+    private configServ: ConfiguracionService
+    
   ) {}
 
+
+  async ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+    await this.configServ.getTemporada('%' ,'1')
+   console.log('getTemporada');
+   await this.fn_GetOpcionesMenu('70');
+   console.log('fn_GetOpcionesMenu');
+   
+  }
+
+
   ngOnInit() {
-    this.fn_GetOpcionesMenu('70');
+   
   }
 
   fn_GetOpcionesMenu(as_sistema: string) {

@@ -56,9 +56,11 @@ export class LoginPage implements OnInit {
         console.log('getappconfig');
         await this.fn_login().then((resolve) => {
           if (resolve) {
+            
             this.router.navigateByUrl('inicio');
           }
         });
+       
         await this.ultilService.loading.dismiss();
         console.log('dismiss');
       }

@@ -5,6 +5,7 @@ import { Device } from "@awesome-cordova-plugins/device/ngx";
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { SqliteService } from 'src/app/services/sqlite.service';
 import { environment } from 'src/environments/environment';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-configuraciones',
@@ -28,6 +29,9 @@ export class ConfiguracionesPage implements OnInit {
 
   async ngOnInit() {
     await this.configServ.getappconfig();
+
+
+  
 
     this.configSer.url_api_app = environment.url_api_app
     this.configSer.terminal_app = environment.terminal_app

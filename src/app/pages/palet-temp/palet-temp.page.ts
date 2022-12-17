@@ -24,10 +24,10 @@ export class PaletTempPage implements OnInit {
   }
 
   ngOnInit() {
-  
+    this.fn_cargargrado();
   }
 
-  fn_cargarareas() {
+  fn_cargargrado() {
     var json = {
       c_tipo_are: '05', // definir los tipos de areas y como quedaran en cada ventana
     };

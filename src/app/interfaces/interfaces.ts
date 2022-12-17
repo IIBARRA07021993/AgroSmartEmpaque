@@ -108,3 +108,32 @@ export interface Grado {
    c_codigo_gdm: string;
    v_nombre_gdm: string;
 }
+
+
+export interface Bandas {
+   c_codigo_bnd:    string;
+   v_nombre_bnd:    string;
+   c_codigo_cul:    string;
+   v_nombre_cul:    string;
+   c_codigo_lot:    string;
+   v_nombre_lot:    string;
+   n_superf_lot:    number;
+   c_codigo_sel:    string;
+   c_codigo_prq:    string;
+   c_horaFin_prq:   string;
+   c_horaIni_prq:   string;
+   d_fechaIni_prq:  Date;
+   d_fechaFin_prq:  Date;
+   c_corriendo_prq: string;
+   KilosRec:        number;
+   KilosEmp:        number;  
+   d_fecha_sel:       Date;
+}
+
+
+export interface Temporadas {
+   c_codigo_tem: string;
+   v_nombre_tem: string;
+   d_inicio_tem: Date;
+   d_fin_tem:    Date;
+}

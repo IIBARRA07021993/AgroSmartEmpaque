@@ -1,9 +1,107 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>armado-pal</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-app>
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar class="ion-text-center" color="success">
+      <ion-avatar
+        slot="start"
+        class="ion-margin-horizontal ion-margin-vertical"
+      >
+        <img src="assets\icon\as.jpg" />
+      </ion-avatar>
+      <ion-title class="ion-text-center">
+        <h5>Armado Rapido Palet <br />Multiples Estibas</h5>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content>
+  <ion-content [fullscreen]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content> </ion-refresher-content>
+    </ion-refresher>
 
-</ion-content>
+    <ion-list #listabandas>
+      <ion-card *ngFor="let banda of bandas">
+        <ion-item-sliding>
+          <ion-item-options
+            (click)="fn_accionbanda()"
+            *ngIf="banda.c_corriendo_prq == 'S'"
+            side="end"
+          >
+            <ion-item-option color="danger">
+              <ion-icon slot="icon-only" name="hand-left-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item-options
+            (click)="fn_accionbanda()"
+            *ngIf="banda.c_corriendo_prq == 'N'"
+            side="end"
+          >
+            <ion-item-option color="success">
+              <ion-icon slot="icon-only" name="walk-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <ion-item class="itemapp" lines="full" (click)="fn_newpal()">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label>
+                    <h2>
+                      <strong
+                        >{{banda.c_codigo_bnd}} - {{banda.v_nombre_bnd}}
+                      </strong>
+                    </h2>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+
+              <ion-row>
+                <ion-col size="8" *ngIf="banda.c_codigo_sel != ''">
+                  <ion-label class="ion-text-start">
+                    <h5><strong>Estiba - {{banda.c_codigo_sel}}</strong></h5>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-label class="ion-text-end">
+                    <p>
+                      <strong>{{banda.d_fecha_sel | date:'dd/MM/yyyy'}}</strong>
+                    </p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-row>
+                  <ion-col size="12" *ngIf="banda.c_codigo_lot != ''">
+                    <ion-label>
+                      <p>
+                        <strong
+                          >{{banda.c_codigo_lot}} - {{banda.v_nombre_lot}}
+                        </strong>
+                      </p>
+                      <p>
+                        <strong
+                          >{{banda.c_codigo_cul}} - {{banda.v_nombre_cul}}
+                        </strong>
+                      </p>
+                    </ion-label>
+                  </ion-col>
+                </ion-row>
+
+                <ion-col size="6" *ngIf="banda.KilosRec != 0">
+                  <ion-badge color="success"
+                    >Kg Totales:{{banda.KilosRec}}</ion-badge
+                  >
+                </ion-col>
+                <ion-col size="6" *ngIf="banda.KilosEmp != 0">
+                  <ion-badge color="warning"
+                    >Kg Procesado:{{banda.KilosEmp}}</ion-badge
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-item-sliding>
+      </ion-card>
+    </ion-list>
+  </ion-content>
+</ion-app>

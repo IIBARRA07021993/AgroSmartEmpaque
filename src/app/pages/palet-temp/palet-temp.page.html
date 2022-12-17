@@ -1,64 +1,119 @@
-
-<app-header [titulo] =  "titulo"> </app-header>
+<app-header [titulo]="titulo"> </app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <form #formulario="ngForm" >
-    <ion-item>
+  <form #formulario="ngForm">
+    <!--   <ion-item>
       <ion-input value="Estibas 2" readonly="true"></ion-input>
-      <ion-input value="Kgs:1,000kg" readonly="true" class="ion-text-end" ></ion-input>
-    </ion-item>
+      <ion-input
+        value="Kgs:1,000kg"
+        readonly="true"
+        class="ion-text-end"
+      ></ion-input>
+    </ion-item> -->
 
     <form #formulario="ngForm" class="ion-padding" class="grupo">
       <ion-item>
-        <ion-icon slot="start" name="qr-code-outline" size="large"></ion-icon>
-        <ion-input class="custom"></ion-input>
-      </ion-item>
-
-      <ion-item>
         <ion-label>Grado maduración</ion-label>
-        <ion-select [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Seleccionar grado">
-          <ion-select-option value="Grado #1">Grado #1</ion-select-option>
-          <ion-select-option value="Grado #2">Grado #2</ion-select-option>
-          <ion-select-option value="Grado #3">Grado #3</ion-select-option>
+        <ion-select
+          [interfaceOptions]="customPopoverOptions"
+          interface="popover"
+          placeholder="Seleccionar grado"
+          [(ngModel)]="tabla.c_codigo_gdm"
+          name="c_area"
+          (ionChange)="fn_cargarlistado()"
+          required
+        >
+          <ion-select-option
+            *ngFor="let grado of grados"
+            [value]="grado.c_codigo_gdm"
+            >{{grado.v_nombre_gdm}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label>Kilos: </ion-label>
-        <ion-input class="custom2" type="number" (ionChange)="formataNumero($event)"></ion-input>
-        <ion-label>Cajas: </ion-label>
-        <ion-input class="custom2" type="number"></ion-input>
+        <ion-icon
+          slot="start"
+          name="barcode-outline"
+          size="large"
+          (click)="scanBarcode()"
+        ></ion-icon>
+        <ion-input
+          class="custom"
+          type="number"
+          [(ngModel)]="tabla.c_codigo"
+          name="c_reccon"
+          maxlength="9"
+        ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-button shape="round" color="success" >Finaliza vaciado</ion-button>
-        <ion-icon (click)="fn_agregar()" slot="end" name="checkmark-circle-outline" size="large"></ion-icon>
+        <ion-label>Kilos: </ion-label>
+        <ion-input
+          class="custom2"
+          type="number"
+          [(ngModel)]="tabla.n_kilos_pte"
+          name="n_kilos"
+        ></ion-input>
+        <ion-label>Cajas: </ion-label>
+        <ion-input
+          class="custom2"
+          type="number"
+          [(ngModel)]="tabla.n_cajas_pte"
+          name="n_cajas"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-button shape="round" color="success" (click)="fn_guardarpalet()"
+          >Finalizar pallet</ion-button
+        >
+        <ion-icon
+          (click)="fn_agregarlist()"
+          slot="end"
+          name="checkmark-circle-outline"
+          size="large"
+        ></ion-icon>
       </ion-item>
     </form>
 
-    <ion-item> 
-      <ion-input name="estibas" [(ngModel)]="tabla.paletas" readonly="true"></ion-input>
-      <ion-input name="cajas" [(ngModel)]="tabla.cajas" readonly="true" class="ion-text-center"></ion-input>
-      <ion-input name="kgs" [(ngModel)]="tabla.kgs" readonly="true" class="ion-text-end" ></ion-input>
+    <ion-item>
+      <ion-input
+        name="estibas"
+        [(ngModel)]="tabla.paletas"
+        readonly="true"
+      ></ion-input>
+      <ion-input
+        name="cajas"
+        [(ngModel)]="tabla.cajas"
+        readonly="true"
+        class="ion-text-center"
+      ></ion-input>
+      <ion-input
+        name="kgs"
+        [(ngModel)]="tabla.kgs"
+        readonly="true"
+        class="ion-text-end"
+      ></ion-input>
     </ion-item>
-
   </form>
 
-    <ion-item>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="5">Pallets</ion-col>
-          <ion-col size="2" class="ion-text-center">Mad</ion-col>
-          <ion-col size="2" class="ion-text-end">Cajas</ion-col>
-          <ion-col size="3" class="ion-text-end">Kgs</ion-col>
-        </ion-row>
-        <ion-row *ngFor="let palet of pallets; index as i">
-          <ion-col size="5">{{ palet.pal }}</ion-col>
-          <ion-col size="2" class="ion-text-center">{{ palet.mad }}</ion-col>
-          <ion-col size="2" class="ion-text-end">{{ palet.caj }}</ion-col>
-          <ion-col size="3" class="ion-text-end">{{ palet.kgs }}</ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="4">Pallets</ion-col>
+        <ion-col size="3" class="ion-text-center">Mad</ion-col>
+        <ion-col size="2" class="ion-text-end">Cajas</ion-col>
+        <ion-col size="3" class="ion-text-end">Kgs</ion-col>
+      </ion-row>
+      <ion-row *ngFor="let list of listado; index as i">
+        <ion-col size="4">{{ list.c_codigo }}</ion-col>
+        <ion-col size="3" class="ion-text-center"
+          >{{ list.v_nombre_gdm }}</ion-col
+        >
+        <ion-col size="2" class="ion-text-end">{{ list.n_cajas_pte }}</ion-col>
+        <ion-col size="3" class="ion-text-end">{{ list.n_kilos_pte }}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
 </ion-content>

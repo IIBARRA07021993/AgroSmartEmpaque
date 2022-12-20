@@ -29,6 +29,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.versionapp = environment.version;
+ 
   }
 
   async login() {
@@ -92,7 +93,7 @@ export class LoginPage implements OnInit {
                   this.ultilService.presentToastok(
                     'Inicio!',
                     arrayresp[1],
-                    1500,
+                    1000,
                     'checkmark-done-outline',
                     'success'
                   );
@@ -156,7 +157,7 @@ export class LoginPage implements OnInit {
         this.ultilService.presentToast(
           'Atención!',
           'No se ha configurado servidor host.',
-          500,
+          1000,
           'warning-outline',
           'warning'
         );

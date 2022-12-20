@@ -22,7 +22,7 @@
       <ion-card *ngFor="let banda of bandas">
         <ion-item-sliding>
           <ion-item-options
-            (click)="fn_accionbanda()"
+            (click)="Confirmar_Parar_Banda(banda)"
             *ngIf="banda.c_corriendo_prq == 'S'"
             side="end"
           >
@@ -31,17 +31,7 @@
             </ion-item-option>
           </ion-item-options>
 
-          <ion-item-options
-            (click)="fn_accionbanda()"
-            *ngIf="banda.c_corriendo_prq == 'N'"
-            side="end"
-          >
-            <ion-item-option color="success">
-              <ion-icon slot="icon-only" name="walk-outline"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-
-          <ion-item class="itemapp" lines="full" (click)="fn_newpal()">
+          <ion-item class="itemapp" lines="full" (click)="fn_newpal(banda)">
             <ion-grid>
               <ion-row>
                 <ion-col size="12">
@@ -56,7 +46,7 @@
               </ion-row>
 
               <ion-row>
-                <ion-col size="8" *ngIf="banda.c_codigo_sel != ''">
+                <ion-col size="8" >
                   <ion-label class="ion-text-start">
                     <h5><strong>Estiba - {{banda.c_codigo_sel}}</strong></h5>
                   </ion-label>
@@ -71,7 +61,7 @@
               </ion-row>
               <ion-row>
                 <ion-row>
-                  <ion-col size="12" *ngIf="banda.c_codigo_lot != ''">
+                  <ion-col size="12" >
                     <ion-label>
                       <p>
                         <strong
@@ -87,12 +77,12 @@
                   </ion-col>
                 </ion-row>
 
-                <ion-col size="6" *ngIf="banda.KilosRec != 0">
+                <ion-col size="6">
                   <ion-badge color="success"
                     >Kg Totales:{{banda.KilosRec}}</ion-badge
                   >
                 </ion-col>
-                <ion-col size="6" *ngIf="banda.KilosEmp != 0">
+                <ion-col size="6">
                   <ion-badge color="warning"
                     >Kg Procesado:{{banda.KilosEmp}}</ion-badge
                   >

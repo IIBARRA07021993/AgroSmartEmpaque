@@ -1,0 +1,47 @@
+<ion-app>
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar class="ion-text-center" color="success">
+      <ion-avatar
+        slot="start"
+        class="ion-margin-horizontal ion-margin-vertical"
+      >
+        <img src="assets\icon\as.jpg" />
+      </ion-avatar>
+      <ion-title class="ion-text-center">
+        <h5>Nuevo Palet</h5>
+        <h5>No. Estiba: {{banda.c_codigo_sel}}</h5>
+        <ion-icon slot="end" name="search-circle-outline"></ion-icon>
+      </ion-title>
+    </ion-toolbar>
+    <form  >
+      <ion-item class="ion-no-border">
+        <ion-row>
+          <ion-col size="3" class="ion-padding-top">
+            <ion-icon (click)="fn_scanner()" name="barcode-outline" size="large"></ion-icon>
+          </ion-col>
+          <ion-col size="6">
+            <ion-label position="floating">Código</ion-label>
+            <ion-input #codpal (keydown.enter)="enterkey()" name="codigopal" [(ngModel)]="c_codigo_pal" [autofocus]="true"
+              type="number" placeholder="0000000001" maxlength="10"></ion-input>
+          </ion-col>  
+        </ion-row>
+      </ion-item>
+    </form>
+    <ion-item color="primary" class="ion-margin-top ion-text-center ion-no-border" >
+      <ion-label>
+        <h4>{{banda.c_codigo_lot}} -  {{banda.v_nombre_lot}}</h4>
+        <h4>{{banda.c_codigo_cul}} -  {{banda.v_nombre_cul}}</h4>
+        <h4>{{banda.c_codigo_bnd}} -  {{banda.v_nombre_bnd}}</h4>
+      </ion-label>
+    </ion-item>  
+  </ion-header>
+  <ion-content [fullscreen]="true">
+   
+   
+   
+
+
+
+
+  </ion-content>
+</ion-app>

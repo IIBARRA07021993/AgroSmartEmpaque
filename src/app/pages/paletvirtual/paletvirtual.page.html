@@ -15,28 +15,33 @@
     </ion-toolbar>
   </ion-header>
   <ion-content [fullscreen]="true">
-    <ion-card>
-      <ion-item class="ion-text-center">
-        <ion-label>
-          <h4>{{banda.c_codigo_lot}} - {{banda.v_nombre_lot}}</h4>
-          <h4>{{banda.c_codigo_cul}} - {{banda.v_nombre_cul}}</h4>
-          <h4>{{banda.c_codigo_bnd}} - {{banda.v_nombre_bnd}}</h4>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-
     <form>
       <ion-grid>
         <ion-row>
           <ion-col size="12">
+            <ion-card>
+              <ion-item class="ion-text-center">
+                <ion-label>
+                  <h4>{{banda.c_codigo_lot}} - {{banda.v_nombre_lot}}</h4>
+                  <h4>{{banda.c_codigo_cul}} - {{banda.v_nombre_cul}}</h4>
+                  <h4>{{banda.c_codigo_bnd}} - {{banda.v_nombre_bnd}}</h4>
+                </ion-label>
+              </ion-item>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
             <ion-label class="ion-label-h">Codigó</ion-label>
-            <ion-item>
+            <ion-item *ngIf="c_codigo_pal == ''">
               <ion-icon
                 slot="end"
                 name="barcode-outline"
                 class="search-button"
               ></ion-icon>
               <ion-input
+                [(ngModel)]="c_codigo_pal"
                 (keydown.enter)="enterkey()"
                 type="number"
                 maxlength="10"
@@ -50,12 +55,21 @@
               ></ion-icon>
             </ion-item>
 
-            <ion-chip style="margin-top: 2vh" color="success">
-              <ion-label>0000000001</ion-label>
-              <ion-icon name="close-circle"></ion-icon>
+            <ion-chip
+              style="margin-top: 2vh"
+              color="success"
+              *ngIf="c_codigo_pal != ''"
+            >
+              <ion-label>{{c_codigo_pal}}</ion-label>
+              <ion-icon
+                name="close-circle"
+                (click)="removerCodigo()"
+              ></ion-icon>
             </ion-chip>
           </ion-col>
         </ion-row>
+
+        
         <ion-row>
           <ion-col size="12">
             <ion-label class="ion-label-h">Producto</ion-label>
@@ -83,10 +97,16 @@
                 >{{producto.c_codigo_pro }} -
                 {{producto.v_nombre_pro}}</ion-label
               >
-              <ion-icon name="close-circle"></ion-icon>
+              <ion-icon
+                name="close-circle"
+                (click)="removerProducto()"
+              ></ion-icon>
             </ion-chip>
           </ion-col>
         </ion-row>
+
+
+
         <ion-row>
           <ion-col size="12">
             <ion-label class="ion-label-h">Etiqueta</ion-label>
@@ -114,7 +134,10 @@
                 >{{etiqueta.c_codigo_eti }} -
                 {{etiqueta.v_nombre_eti}}</ion-label
               >
-              <ion-icon name="close-circle"></ion-icon>
+              <ion-icon
+                name="close-circle"
+                (click)="removerEtiqueta()"
+              ></ion-icon>
             </ion-chip>
           </ion-col>
         </ion-row>
@@ -145,7 +168,7 @@
               <ion-label
                 >{{color.c_codigo_col }} - {{color.v_nombre_col}}</ion-label
               >
-              <ion-icon name="close-circle"></ion-icon>
+              <ion-icon name="close-circle" (click)="removerColor()"></ion-icon>
             </ion-chip>
           </ion-col>
         </ion-row>

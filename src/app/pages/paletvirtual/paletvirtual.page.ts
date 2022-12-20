@@ -1,7 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonInput } from '@ionic/angular';
-import { Bandas, Color, Etiqueta} from 'src/app/interfaces/interfaces';
+import { IonInput, ModalController } from '@ionic/angular';
+import { BuscarcolorComponent } from 'src/app/components/buscarcolor/buscarcolor.component';
+import { BuscaretiquetaComponent } from 'src/app/components/buscaretiqueta/buscaretiqueta.component';
+import { BuscarproductosComponent } from 'src/app/components/buscarproductos/buscarproductos.component';
+import { Bandas } from 'src/app/interfaces/interfaces';
+import { EyeColor } from 'src/app/models/color.model';
+import { EyeEtiqueta } from 'src/app/models/etiqueta.model';
 import { EyeProducto } from 'src/app/models/producto.model';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -16,131 +21,88 @@ export class PaletvirtualPage implements OnInit {
   @ViewChild('codpal', { static: false }) codpal!: IonInput;
 
   banda: Bandas;
-
-  producto: EyeProducto = new EyeProducto()
-  etiqueta: Etiqueta;
-  color: Color;
+  c_codigo_pal: string = '';
+  producto: EyeProducto = new EyeProducto();
+  etiqueta: EyeEtiqueta = new EyeEtiqueta();
+  color: EyeColor = new EyeColor();
 
   constructor(
     private route: ActivatedRoute,
-    private getdatoserv: GetdatosService,
-    private ultilService: UtilService
+    private modalController: ModalController,
+   
   ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((Params: Bandas) => {
       this.banda = Params;
     });
-
-
-    
   }
 
   enterkey() {}
   fn_scanner() {}
 
-  buscarProducto() {
-    return new Promise((resolve) => {
-      var json = {};
-
-      console.log(JSON.stringify(json));
-
-      this.getdatoserv
-        .sp_AppGetDatos(
-          '/GetDatos?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=14&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            this.producto = JSON.parse(resp);
-            console.log(this.producto);
-            resolve(true);
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              500,
-              'warning-outline',
-              'danger'
-            );
-            resolve(false);
-          }
-        );
+  async buscarProducto() {
+    const modal = await this.modalController.create({
+      component: BuscarproductosComponent,
+      componentProps: {
+        c_codigo_pro: this.producto.c_codigo_pro,
+      },
     });
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data) {
+        this.producto = dataReturned.data;
+      }
+    });
+    return await modal.present();
   }
 
-  buscarEtiqueta() {
-    return new Promise((resolve) => {
-      var json = {};
-
-      console.log(JSON.stringify(json));
-
-      this.getdatoserv
-        .sp_AppGetDatos(
-          '/GetDatos?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=15&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            this.etiqueta = JSON.parse(resp);
-            console.log(this.etiqueta);
-            resolve(true);
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              500,
-              'warning-outline',
-              'danger'
-            );
-            resolve(false);
-          }
-        );
+  async buscarEtiqueta() {
+    const modal = await this.modalController.create({
+      component: BuscaretiquetaComponent,
+      componentProps: {
+        c_codigo_eti: this.etiqueta.c_codigo_eti,
+      },
     });
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data) {
+        this.etiqueta = dataReturned.data;
+      }
+    });
+    return await modal.present();
   }
 
-  buscarColor() {
-    return new Promise((resolve) => {
-      var json = {};
-
-      console.log(JSON.stringify(json));
-
-      this.getdatoserv
-        .sp_AppGetDatos(
-          '/GetDatos?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=16&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            this.color = JSON.parse(resp);
-            console.log(this.color);
-            resolve(true);
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              500,
-              'warning-outline',
-              'danger'
-            );
-            resolve(false);
-          }
-        );
+  async buscarColor() {
+    const modal = await this.modalController.create({
+      component: BuscarcolorComponent,
+      componentProps: {
+        c_codigo_col: this.color.c_codigo_col,
+      },
     });
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data) {
+        this.color = dataReturned.data;
+      }
+    });
+    return await modal.present();
+  }
+
+  removerCodigo() {
+    this.c_codigo_pal = '';
+    console.log(this.c_codigo_pal);
+  }
+
+  removerProducto() {
+    this.producto = new EyeProducto();
+    console.log(this.producto);
+  }
+
+  removerEtiqueta() {
+    this.etiqueta = new EyeEtiqueta();
+    console.log(this.etiqueta);
+  }
+
+  removerColor() {
+    this.color = new EyeColor();
+    console.log(this.color);
   }
 }

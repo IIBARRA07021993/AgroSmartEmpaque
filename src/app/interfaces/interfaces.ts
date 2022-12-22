@@ -96,6 +96,7 @@ export interface Lotes {
   c_concecutivo_dso: string;
   c_codigo_lot: string;
   n_kilos_dso: number;
+  c_codigo_pal: string;
 }
 
 export interface Grado {

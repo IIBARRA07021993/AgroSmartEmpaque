@@ -42,13 +42,13 @@ export class SortingEstPage implements OnInit {
     c_codigotarima_tcj: '',
     c_codigo_usu: environment.usuario_login,
     c_codigo: '',
+    tipo: '',
   };
   scannedData: any;
   encodedData: '';
   encodeData: any;
   inputData: any;
-  tiposorteo =  [{c_tipo:''}];
-  tipo = '';
+  tiposorteo = [{ c_tipo: '' }];
 
   ngOnInit() {
     this.estibas = this.lotes;
@@ -119,7 +119,6 @@ export class SortingEstPage implements OnInit {
   }
 
   async fn_guardarsorteo() {
-    await this.fn_validartiposorteo()
     var json = {
       c_codigo_are: this.tabla.c_codigo_are,
       c_codigo: this.tabla.c_codigo,
@@ -128,22 +127,27 @@ export class SortingEstPage implements OnInit {
       c_codigocaja_tcj: this.tabla.c_codigocaja_tcj,
       c_codigotarima_tcj: this.tabla.c_codigotarima_tcj,
       c_codigo_usu: this.tabla.c_codigo_usu,
-      c_tipo: this.tipo
+      c_tipo: this.tabla.tipo,
     };
-    console.log(json);
-    if ((await this.fn_validarcampos(json)) == 0) {
-      return;
-    }
-    await this.fn_save(json).then((resolve) => {
-      if (resolve) {
-        console.log('Recepcion guardada');
-        this.fn_cargarlistado();
-        console.log('listado actualizado');
-        this.tabla.c_codigo = '';
-        this.tabla.n_cajas_dso = '';
-        this.tabla.n_kilos_dso = '';
+    if ((await this.fn_validartiposorteo()) == true) {
+      json.c_tipo = this.tabla.tipo;
+      console.log(json);
+
+      if ((await this.fn_validarcampos(json)) == 0) {
+        return;
+      } else {
+        await this.fn_save(json).then((resolve) => {
+          if (resolve) {
+            console.log('Recepcion guardada');
+            this.fn_cargarlistado();
+            console.log('listado actualizado');
+            this.tabla.c_codigo = '';
+            this.tabla.n_cajas_dso = '';
+            this.tabla.n_kilos_dso = '';
+          }
+        });
       }
-    });
+    }
   }
 
   fn_cargarlistado() {
@@ -172,6 +176,8 @@ export class SortingEstPage implements OnInit {
             this.totalkgs += this.estibas[v].n_kilos_dso;
           }
           this.tabla.kgs = 'KGS: ' + this.totalkgs;
+          this.fn_traertipo();
+          resolve(true);
         });
     });
   }
@@ -187,6 +193,7 @@ export class SortingEstPage implements OnInit {
         (resp: any) => {
           var arrayresp = resp.split('|');
           if (arrayresp.length > 0) {
+            console.log('proceso guardado');
             console.log(arrayresp[0]);
             switch (arrayresp[0]) {
               case '1':
@@ -308,6 +315,8 @@ export class SortingEstPage implements OnInit {
   async fn_finvaciado() {
     var json = {
       c_codigo_are: this.tabla.c_codigo_are,
+      c_codigo_usu: this.tabla.c_codigo_usu,
+      c_tipo: this.tabla.tipo,
     };
 
     if (this.lotes.length <= 0) {
@@ -386,15 +395,11 @@ export class SortingEstPage implements OnInit {
     }
   }
 
-  fn_validartiposorteo(){
-    if (this.tipo=='') {/*sacar tipo de sorteo (recepcion-sec , palet temporar, palet externo)*/
-    var json = {c_codigo:''}
-      if (this.tabla.c_codigo == ''){
-        json.c_codigo =  this.tabla.c_codigo
-      }else{
-        json.c_codigo = this.estibas[0].c_codigo_rec
-      }
-      
+  fn_validartiposorteo() {
+    var json = { c_codigo: this.tabla.c_codigo };
+    console.log(this.tabla.c_codigo);
+    if (this.tabla.tipo == '') {
+      /*sacar tipo de sorteo (recepcion-sec , palet temporar, palet externo)*/
       return new Promise((resolve) => {
         this.getdatos
           .sp_AppGetDatos(
@@ -405,15 +410,80 @@ export class SortingEstPage implements OnInit {
           )
           .subscribe((resp: any) => {
             this.tiposorteo = JSON.parse(resp);
-            console.log(this.tiposorteo[0].c_tipo);
-            this.tipo = this.tiposorteo[0].c_tipo;
-            console.log(this.tipo);
+            this.tabla.tipo = this.tiposorteo[0].c_tipo;
+            console.log(
+              'El tipo del listado sera: ' + this.tiposorteo[0].c_tipo
+            );
+          });
+        resolve(true);
+      });
+    } else {
+      return new Promise((resolve) => {
+        this.getdatos
+          .sp_AppGetDatos(
+            '/GetDatos?as_empresa=' +
+              environment.codempresa +
+              '&as_operation=13&as_json=' +
+              JSON.stringify(json)
+          )
+          .subscribe((resp: any) => {
+            this.tiposorteo = JSON.parse(resp);
+            if (this.tabla.tipo == this.tiposorteo[0].c_tipo) {
+              console.log(
+                'El tipo del listado es: ' +
+                  this.tabla.tipo +
+                  ' es == a: ' +
+                  this.tiposorteo[0].c_tipo
+              );
+              resolve(true);
+            } else {
+              console.log(
+                'El tipo del listado es: ' +
+                  this.tabla.tipo +
+                  ' es <> a: ' +
+                  this.tiposorteo[0].c_tipo
+              );
+              this.ultilService.presentToast(
+                'Alerta!',
+                'El registro que quiere ingresar no es del mismo tipo que los demas.',
+                1000,
+                'warning-outline',
+                'warning'
+              );
+            }
+            resolve(false);
           });
       });
-    }else{
-
     }
-    
+  }
+
+  fn_traertipo() {
+    if (this.estibas.length > 0) {
+      console.log(
+        this.estibas[0].c_codigo_rec + this.estibas[0].c_concecutivo_dso
+      );
+      var json = {
+        c_codigo:
+          this.estibas[0].c_codigo_rec + this.estibas[0].c_concecutivo_dso,
+      };
+      return new Promise((resolve) => {
+        this.getdatos
+          .sp_AppGetDatos(
+            '/GetDatos?as_empresa=' +
+              environment.codempresa +
+              '&as_operation=13&as_json=' +
+              JSON.stringify(json)
+          )
+          .subscribe((resp: any) => {
+            this.tiposorteo = JSON.parse(resp);
+            this.tabla.tipo = this.tiposorteo[0].c_tipo;
+            console.log(
+              'los registros del listado son de tipo - ' + this.tabla.tipo
+            );
+            resolve(true);
+          });
+      });
+    }
   }
 
   async alerta() {

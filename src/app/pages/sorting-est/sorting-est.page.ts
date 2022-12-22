@@ -47,6 +47,8 @@ export class SortingEstPage implements OnInit {
   encodedData: '';
   encodeData: any;
   inputData: any;
+  tiposorteo =  [{c_tipo:''}];
+  tipo = '';
 
   ngOnInit() {
     this.estibas = this.lotes;
@@ -117,15 +119,16 @@ export class SortingEstPage implements OnInit {
   }
 
   async fn_guardarsorteo() {
+    await this.fn_validartiposorteo()
     var json = {
       c_codigo_are: this.tabla.c_codigo_are,
-      c_codigo_rec: this.tabla.c_codigo.substring(0, 6),
-      c_concecutivo_dso: this.tabla.c_codigo.substring(6, 9),
+      c_codigo: this.tabla.c_codigo,
       n_kilos_dso: this.tabla.n_kilos_dso,
       n_cajas_dso: this.tabla.n_cajas_dso,
       c_codigocaja_tcj: this.tabla.c_codigocaja_tcj,
       c_codigotarima_tcj: this.tabla.c_codigotarima_tcj,
       c_codigo_usu: this.tabla.c_codigo_usu,
+      c_tipo: this.tipo
     };
     console.log(json);
     if ((await this.fn_validarcampos(json)) == 0) {
@@ -381,6 +384,36 @@ export class SortingEstPage implements OnInit {
         );
       });
     }
+  }
+
+  fn_validartiposorteo(){
+    if (this.tipo=='') {/*sacar tipo de sorteo (recepcion-sec , palet temporar, palet externo)*/
+    var json = {c_codigo:''}
+      if (this.tabla.c_codigo == ''){
+        json.c_codigo =  this.tabla.c_codigo
+      }else{
+        json.c_codigo = this.estibas[0].c_codigo_rec
+      }
+      
+      return new Promise((resolve) => {
+        this.getdatos
+          .sp_AppGetDatos(
+            '/GetDatos?as_empresa=' +
+              environment.codempresa +
+              '&as_operation=13&as_json=' +
+              JSON.stringify(json)
+          )
+          .subscribe((resp: any) => {
+            this.tiposorteo = JSON.parse(resp);
+            console.log(this.tiposorteo[0].c_tipo);
+            this.tipo = this.tiposorteo[0].c_tipo;
+            console.log(this.tipo);
+          });
+      });
+    }else{
+
+    }
+    
   }
 
   async alerta() {

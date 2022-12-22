@@ -11,23 +11,34 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./buscarproductos.component.scss'],
 })
 export class BuscarproductosComponent implements OnInit {
- 
-
   producto: EyeProducto;
-  productos  :EyeProducto [] = []
+  productos: EyeProducto[] = [];
+  texto_filtro: string = '';
+
   constructor(
     private modalController: ModalController,
     private getdatoserv: GetdatosService,
     private ultilService: UtilService
   ) {}
 
+  async ionViewWillEnter() {
+    await this.ultilService.showLoading('Cargando Productos...');
+    await this.buscarProducto();
+    await this.ultilService.loading.dismiss();
+  }
+
   ngOnInit() {}
+
+  fn_filtro(evento: any) {
+    console.log(evento);
+    this.texto_filtro = evento.detail.value;
+  }
 
   cerrar() {
     this.modalController.dismiss(this.producto);
   }
 
-  seleccionarProducto(producto: any) {
+  seleccionarProducto(producto: EyeProducto) {
     console.log('Producto Seleccionado');
     console.log(producto);
     this.producto = producto;
@@ -36,7 +47,7 @@ export class BuscarproductosComponent implements OnInit {
 
   buscarProducto() {
     return new Promise((resolve) => {
-      var json = {};
+      var json = { c_codigo_pro : '%%'};
 
       console.log(JSON.stringify(json));
 

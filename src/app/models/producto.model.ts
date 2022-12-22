@@ -18,6 +18,8 @@ export class EyeProducto {
   v_codext_pro: string;
   id_variety: string;
   id_pack: string;
+  v_nombre_env: string;
+  v_nombre_tam : string;
 
   constructor() {
     this.c_codigo_pro = '';
@@ -39,5 +41,7 @@ export class EyeProducto {
     this.v_codext_pro = '';
     this.id_variety = '';
     this.id_pack = '';
+    this.v_nombre_env = '';
+    this.v_nombre_tam  = '';
   }
 }

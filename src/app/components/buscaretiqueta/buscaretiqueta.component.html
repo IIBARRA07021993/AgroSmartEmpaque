@@ -1,6 +1,42 @@
-
-<app-header [titulo] =  "titulo"> </app-header>
+<ion-header mode="ios" translucent="true">
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-button (click)="cerrar()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-capitalize">Buscar Etiquetas</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-    <ion-img  style="size:500px;" src="assets\en_proceso.png"></ion-img>
-
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label position="stacked">Solo Etiquetas Activas</ion-label>
+          <ion-input
+            (ionChange)="fn_filtro($event)"
+            type="number"
+            maxlength="2"
+            placeholder="Teclee Codigó para Filtrar Etiquetas"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-item
+            *ngFor="
+              let etiqueta of etiquetas | filtro : texto_filtro : 'c_codigo_eti'
+            "
+          >
+            <ion-label (click)="seleccionarEtiqueta(etiqueta)">
+              {{ etiqueta.c_codigo_eti }} - {{ etiqueta.v_nombre_eti }}
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

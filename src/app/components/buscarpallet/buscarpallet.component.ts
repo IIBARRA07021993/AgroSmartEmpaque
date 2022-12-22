@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { EyeColor } from 'src/app/models/color.model';
+import { EyePalletVirtual } from 'src/app/models/palletvir.model';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-buscarcolor',
-  templateUrl: './buscarcolor.component.html',
-  styleUrls: ['./buscarcolor.component.scss'],
+  selector: 'app-buscarpallet',
+  templateUrl: './buscarpallet.component.html',
+  styleUrls: ['./buscarpallet.component.scss'],
 })
-export class BuscarcolorComponent implements OnInit {
-  color: EyeColor;
-  colores: EyeColor[] = [];
-
+export class BuscarpalletComponent implements OnInit {
+  pallet: EyePalletVirtual;
+  pallets: EyePalletVirtual[] = [];
   texto_filtro: string = '';
+
   constructor(
     private modalController: ModalController,
     private getdatoserv: GetdatosService,
@@ -22,8 +22,8 @@ export class BuscarcolorComponent implements OnInit {
   ) {}
 
   async ionViewWillEnter() {
-    await this.ultilService.showLoading('Cargando Colores...');
-    await this.buscarColor();
+    await this.ultilService.showLoading('Cargando Pallet...');
+    await this.buscarPalletvirtual();
     await this.ultilService.loading.dismiss();
   }
 
@@ -35,19 +35,22 @@ export class BuscarcolorComponent implements OnInit {
   }
 
   cerrar() {
-    this.modalController.dismiss(this.color);
+    this.modalController.dismiss(this.pallet);
   }
 
-  seleccionarColor(color: EyeColor) {
-    console.log('Color Seleccionado');
-    console.log(color);
-    this.color = color;
+  seleccionarPallet(pallet: EyePalletVirtual) {  
+    console.log('Pallet Seleccionado');
+    console.log(pallet);
+    this.pallet = pallet;
     this.cerrar();
   }
 
-  buscarColor() {
+  buscarPalletvirtual() {
     return new Promise((resolve) => {
-      var json = { c_codigo_col : '%%'};
+      var json = {
+        c_codigo_tem: environment.c_codigo_tem,
+        c_codigo_emp: environment.c_codigo_emp,
+      };
 
       console.log(JSON.stringify(json));
 
@@ -55,14 +58,14 @@ export class BuscarcolorComponent implements OnInit {
         .sp_AppGetDatos(
           '/GetDatos?as_empresa=' +
             environment.codempresa +
-            '&as_operation=16&as_json=' +
+            '&as_operation=17&as_json=' +
             JSON.stringify(json)
         )
         .subscribe(
           (resp: string) => {
             console.log(resp);
-            this.colores = JSON.parse(resp);
-            console.log(this.colores);
+            this.pallets = JSON.parse(resp);
+            console.log(this.pallets);
             resolve(true);
           },
           (error) => {

@@ -151,8 +151,16 @@ export class LoginPage implements OnInit {
     this.router.navigateByUrl('configuraciones');
   }
 
-  fn_cargarempresas() {
-    return new Promise((resolve) => {
+  async fn_cargarempresas(){
+    await this.ultilService.showLoading('Cargando Empresas...');
+    await this.Getempresas()
+    await this.ultilService.loading.dismiss();
+
+  }
+
+
+ Getempresas() {
+    return new Promise( (resolve) => {
       if (environment.url_api_app == '') {
         this.ultilService.presentToast(
           'Atención!',
@@ -161,13 +169,16 @@ export class LoginPage implements OnInit {
           'warning-outline',
           'warning'
         );
+        resolve(false);
+
       } else {
+       
         this.loginservi.CargarEmpresas('/empresas').subscribe(
           (resp: string) => {
             console.log(resp);
             this.empresas = JSON.parse(resp);
             console.log(this.empresas);
-
+            
             if (this.empresas.length == 0) {
               this.ultilService.presentToast(
                 'Atención!',
@@ -178,6 +189,7 @@ export class LoginPage implements OnInit {
               );
               resolve(false);
             }
+            resolve(true);
           },
           (error) => {
             console.error(JSON.stringify(error));
@@ -188,6 +200,7 @@ export class LoginPage implements OnInit {
               'warning-outline',
               'danger'
             );
+           
             resolve(false);
           }
         );

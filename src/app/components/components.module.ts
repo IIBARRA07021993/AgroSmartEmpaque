@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { BuscarproductosComponent } from './buscarproductos/buscarproductos.component';
 import { BuscaretiquetaComponent } from './buscaretiqueta/buscaretiqueta.component';
 import { BuscarcolorComponent } from './buscarcolor/buscarcolor.component';
+import { PipesModule } from '../pipes/pipes.module';
+import { BuscarpalletComponent } from './buscarpallet/buscarpallet.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,7 @@ import { BuscarcolorComponent } from './buscarcolor/buscarcolor.component';
     BuscarproductosComponent,
     BuscaretiquetaComponent,
     BuscarcolorComponent,
+    BuscarpalletComponent
   ],
   exports: [
     HeaderComponent,
@@ -22,7 +25,9 @@ import { BuscarcolorComponent } from './buscarcolor/buscarcolor.component';
     BuscarproductosComponent,
     BuscaretiquetaComponent,
     BuscarcolorComponent,
+    BuscarpalletComponent
+
   ],
-  imports: [CommonModule, IonicModule, RouterModule],
+  imports: [CommonModule, IonicModule, RouterModule,PipesModule],
 })
 export class ComponentsModule {}

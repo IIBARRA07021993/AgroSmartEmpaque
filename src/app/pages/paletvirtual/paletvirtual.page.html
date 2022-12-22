@@ -1,26 +1,23 @@
 <ion-app>
   <ion-header mode="ios" translucent="true">
-    <ion-toolbar class="ion-text-center" color="success">
-      <ion-avatar
-        slot="start"
-        class="ion-margin-horizontal ion-margin-vertical"
-      >
-        <img src="assets\icon\as.jpg" />
-      </ion-avatar>
-      <ion-icon slot="end" size="large" name="search-circle-outline"></ion-icon>
+    <ion-toolbar style="height: 80px" class="ion-text-center" color="success">
+      <ion-buttons slot="start">
+        <ion-back-button mode="md" defaultHref="/"> </ion-back-button>
+      </ion-buttons>
       <ion-title class="ion-text-center">
-        <h5>Nuevo Palet</h5>
-        <h5>Estiba:{{banda.c_codigo_sel}}</h5>
+        <h5 *ngIf=" b_nuevo_pal  == true">Pallet Nuevo<br />Estiba:{{banda.c_codigo_sel}}</h5>
+        <h5 *ngIf=" b_nuevo_pal  == false">Pallet Existente <br />Estiba:{{banda.c_codigo_sel}}</h5>
       </ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-content [fullscreen]="true">
-    <form>
+    <form #formulario="ngForm">
       <ion-grid>
         <ion-row>
           <ion-col size="12">
             <ion-card>
-              <ion-item class="ion-text-center">
+              <ion-item>
                 <ion-label>
                   <h4>{{banda.c_codigo_lot}} - {{banda.v_nombre_lot}}</h4>
                   <h4>{{banda.c_codigo_cul}} - {{banda.v_nombre_cul}}</h4>
@@ -34,48 +31,65 @@
         <ion-row>
           <ion-col size="12">
             <ion-label class="ion-label-h">Codigó</ion-label>
-            <ion-item *ngIf="c_codigo_pal == ''">
-              <ion-icon
-                slot="end"
-                name="barcode-outline"
-                class="search-button"
-              ></ion-icon>
+            <ion-item>
               <ion-input
+                #codpal
                 [(ngModel)]="c_codigo_pal"
+                [value]="c_codigo_pal |uppercase"
+                name="c_codigo_pal"
                 (keydown.enter)="enterkey()"
-                type="number"
+                [autofocus]="true"
+                type="text"
+                inputmode="text"
                 maxlength="10"
                 class="search-input"
                 placeholder="Teclee un código de Palet"
               ></ion-input>
+              <ion-icon *ngIf="b_nuevo_pal  == false"
+                name="close-circle"
+                (click)="removerCodigo()"
+              ></ion-icon>
               <ion-icon
+                (click)="buscarPalletVirtual()"
                 slot="end"
                 name="search"
                 class="search-button"
               ></ion-icon>
             </ion-item>
+          </ion-col>
+        </ion-row>
 
-            <ion-chip
-              style="margin-top: 2vh"
-              color="success"
-              *ngIf="c_codigo_pal != ''"
-            >
-              <ion-label>{{c_codigo_pal}}</ion-label>
-              <ion-icon
-                name="close-circle"
-                (click)="removerCodigo()"
-              ></ion-icon>
+        <ion-row>
+          <ion-col size="12">
+            <ion-chip color="success" *ngIf="pallet.n_totalbulxpa_pme !== 0">
+              <ion-label
+                >Total de Cajas/Bultos: {{pallet.n_totalbulxpa_pme}}
+              </ion-label>
             </ion-chip>
           </ion-col>
         </ion-row>
 
-        
+        <ion-row class="ion-padding-bottom">
+          <ion-col size="12">
+            <ion-item
+              style="border-radius: 15px; border: solid 2px green"
+              color="success"
+            >
+              <ion-label> Presentación</ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
         <ion-row>
           <ion-col size="12">
             <ion-label class="ion-label-h">Producto</ion-label>
             <ion-item *ngIf="producto.c_codigo_pro == ''">
               <ion-input
-                type="number"
+                [(ngModel)]="c_codigo_pro"
+                name="c_codigo_pro"
+                (keyup.enter)="buscarProductoPorCodigo()"
+                type="text"
+                inputmode="numeric"
                 class="search-input"
                 maxlength="4"
                 placeholder="Teclee un código de Producto"
@@ -91,28 +105,49 @@
             <ion-chip
               style="margin-top: 2vh"
               color="success"
-              *ngIf="producto.c_codigo_pro != ''"
+              *ngIf="producto.c_codigo_pro !== ''"
             >
               <ion-label
-                >{{producto.c_codigo_pro }} -
-                {{producto.v_nombre_pro}}</ion-label
-              >
+                >{{producto.c_codigo_pro }} - {{producto.v_nombre_pro}}
+              </ion-label>
+
               <ion-icon
                 name="close-circle"
                 (click)="removerProducto()"
               ></ion-icon>
             </ion-chip>
+            <ion-chip
+              style="margin-top: 1vh"
+              color="success"
+              *ngIf="producto.c_codigo_pro !== ''"
+            >
+              <ion-label>
+                Tamaño: {{producto.c_codigo_tam}} - {{producto.v_nombre_tam}}
+              </ion-label>
+            </ion-chip>
+
+            <ion-chip
+              style="margin-top: 1vh"
+              color="success"
+              *ngIf="producto.c_codigo_pro !== ''"
+            >
+              <ion-label>
+                Envase: {{producto.c_codigo_env}} - {{producto.v_nombre_env}}
+              </ion-label>
+            </ion-chip>
           </ion-col>
         </ion-row>
-
-
 
         <ion-row>
           <ion-col size="12">
             <ion-label class="ion-label-h">Etiqueta</ion-label>
             <ion-item *ngIf="etiqueta.c_codigo_eti == ''">
               <ion-input
-                type="number"
+                [(ngModel)]="c_codigo_eti"
+                name="c_codigo_eti"
+                (keyup.enter)="buscarEtiquetaPorCodigo()"
+                type="text"
+                inputmode="numeric"
                 maxlength="2"
                 class="search-input"
                 placeholder="Teclee un código de Etiqueta"
@@ -128,7 +163,7 @@
             <ion-chip
               style="margin-top: 2vh"
               color="success"
-              *ngIf="etiqueta.c_codigo_eti != ''"
+              *ngIf="etiqueta.c_codigo_eti !== ''"
             >
               <ion-label
                 >{{etiqueta.c_codigo_eti }} -
@@ -147,7 +182,11 @@
             <ion-label class="ion-label-h">Color</ion-label>
             <ion-item *ngIf="color.c_codigo_col == ''">
               <ion-input
-                type="number"
+                [(ngModel)]="c_codigo_col"
+                name="c_codigo_col"
+                type="text"
+                inputmode="numeric"
+                (keyup.enter)="buscarColorPorCodigo()"
                 maxlength="2"
                 class="search-input"
                 placeholder="Teclee un código de Color"
@@ -172,7 +211,44 @@
             </ion-chip>
           </ion-col>
         </ion-row>
+
+        <ion-row>
+          <ion-col size="8">
+            <ion-label class="ion-label-h">Cajas/Bultos</ion-label>
+            <ion-item>
+              <ion-input
+                [disabled]="b_conteocajas"
+                name="n_bulxpa_pal"
+                type="text"
+                inputmode="numeric"
+                [(ngModel)]="n_bulxpa_pal"
+                placeholder="Teclee la cantidad"
+              ></ion-input>
+              <ion-icon
+                *ngIf="b_conteocajas === true"
+                (click)="ConteoCajas()"
+                slot="end"
+                name="barcode-outline"
+                class="search-button"
+              ></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
       </ion-grid>
     </form>
+
+    <ion-row style="display: grid" class="ion-padding">
+      <ion-button
+        expand="full"
+        shape="round"
+        style="height: 50px"
+        color="success"
+        (click)="newpPal()"
+        [disabled]="!formulario.valid"
+      >
+        Guardar
+        <ion-icon slot="end" name="add-circle-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-row>
   </ion-content>
 </ion-app>

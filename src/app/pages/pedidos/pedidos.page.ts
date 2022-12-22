@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, IonList, ModalController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { Pedidos } from 'src/app/interfaces/interfaces';
 import { ApiService } from 'src/app/services/api.service';
 import { GetdatosService } from 'src/app/services/getdatos.service';

@@ -26,10 +26,13 @@ ion-card {
 }
 
 .search-input {
-    --padding-end: 3em !important;
-    position: absolute;
+
+
+   /* --padding-end: 3em !important;
+    position: absolute;*/
     background-color: gray;
 }
+
 
 .item-input.sc-ion-label-md-h, .item-input .sc-ion-label-md-h {
     -ms-flex: initial;
@@ -46,10 +49,9 @@ ion-card {
 .item-interactive, .item-has-focus, .item-label
 {
     --border-style:none;
-    --highlight-background: transparent;
+    /*--highlight-background: transparent;*/
     font-family: 'Lato';    
 }
-
 
 
 

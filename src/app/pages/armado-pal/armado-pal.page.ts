@@ -21,8 +21,7 @@ export class ArmadoPalPage implements OnInit {
     private ultilService: UtilService,
     private armadopal: ArmadopaletService,
     private router: Router,
-    public alertController: AlertController,
-   
+    public alertController: AlertController
   ) {}
 
   ngOnInit() {}
@@ -81,13 +80,13 @@ export class ArmadoPalPage implements OnInit {
   }
 
   async fn_accionbanda(banda: Bandas) {
-    await this.fn_valida_parar_banda(banda).then( async (resolve) => {
+    await this.fn_valida_parar_banda(banda).then(async (resolve) => {
       if (resolve) {
-        await  this.fn_parar_banda(banda).then((resolve) => {
+        await this.fn_parar_banda(banda).then((resolve) => {
           if (resolve) {
-            this.getBandas()
+            this.getBandas();
           }
-        }) 
+        });
       }
     });
     await this.listabandas.closeSlidingItems();
@@ -190,7 +189,7 @@ export class ArmadoPalPage implements OnInit {
                 this.ultilService.presentToast(
                   'Error!',
                   arrayresp[1],
-                  1000,
+                  1500,
                   'warning-outline',
                   'danger'
                 );
@@ -201,7 +200,7 @@ export class ArmadoPalPage implements OnInit {
               this.ultilService.presentToast(
                 'Error!',
                 'Ocurrio un error Interno.',
-                500,
+                1500,
                 'warning-outline',
                 'danger'
               );
@@ -213,7 +212,7 @@ export class ArmadoPalPage implements OnInit {
             this.ultilService.presentToast(
               'Error!',
               'Ocurrio un error Interno.',
-              500,
+              1500,
               'warning-outline',
               'danger'
             );
@@ -223,10 +222,8 @@ export class ArmadoPalPage implements OnInit {
     });
   }
 
-  fn_newpal(banda : Bandas) {
-  
-    this.router.navigate(['/paletvirtual'], { queryParams:  banda })
-
+  fn_newpal(banda: Bandas) {
+    this.router.navigate(['/paletvirtual'], { queryParams: banda });
   }
 
   /* message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd + 
@@ -235,14 +232,14 @@ export class ArmadoPalPage implements OnInit {
               'Cultivo: ' + banda.c_codigo_cul + ' - ' + banda.v_nombre_cul + 
               "NOTA: Se dejará libre la banda para \nsignarle una nueva Estiba de Proceso.", */
 
-  async Confirmar_Parar_Banda(banda : Bandas) {
+  async Confirmar_Parar_Banda(banda: Bandas) {
     const alert = await this.alertController.create({
       mode: 'ios',
       cssClass: 'custom-alert',
-      header: "¿DESEA PARAR ESTA BANDA?",
-      subHeader: "Programa Empaque #: " + banda.c_codigo_prq ,
-      message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd ,
-              
+      header: '¿DESEA PARAR ESTA BANDA?',
+      subHeader: 'Programa Empaque #: ' + banda.c_codigo_prq,
+      message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd,
+
       buttons: [
         {
           text: 'No',
@@ -255,7 +252,7 @@ export class ArmadoPalPage implements OnInit {
           text: 'Si',
           role: 'confirm',
           handler: async () => {
-            await this.fn_accionbanda(banda)
+            await this.fn_accionbanda(banda);
           },
         },
       ],
@@ -266,7 +263,4 @@ export class ArmadoPalPage implements OnInit {
     const { role } = await alert.onDidDismiss();
     console.log(`Dismissed with role: ${role}`);
   }
-
-
-
 }

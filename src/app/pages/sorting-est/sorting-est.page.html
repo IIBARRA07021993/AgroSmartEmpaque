@@ -31,10 +31,8 @@
         ></ion-icon>
         <ion-input
           class="custom"
-          type="number"
           [(ngModel)]="tabla.c_codigo"
           name="c_reccon"
-          maxlength="9"
         ></ion-input>
       </ion-item>
 
@@ -103,7 +101,6 @@
           slot="end"
           name="checkmark-circle-outline"
           size="large"
-          disabled="{{!formulario.valid}}"
         ></ion-icon>
       </ion-item>
     </form>

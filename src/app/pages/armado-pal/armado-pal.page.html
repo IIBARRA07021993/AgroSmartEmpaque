@@ -77,12 +77,12 @@
 
                 <ion-col size="6">
                   <ion-badge color="success"
-                    >Kg Totales:{{banda.KilosRec}}</ion-badge
+                    >Kg Totales:{{banda.KilosRec | number : "1.3-3"}}</ion-badge
                   >
                 </ion-col>
                 <ion-col size="6">
                   <ion-badge color="warning"
-                    >Kg Procesado:{{banda.KilosEmp}}</ion-badge
+                    >Kg Procesado:{{banda.KilosEmp | number : "1.3-3"}}</ion-badge
                   >
                 </ion-col>
               </ion-row>

@@ -238,7 +238,12 @@ export class ArmadoPalPage implements OnInit {
       cssClass: 'custom-alert',
       header: '¿DESEA PARAR ESTA BANDA?',
       subHeader: 'Programa Empaque #: ' + banda.c_codigo_prq,
-      message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd,
+      message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd + 
+              ' <br/><br/>Estiba de Proceso: ' + banda.c_codigo_sel + 
+              ' <br/><br/>Lote: ' + banda.c_codigo_lot + ' - ' + banda.v_nombre_lot + 
+              ' <br/><br/>Cultivo: ' + banda.c_codigo_cul + ' - ' + banda.v_nombre_cul + 
+              " <br/><br/>NOTA: Se dejará libre la banda para signarle una nueva Estiba de Proceso.",
+     
 
       buttons: [
         {

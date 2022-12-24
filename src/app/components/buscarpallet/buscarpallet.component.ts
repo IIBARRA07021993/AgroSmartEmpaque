@@ -27,6 +27,11 @@ export class BuscarpalletComponent implements OnInit {
     await this.ultilService.loading.dismiss();
   }
 
+  getColorCard(c_codigo_pal: string) {
+    return '#499b38';
+   
+  }
+
   ngOnInit() {}
 
   fn_filtro(evento: any) {
@@ -38,7 +43,7 @@ export class BuscarpalletComponent implements OnInit {
     this.modalController.dismiss(this.pallet);
   }
 
-  seleccionarPallet(pallet: EyePalletVirtual) {  
+  seleccionarPallet(pallet: EyePalletVirtual) {
     console.log('Pallet Seleccionado');
     console.log(pallet);
     this.pallet = pallet;

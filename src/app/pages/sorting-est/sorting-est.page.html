@@ -24,6 +24,7 @@
     <form #formulario="ngForm" class="ion-padding" class="grupo">
       <ion-item>
         <ion-icon
+          id = "codigobarras"
           slot="start"
           name="barcode-outline"
           size="large"
@@ -39,6 +40,7 @@
       <ion-item>
         <ion-label>Kilos: </ion-label>
         <ion-input
+          #kilogramos
           class="custom2"
           type="number"
           [(ngModel)]="tabla.n_kilos_dso"
@@ -114,22 +116,19 @@
       <ion-input name="kgs" [(ngModel)]="tabla.kgs" readonly="true"></ion-input>
     </ion-item>
   </form>
-
   <ion-item>
     <ion-grid>
       <ion-row>
         <ion-col size="5">Pallet</ion-col>
-        <ion-col size="3">Lote</ion-col>
-        <ion-col size="4" class="ion-text-end">Kgs</ion-col>
+        <ion-col size="2">Lote</ion-col>
+        <ion-col size="3" class="ion-text-end">Kgs</ion-col>
+        <ion-col size="2"></ion-col>
       </ion-row>
       <ion-row *ngFor="let estiba of estibas; index as i">
-        <ion-col size="5"
-          >{{ estiba.c_codigo_rec }}{{ estiba.c_concecutivo_dso }}
-        </ion-col>
-        <ion-col size="3">{{ estiba.c_codigo_lot }}</ion-col>
-        <ion-col size="4" class="ion-text-end"
-          >{{ estiba.n_kilos_dso }}</ion-col
-        >
+        <ion-col id = "columnas" size="5">{{ estiba.c_codigo_rec }}{{ estiba.c_concecutivo_dso }}{{ estiba.c_codigo_pal }}</ion-col>
+        <ion-col id = "columnas" size="2">{{ estiba.c_codigo_lot }}</ion-col>
+        <ion-col id = "columnas" size="3" class="ion-text-end">{{ estiba.n_kilos_dso }}</ion-col>
+        <ion-col size="2" class="ion-text-center"  padding-bottom= "20px"><ion-button color="danger" size="small" (click)="fn_eliminar(estiba.c_codigo_rec,estiba.c_concecutivo_dso,estiba.c_codigo_pal)"><ion-icon name="trash-outline" size="small"></ion-icon></ion-button></ion-col>
       </ion-row>
     </ion-grid>
   </ion-item>

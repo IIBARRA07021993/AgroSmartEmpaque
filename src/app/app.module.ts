@@ -11,6 +11,8 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { Device } from "@awesome-cordova-plugins/device/ngx";
 import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx';
+import { AudioManagement } from '@ionic-native/audio-management/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
 
 
@@ -26,7 +28,10 @@ import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx';
     BarcodeScanner,
     Vibration,
     Device,
-    Keyboard
+    Keyboard,
+    Vibration,
+    AudioManagement,
+    NativeAudio,
   ],
   bootstrap: [AppComponent],
 })

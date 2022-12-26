@@ -6,8 +6,12 @@ form.grupo {
   font-size: 20px;
 }
 
+#columnas{
+  padding-top: 10px;
+}
+
 ion-grid {
-    --ion-grid-column-padding: 5px;
+    --ion-grid-column-padding: 1px;
     border-collapse: collapse;
     border-style: hidden;
     
@@ -55,3 +59,4 @@ ion-grid {
     --padding-start: 5px;
     --padding-top: 5px;
   }
+

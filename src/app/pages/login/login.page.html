@@ -86,10 +86,12 @@
           class="ion-text-center"
           placeholder="Seleccionar Empresa"
           (ionChange)="handleChange($event)"
+          
         >
           <ion-select-option
             *ngFor="let emp of empresas"
             value="{{emp.C_codigo_emp}}"
+          
             >{{emp.V_nombre_emp}}</ion-select-option
           >
         </ion-select>

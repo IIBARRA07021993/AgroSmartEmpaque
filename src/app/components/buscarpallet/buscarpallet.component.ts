@@ -27,8 +27,6 @@ export class BuscarpalletComponent implements OnInit {
     await this.ultilService.loading.dismiss();
   }
 
-
-
   ngOnInit() {}
 
   fn_filtro(evento: any) {
@@ -52,8 +50,9 @@ export class BuscarpalletComponent implements OnInit {
       var json = {
         c_codigo_tem: environment.c_codigo_tem,
         c_codigo_emp: environment.c_codigo_emp,
+        c_codigo_pal: '%%',
+        c_codsec_pal: '%%',
       };
-
       console.log(JSON.stringify(json));
 
       this.getdatoserv
@@ -87,12 +86,9 @@ export class BuscarpalletComponent implements OnInit {
 
   async doRefresh(event) {
     console.log(event);
-    await this.buscarPalletvirtual()
+    await this.buscarPalletvirtual();
     console.log('buscarPalletvirtual');
     await event.target.complete();
     console.log('event.target.complete');
   }
-
-
-
 }

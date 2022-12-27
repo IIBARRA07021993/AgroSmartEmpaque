@@ -36,10 +36,13 @@ export class PaletvirtualPage implements OnInit {
   c_codigo_col: string = '';
   n_bulxpa_pal: number = 0;
   producto: EyeProducto = new EyeProducto();
+  productos: EyeProducto[] = [];
   etiqueta: EyeEtiqueta = new EyeEtiqueta();
-
+  etiquetas: EyeEtiqueta[] = [];
   color: EyeColor = new EyeColor();
+  colores: EyeColor[] = [];
   pallet: EyePalletVirtual = new EyePalletVirtual();
+  pallets: EyePalletVirtual[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -60,30 +63,263 @@ export class PaletvirtualPage implements OnInit {
     });
   }
 
-  async buscarPalletVirtualCodigo() {
+  async buscarPalletVirtualCodigo(codigo) {
     console.log('buscarPalletVirtualCodigo');
+    console.log(codigo);
+    this.c_codigo_pal = codigo;
+    console.log(this.c_codigo_pal);
+    // this.inputproducto.setFocus()
 
-    await this.inputproducto.setFocus();
+    return new Promise((resolve) => {
+      var json = {
+        c_codigo_tem: environment.c_codigo_tem,
+        c_codigo_emp: environment.c_codigo_emp,
+        c_codigo_pal: this.c_codigo_pal,
+        c_codsec_pal: '00',
+      };
+
+      console.log(JSON.stringify(json));
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=17&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.pallets = JSON.parse(resp);
+            console.log(this.pallets);
+            if (this.pallets.length > 0) {
+              this.pallet = this.pallets[0];
+              console.log(this.pallet);
+
+              if (this.pallet.c_codigo_pal !== '') {
+                this.ultilService.presentToast(
+                  'PALET YA CONFIRMADO!',
+                  'El Código de Palet [' +
+                    this.c_codigo_pal +
+                    '] ya fue confirmado como Palet final.',
+
+                  1500,
+                  'warning-outline',
+                  'warning'
+                );
+                this.removerCodigo();
+                resolve(false);
+              } else {
+                this.LimpiarCaptura();
+                this.b_nuevo_pal = false;
+                this.c_codigo_pal = this.pallet.c_codigo;
+                this.inputproducto.setFocus();
+                resolve(true);
+              }
+            } else {
+              this.ultilService.presentToast(
+                'ATENCION!',
+                'El Código de Palet [' +
+                  this.c_codigo_pal +
+                  '] NO existe en los palets multiestiba.',
+
+                1500,
+                'warning-outline',
+                'warning'
+              );
+              this.removerCodigo();
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              500,
+              'warning-outline',
+              'danger'
+            );
+            this.removerCodigo();
+            resolve(false);
+          }
+        );
+    });
   }
 
-  async buscarProductoPorCodigo() {
+  async buscarProductoPorCodigo(codigo) {
     console.log('buscarProductoPorCodigo');
-    await this.inputetiqueta.setFocus();
+    console.log(codigo);
+    this.c_codigo_pro = codigo;
+    console.log(this.c_codigo_pro);
+    //this.inputetiqueta.setFocus()
+    return new Promise((resolve) => {
+      var json = { c_codigo_pro: this.c_codigo_pro };
+      console.log(JSON.stringify(json));
+
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=14&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.productos = JSON.parse(resp);
+            console.log(this.productos);
+
+            if (this.productos.length > 0) {
+              this.producto = this.productos[0];
+              this.c_codigo_pro = this.producto.c_codigo_pro;
+              this.inputetiqueta.setFocus();
+              resolve(true);
+            } else {
+              this.ultilService.presentToast(
+                'ATENCION!',
+                'El Código del Producto [' +
+                  this.c_codigo_pro +
+                  '] NO existe o esta Inactivo en el catálogo.',
+                1500,
+                'warning-outline',
+                'warning'
+              );
+              this.removerProducto();
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              1500,
+              'warning-outline',
+              'danger'
+            );
+            this.removerProducto();
+            resolve(false);
+          }
+        );
+    });
   }
 
-  async buscarEtiquetaPorCodigo() {
+  async buscarEtiquetaPorCodigo(codigo) {
     console.log('buscarEtiquetaPorCodigo');
-    await this.inputcolor.setFocus();
+    console.log(codigo);
+    this.c_codigo_eti = codigo;
+    console.log(this.c_codigo_eti);
+    //this.inputcolor.setFocus()
+    return new Promise((resolve) => {
+      var json = { c_codigo_eti: this.c_codigo_eti };
+      console.log(JSON.stringify(json));
+
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=15&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.etiquetas = JSON.parse(resp);
+            console.log(this.etiquetas);
+
+            if (this.etiquetas.length > 0) {
+              this.etiqueta = this.etiquetas[0];
+              this.c_codigo_eti = this.etiqueta.c_codigo_eti;
+              this.inputcolor.setFocus();
+              resolve(true);
+            } else {
+              this.ultilService.presentToast(
+                'ATENCION!',
+                'El Código de la Etiqueta [' +
+                  this.c_codigo_eti +
+                  '] NO existe o esta Inactivo en el catálogo.',
+                1500,
+                'warning-outline',
+                'warning'
+              );
+              this.removerEtiqueta();
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              1500,
+              'warning-outline',
+              'danger'
+            );
+            this.removerEtiqueta();
+            resolve(false);
+          }
+        );
+    });
   }
 
-  async buscarColorPorCodigo() {
+  async buscarColorPorCodigo(codigo) {
     console.log('buscarColorPorCodigo');
-    await this.inputcajas.setFocus();
-  }
+    console.log(codigo);
+    this.c_codigo_col = codigo;
+    console.log(this.c_codigo_col);
+    //this.inputcajas.setFocus()
+    return new Promise((resolve) => {
+      console.log(this.c_codigo_col);
+      console.log(this.pallet.c_codigo_col);
+      var json = { c_codigo_col: this.c_codigo_col };
+      console.log(JSON.stringify(json));
 
-  async entercajas() {
-    console.log('entercajas');
-    await this.inputproducto.setFocus();
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=16&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.colores = JSON.parse(resp);
+            console.log(this.colores);
+
+            if (this.colores.length > 0) {
+              this.color = this.colores[0];
+              this.c_codigo_col = this.color.c_codigo_col;
+              this.inputcajas.setFocus();
+              resolve(true);
+            } else {
+              this.ultilService.presentToast(
+                'ATENCION!',
+                'El Código del Color [' +
+                  this.c_codigo_col +
+                  '] NO existe o esta Inactivo en el catálogo.',
+                1500,
+                'warning-outline',
+                'warning'
+              );
+              this.removerColor();
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              1500,
+              'warning-outline',
+              'danger'
+            );
+            this.removerColor();
+            resolve(false);
+          }
+        );
+    });
   }
 
   async buscarPalletVirtual() {
@@ -101,7 +337,7 @@ export class PaletvirtualPage implements OnInit {
           this.LimpiarCaptura();
           this.b_nuevo_pal = false;
           this.c_codigo_pal = this.pallet.c_codigo;
-           this.inputproducto.setFocus();
+          this.inputproducto.setFocus();
         }
       }
     });
@@ -120,7 +356,7 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.producto = dataReturned.data;
-        this.inputetiqueta.setFocus()
+        this.inputetiqueta.setFocus();
       }
     });
     return await modal.present();
@@ -136,7 +372,7 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.etiqueta = dataReturned.data;
-        this.inputcolor.setFocus()
+        this.inputcolor.setFocus();
       }
     });
     return await modal.present();
@@ -152,7 +388,7 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.color = dataReturned.data;
-        this.inputcajas.setFocus()
+        this.inputcajas.setFocus();
       }
     });
     return await modal.present();
@@ -167,17 +403,19 @@ export class PaletvirtualPage implements OnInit {
 
   removerProducto() {
     this.producto = new EyeProducto();
+    this.c_codigo_pro = '';
     console.log(this.producto);
   }
 
   removerEtiqueta() {
     this.etiqueta = new EyeEtiqueta();
+    this.c_codigo_eti = '';
     console.log(this.etiqueta);
   }
 
   removerColor() {
     this.color = new EyeColor();
-    console.log(this.color);
+    this.c_codigo_col = '';
   }
 
   async newpPal() {
@@ -221,13 +459,19 @@ export class PaletvirtualPage implements OnInit {
             var arrayresp = resp.split('|');
             if (arrayresp.length > 0) {
               if (arrayresp[0] == '1') {
-                this.ultilService.presentToastok(
+                this.ultilService.AlertaOK(
+                  'Guardado',
+                  'Guardado de Pallet',
+                  arrayresp[1],
+                  'OK'
+                );
+                /* this.ultilService.presentToastok(
                   'Atención!',
                   arrayresp[1],
                   5000,
                   'checkmark-done-outline',
                   'success'
-                );
+                );*/
 
                 this.LimpiarCaptura();
 
@@ -427,16 +671,12 @@ export class PaletvirtualPage implements OnInit {
   LimpiarCaptura() {
     this.b_nuevo_pal = true;
     this.c_codigo_pal = '';
-    this.c_codigo_pro = '';
-    this.c_codigo_eti = '';
-    this.c_codigo_col = '';
-    this.c_codigo_pal = '';
     this.removerProducto();
     this.removerEtiqueta();
     this.removerColor();
-    this.c_codigo_pal = '';
     this.n_bulxpa_pal = 0;
+    this.inputpallet.setFocus();
   }
-  
+
   ConteoCajas() {}
 }

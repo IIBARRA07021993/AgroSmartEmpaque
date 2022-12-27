@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Areas, Cajas, Lotes } from 'src/app/interfaces/interfaces';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { environment } from 'src/environments/environment';
 import { UtilService } from 'src/app/services/util.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonInput } from '@ionic/angular';
 import { SorteoService } from 'src/app/services/sorteo.service';
 import {
   BarcodeScanner,
   BarcodeScannerOptions,
 } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
 @Component({
   selector: 'app-sorting-est',
@@ -17,12 +19,17 @@ import {
 })
 export class SortingEstPage implements OnInit {
   titulo = 'Sorting Maduración(Estiba)';
+  @ViewChild('kilogramos', { static: false }) kilogramos!: IonInput;
+  public alertMode: any;
+  public loopMode: any;
   constructor(
     private getdatos: GetdatosService,
     private ultilService: UtilService,
     private SorteoService: SorteoService,
     private alertController: AlertController,
-    private barcodeScanner: BarcodeScanner
+    private barcodeScanner: BarcodeScanner,
+    private Vibration: Vibration,
+    private nativeAudio: NativeAudio
   ) {}
   estibas: any[];
   totalkgs: any;
@@ -61,9 +68,7 @@ export class SortingEstPage implements OnInit {
     var json = {
       c_tipo_are: '05', // definir los tipos de areas y como quedaran en cada ventana
     };
-    //llenar drop down de area para seleccionar.
     return new Promise((resolve) => {
-      //http://192.175.112.100:7001/api/GetAreaFisica?as_empresa=01&as_operation=1&as_json={}
       this.getdatos
         .sp_AppGetDatos(
           '/GetDatos?as_empresa=' +
@@ -129,24 +134,21 @@ export class SortingEstPage implements OnInit {
       c_codigo_usu: this.tabla.c_codigo_usu,
       c_tipo: this.tabla.tipo,
     };
-    if ((await this.fn_validartiposorteo()) == true) {
-      json.c_tipo = this.tabla.tipo;
-      console.log(json);
-
-      if ((await this.fn_validarcampos(json)) == 0) {
-        return;
-      } else {
+    if ((await this.fn_validarcampos(json)) != 0) {
+      if ((await this.fn_validartiposorteo()) == true) {
+        await new Promise((f) => setTimeout(f, 1000));
+        json.c_tipo = this.tabla.tipo;
+        console.log(json);
         await this.fn_save(json).then((resolve) => {
           if (resolve) {
-            console.log('Recepcion guardada');
             this.fn_cargarlistado();
-            console.log('listado actualizado');
             this.tabla.c_codigo = '';
             this.tabla.n_cajas_dso = '';
             this.tabla.n_kilos_dso = '';
           }
         });
       }
+      return;
     }
   }
 
@@ -175,7 +177,7 @@ export class SortingEstPage implements OnInit {
           for (v = 0; v < this.estibas.length; v++) {
             this.totalkgs += this.estibas[v].n_kilos_dso;
           }
-          this.tabla.kgs = 'KGS: ' + this.totalkgs;
+          this.tabla.kgs = 'KGS: ' + parseFloat(this.totalkgs).toFixed(3);
           this.fn_traertipo();
           resolve(true);
         });
@@ -200,9 +202,11 @@ export class SortingEstPage implements OnInit {
                 this.ultilService.presentToastok(
                   'Guardado!',
                   arrayresp[1],
-                  1500,
+                  2000,
                   'checkmark-done-outline',
-                  'success'
+                  'success',
+                  'bien',
+                  true
                 );
 
                 resolve(true);
@@ -211,9 +215,11 @@ export class SortingEstPage implements OnInit {
                 this.ultilService.presentToast(
                   'Error!',
                   arrayresp[1],
-                  1000,
+                  2000,
                   'warning-outline',
-                  'danger'
+                  'danger',
+                  'error',
+                  true
                 );
                 resolve(false);
                 break;
@@ -221,9 +227,11 @@ export class SortingEstPage implements OnInit {
                 this.ultilService.presentToast(
                   'Error!',
                   arrayresp[1],
-                  1000,
+                  2000,
                   'warning-outline',
-                  'danger'
+                  'danger',
+                  'error',
+                  true
                 );
                 resolve(false);
                 break;
@@ -232,9 +240,11 @@ export class SortingEstPage implements OnInit {
             this.ultilService.presentToast(
               'Error!',
               'Ocurrio un error Interno.',
-              1000,
+              2000,
               'warning-outline',
-              'danger'
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }
@@ -244,9 +254,11 @@ export class SortingEstPage implements OnInit {
           this.ultilService.presentToast(
             'Error!',
             'Ocurrio un error Interno.',
-            1000,
+            2000,
             'warning-outline',
-            'danger'
+            'danger',
+            'error',
+            true
           );
           resolve(false);
         }
@@ -256,60 +268,79 @@ export class SortingEstPage implements OnInit {
 
   fn_validarcampos(json) {
     if (json.c_codigo_are == '') {
-      this.ultilService.presentToast(
-        'Alerta!',
+      
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Área de Sorting! ',
         'Debe seleccionar un área de sorting.',
-        1000,
-        'warning-outline',
-        'warning'
+        'OK',
+        'alerta',
+        true
       );
       return 0;
     } else if (json.c_codigo_rec == '') {
-      this.ultilService.presentToast(
-        'Alerta!',
-        'Debe ingresar una recepción.',
-        1000,
-        'warning-outline',
-        'warning'
+      
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Palet o recepción! ',
+        'Debe ingresar o escanear un codigo.',
+        'OK',
+        'alerta',
+        true
       );
       return 0;
-    } else if (json.n_kilos_dso == 0) {
-      this.ultilService.presentToast(
-        'Alerta!',
-        'Debe ingresar los kilos de la recepción.',
-        1000,
-        'warning-outline',
-        'warning'
+    } else if (json.n_kilos_dso == '' || json.n_kilos_dso == '0') {
+      
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Kilos! ',
+        'Debe ingresar los kilos.',
+        'OK',
+        'alerta',
+        true
       );
       return 0;
-    } else if (json.n_cajas_dso == 0) {
-      this.ultilService.presentToast(
-        'Alerta!',
-        'Debe ingresar las cajas de la recepción.',
-        1000,
-        'warning-outline',
-        'warning'
+    } else if (json.n_cajas_dso == '' || json.n_cajas_dso == '0') {
+      
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Cajas! ',
+        'Debe ingresar las cajas.',
+        'OK',
+        'alerta',
+        true
       );
       return 0;
     } else if (json.c_codigocaja_tcj == '') {
-      this.ultilService.presentToast(
-        'Alerta!',
-        'Debe ingresar el tipo de caja.',
-        1000,
-        'warning-outline',
-        'warning'
+      
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Tipo de cajas! ',
+        'Debe seleccionar el tipo de caja.',
+        'OK',
+        'alerta',
+        true
       );
       return 0;
     } else if (json.c_codigotarima_tcj == '') {
-      this.ultilService.presentToast(
-        'Alerta!',
-        'Debe ingresar el tipo de tarima.',
-        1000,
-        'warning-outline',
-        'warning'
+      
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Tipo de tarimas! ',
+        'Debe seleccionar el tipo de tarima.',
+        'OK',
+        'alerta',
+        true
       );
       return 0;
     }
+    return 1;
   }
 
   async fn_finvaciado() {
@@ -319,11 +350,25 @@ export class SortingEstPage implements OnInit {
       c_tipo: this.tabla.tipo,
     };
 
+    await this.fn_cargarlistado();
+    await new Promise((f) => setTimeout(f, 1000));
+
     if (this.lotes.length <= 0) {
-      return;
+      this.Vibration.vibrate(500);
+      
+      return this.ultilService.AlertaOK(
+        'Atención ',
+        'Finalizar vaciado! ',
+        'No hay registros para el Listado o ya fueron vaciados. Favor de revisar.',
+        'OK',
+        'alerta',
+        true
+      );
     }
 
-    if (await this.alerta()) {
+    this.Vibration.vibrate(500);
+    
+    if (await this.alerta(1, '')) {
       return new Promise((resolve) => {
         this.SorteoService.sp_AppSorteoProcesos(
           '/SorteoProcesos?as_empresa=' +
@@ -340,20 +385,25 @@ export class SortingEstPage implements OnInit {
                   this.ultilService.presentToastok(
                     'Vaciado!',
                     arrayresp[1],
-                    1500,
+                    2000,
                     'checkmark-done-outline',
-                    'success'
+                    'success',
+                    'bien',
+                    true
                   );
                   this.fn_cargarlistado();
+                  this.tabla.tipo = '';
                   resolve(true);
                   break;
                 case '0':
                   this.ultilService.presentToast(
                     'Error!',
                     arrayresp[1],
-                    1000,
+                    2000,
                     'warning-outline',
-                    'danger'
+                    'danger',
+                    'error',
+                    true
                   );
                   resolve(false);
                   break;
@@ -361,9 +411,11 @@ export class SortingEstPage implements OnInit {
                   this.ultilService.presentToast(
                     'Error!',
                     arrayresp[1],
-                    1000,
+                    2000,
                     'warning-outline',
-                    'danger'
+                    'danger',
+                    'error',
+                    true
                   );
                   resolve(false);
                   break;
@@ -372,9 +424,11 @@ export class SortingEstPage implements OnInit {
               this.ultilService.presentToast(
                 'Error!',
                 'Ocurrio un error Interno.',
-                1000,
+                2000,
                 'warning-outline',
-                'danger'
+                'danger',
+                'error',
+                true
               );
               resolve(false);
             }
@@ -384,9 +438,11 @@ export class SortingEstPage implements OnInit {
             this.ultilService.presentToast(
               'Error!',
               'Ocurrio un error Interno.',
-              1000,
+              2000,
               'warning-outline',
-              'danger'
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }
@@ -445,10 +501,12 @@ export class SortingEstPage implements OnInit {
               );
               this.ultilService.presentToast(
                 'Alerta!',
-                'El registro que quiere ingresar no es del mismo tipo que los demas.',
-                1000,
+                'El registro que quiere ingresar no es del mismo tipo que los del listado o esta no existe.',
+                2000,
                 'warning-outline',
-                'warning'
+                'warning',
+                'alerta',
+                true
               );
             }
             resolve(false);
@@ -463,9 +521,17 @@ export class SortingEstPage implements OnInit {
         this.estibas[0].c_codigo_rec + this.estibas[0].c_concecutivo_dso
       );
       var json = {
-        c_codigo:
-          this.estibas[0].c_codigo_rec + this.estibas[0].c_concecutivo_dso,
+        c_codigo: '',
       };
+      if (
+        this.estibas[0].c_codigo_rec + this.estibas[0].c_concecutivo_dso !=
+        ''
+      ) {
+        json.c_codigo =
+          this.estibas[0].c_codigo_rec + this.estibas[0].c_concecutivo_dso;
+      } else if (this.estibas[0].c_codigo_pal) {
+        json.c_codigo = this.estibas[0].c_codigo_pal;
+      }
       return new Promise((resolve) => {
         this.getdatos
           .sp_AppGetDatos(
@@ -486,32 +552,59 @@ export class SortingEstPage implements OnInit {
     }
   }
 
-  async alerta() {
-    return new Promise(async (resolve) => {
-      const confirm = await this.alertController.create({
-        header: 'Sorting',
-        message: '¿Desea finalizar vaciado? ',
-        buttons: [
-          {
-            text: 'NO',
-            role: 'cancel',
-            handler: () => {
-              return resolve(false);
+  async alerta(opcion, codigo) {
+    if (opcion == 1) {
+      return new Promise(async (resolve) => {
+        const confirm = await this.alertController.create({
+          header: 'Sorting',
+          message: '¿Desea finalizar vaciado? ',
+          buttons: [
+            {
+              text: 'NO',
+              role: 'cancel',
+              handler: () => {
+                return resolve(false);
+              },
             },
-          },
-          {
-            text: 'SI',
-            handler: () => {
-              return resolve(true);
+            {
+              text: 'SI',
+              handler: () => {
+                return resolve(true);
+              },
             },
-          },
-        ],
+          ],
+        });
+        this.ultilService.playSingle('alerta',true);
+        await confirm.present();
       });
-      await confirm.present();
-    });
+    } else if (opcion == 2) {
+      return new Promise(async (resolve) => {
+        const confirm = await this.alertController.create({
+          header: 'Sorting',
+          message: '¿Desea quitar el registro [' + codigo + '] del vaciado? ',
+          buttons: [
+            {
+              text: 'NO',
+              role: 'cancel',
+              handler: () => {
+                return resolve(false);
+              },
+            },
+            {
+              text: 'SI',
+              handler: () => {
+                return resolve(true);
+              },
+            },
+          ],
+        });
+        this.ultilService.playSingle('alerta',true);
+        await confirm.present();
+      });
+    }
   }
 
-  scanBarcode() {
+  async scanBarcode() {
     const options: BarcodeScannerOptions = {
       preferFrontCamera: false,
       showFlipCameraButton: true,
@@ -530,9 +623,108 @@ export class SortingEstPage implements OnInit {
         this.scannedData = barcodeData;
         this.tabla.c_codigo = barcodeData.text;
         options.prompt = barcodeData.text;
+        this.kilogramos.setFocus();
       })
       .catch((err) => {
         console.log('Error', err);
       });
+  }
+
+  async fn_eliminar(c_codigo_rec, c_concecutivo_dso, c_codigo_pal) {
+    var json = {
+      c_codigo: '',
+    };
+    if (this.tabla.tipo == 'R') {
+      json.c_codigo = c_codigo_rec + c_concecutivo_dso;
+    } else if (this.tabla.tipo == 'P') {
+      json.c_codigo = c_codigo_pal;
+    }
+    this.Vibration.vibrate(500);
+    
+    if (await this.alerta(2, json.c_codigo)) {
+      await this.ultilService.showLoading('Eliminando...');
+      new Promise((resolve) => {
+        this.SorteoService.sp_AppSorteoProcesos(
+          '/SorteoProcesos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=3&as_json=' +
+            JSON.stringify(json)
+        ).subscribe(
+          async (resp: any) => {
+            var arrayresp = resp.split('|');
+            if (arrayresp.length > 0) {
+              switch (arrayresp[0]) {
+                case '1':
+                  this.ultilService.presentToastok(
+                    'Eliminado!',
+                    arrayresp[1],
+                    2000,
+                    'checkmark-done-outline',
+                    'success',
+                    'bien',
+                    true
+                  );
+                  await this.fn_cargarlistado();
+                  await new Promise((f) => setTimeout(f, 1000));
+                  if (this.estibas.length == 0) {
+                    this.tabla.tipo = '';
+                  }
+                  resolve(true);
+                  break;
+                case '0':
+                  this.ultilService.presentToast(
+                    'Error!',
+                    arrayresp[1],
+                    2000,
+                    'warning-outline',
+                    'danger',
+                    'error',
+                    true
+                  );
+                  resolve(false);
+                  break;
+                default:
+                  this.ultilService.presentToast(
+                    'Error!',
+                    arrayresp[1],
+                    2000,
+                    'warning-outline',
+                    'danger',
+                    'error',
+                    true
+                  );
+                  resolve(false);
+                  break;
+              }
+            } else {
+              this.ultilService.presentToast(
+                'Error!',
+                'Ocurrio un error Interno.',
+                2000,
+                'warning-outline',
+                'danger',
+                'error',
+                true
+              );
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              2000,
+              'warning-outline',
+              'danger',
+              'error',
+              true
+            );
+            resolve(false);
+          }
+        );
+      });
+    }
+    return await this.ultilService.loading.dismiss();
   }
 }

@@ -60,7 +60,9 @@ export class InicioPage implements OnInit {
                 'No tiene Permisos a ninguna Opción.',
                 500,
                 'warning-outline',
-                'warning'
+                'warning',
+                'alerta',
+                true
               );
               resolve(false);
             }
@@ -73,7 +75,9 @@ export class InicioPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }

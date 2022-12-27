@@ -79,4 +79,13 @@ export class BuscarproductosComponent implements OnInit {
         );
     });
   }
+
+  async doRefresh(event) {
+    console.log(event);
+    await this.buscarProducto()
+    console.log('buscarProducto');
+    await event.target.complete();
+    console.log('event.target.complete');
+  }
+
 }

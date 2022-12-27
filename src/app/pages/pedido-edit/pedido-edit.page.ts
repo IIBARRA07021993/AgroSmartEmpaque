@@ -80,6 +80,7 @@ export class PedidoEditPage implements OnInit {
 
 
   }
+  
   fn_get_pallet_pededito_det(det: Pedidosdet) {
     let ls_precentacion = det.c_codigo_pro.trim() + det.c_codigo_eti.trim() + det.c_codigo_col.trim()
     console.log(ls_precentacion);

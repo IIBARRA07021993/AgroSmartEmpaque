@@ -5,8 +5,12 @@
         <ion-back-button mode="md" defaultHref="/"> </ion-back-button>
       </ion-buttons>
       <ion-title class="ion-text-center">
-        <h5 *ngIf=" b_nuevo_pal  == true">Pallet Nuevo<br />Estiba:{{banda.c_codigo_sel}}</h5>
-        <h5 *ngIf=" b_nuevo_pal  == false">Pallet Existente <br />Estiba:{{banda.c_codigo_sel}}</h5>
+        <h5 *ngIf=" b_nuevo_pal  == true">
+          Pallet Nuevo<br />Estiba:{{banda.c_codigo_sel}}
+        </h5>
+        <h5 *ngIf=" b_nuevo_pal  == false">
+          Pallet Existente <br />Estiba:{{banda.c_codigo_sel}}
+        </h5>
       </ion-title>
     </ion-toolbar>
   </ion-header>
@@ -33,19 +37,19 @@
             <ion-label class="ion-label-h">Codigó</ion-label>
             <ion-item>
               <ion-input
-                #codpal
+                #inputpallet
+                (keyup.enter)="buscarPalletVirtualCodigo()"
                 [(ngModel)]="c_codigo_pal"
                 [value]="c_codigo_pal |uppercase"
                 name="c_codigo_pal"
-                (keydown.enter)="enterkey()"
-                [autofocus]="true"
                 type="text"
                 inputmode="text"
                 maxlength="10"
                 class="search-input"
                 placeholder="Teclee un código de Palet"
               ></ion-input>
-              <ion-icon *ngIf="b_nuevo_pal  == false"
+              <ion-icon
+                *ngIf="b_nuevo_pal  == false"
                 name="close-circle"
                 (click)="removerCodigo()"
               ></ion-icon>
@@ -85,6 +89,7 @@
             <ion-label class="ion-label-h">Producto</ion-label>
             <ion-item *ngIf="producto.c_codigo_pro == ''">
               <ion-input
+                #inputproducto
                 [(ngModel)]="c_codigo_pro"
                 name="c_codigo_pro"
                 (keyup.enter)="buscarProductoPorCodigo()"
@@ -143,6 +148,7 @@
             <ion-label class="ion-label-h">Etiqueta</ion-label>
             <ion-item *ngIf="etiqueta.c_codigo_eti == ''">
               <ion-input
+                #inputetiqueta
                 [(ngModel)]="c_codigo_eti"
                 name="c_codigo_eti"
                 (keyup.enter)="buscarEtiquetaPorCodigo()"
@@ -182,6 +188,7 @@
             <ion-label class="ion-label-h">Color</ion-label>
             <ion-item *ngIf="color.c_codigo_col == ''">
               <ion-input
+                #inputcolor
                 [(ngModel)]="c_codigo_col"
                 name="c_codigo_col"
                 type="text"
@@ -217,11 +224,13 @@
             <ion-label class="ion-label-h">Cajas/Bultos</ion-label>
             <ion-item>
               <ion-input
-                [disabled]="b_conteocajas"
+                #inputcajas
+                (keyup.enter)="entercajas()"
+                [(ngModel)]="n_bulxpa_pal"
                 name="n_bulxpa_pal"
                 type="text"
                 inputmode="numeric"
-                [(ngModel)]="n_bulxpa_pal"
+                [disabled]="b_conteocajas"
                 placeholder="Teclee la cantidad"
               ></ion-input>
               <ion-icon
@@ -235,7 +244,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </form>
+    </form>  
 
     <ion-row style="display: grid" class="ion-padding">
       <ion-button

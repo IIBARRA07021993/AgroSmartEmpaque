@@ -27,10 +27,7 @@ export class BuscarpalletComponent implements OnInit {
     await this.ultilService.loading.dismiss();
   }
 
-  getColorCard(c_codigo_pal: string) {
-    return '#499b38';
-   
-  }
+
 
   ngOnInit() {}
 
@@ -87,4 +84,15 @@ export class BuscarpalletComponent implements OnInit {
         );
     });
   }
+
+  async doRefresh(event) {
+    console.log(event);
+    await this.buscarPalletvirtual()
+    console.log('buscarPalletvirtual');
+    await event.target.complete();
+    console.log('event.target.complete');
+  }
+
+
+
 }

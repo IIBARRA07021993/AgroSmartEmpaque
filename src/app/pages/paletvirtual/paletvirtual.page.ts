@@ -21,7 +21,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./paletvirtual.page.scss'],
 })
 export class PaletvirtualPage implements OnInit {
-  @ViewChild('codpal', { static: false }) codpal!: IonInput;
+  @ViewChild('inputpallet', { static: false }) inputpallet!: IonInput;
+  @ViewChild('inputproducto', { static: false }) inputproducto!: IonInput;
+  @ViewChild('inputetiqueta', { static: false }) inputetiqueta!: IonInput;
+  @ViewChild('inputcolor', { static: false }) inputcolor!: IonInput;
+  @ViewChild('inputcajas', { static: false }) inputcajas!: IonInput;
 
   b_nuevo_pal: boolean = true;
   b_conteocajas: boolean = false;
@@ -45,10 +49,41 @@ export class PaletvirtualPage implements OnInit {
     private armadopal: ArmadopaletService
   ) {}
 
+  async ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+    await this.inputpallet.setFocus();
+  }
+
   ngOnInit() {
     this.route.queryParams.subscribe((Params: Bandas) => {
       this.banda = Params;
     });
+  }
+
+  async buscarPalletVirtualCodigo() {
+    console.log('buscarPalletVirtualCodigo');
+
+    await this.inputproducto.setFocus();
+  }
+
+  async buscarProductoPorCodigo() {
+    console.log('buscarProductoPorCodigo');
+    await this.inputetiqueta.setFocus();
+  }
+
+  async buscarEtiquetaPorCodigo() {
+    console.log('buscarEtiquetaPorCodigo');
+    await this.inputcolor.setFocus();
+  }
+
+  async buscarColorPorCodigo() {
+    console.log('buscarColorPorCodigo');
+    await this.inputcajas.setFocus();
+  }
+
+  async entercajas() {
+    console.log('entercajas');
+    await this.inputproducto.setFocus();
   }
 
   async buscarPalletVirtual() {
@@ -66,6 +101,7 @@ export class PaletvirtualPage implements OnInit {
           this.LimpiarCaptura();
           this.b_nuevo_pal = false;
           this.c_codigo_pal = this.pallet.c_codigo;
+           this.inputproducto.setFocus();
         }
       }
     });
@@ -84,43 +120,10 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.producto = dataReturned.data;
+        this.inputetiqueta.setFocus()
       }
     });
     return await modal.present();
-  }
-
-  async buscarProductoPorCodigo() {
-    /*  return new Promise((resolve) => {
-      var json = { c_codigo_pro : this.c_codigo_pro};
-      console.log(JSON.stringify(json));
-
-      this.getdatoserv
-        .sp_AppGetDatos(
-          '/GetDatos?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=14&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            this.producto   = JSON.parse(resp);
-            console.log(this.producto); 
-            resolve(true);
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              500,
-              'warning-outline',
-              'danger'
-            );
-            resolve(false);
-          }
-        );
-    });*/
   }
 
   async buscarEtiqueta() {
@@ -133,43 +136,10 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.etiqueta = dataReturned.data;
+        this.inputcolor.setFocus()
       }
     });
     return await modal.present();
-  }
-
-  buscarEtiquetaPorCodigo() {
-    /* return new Promise((resolve) => {
-      var json = { c_codigo_eti : this.c_codigo_eti};
-      console.log(JSON.stringify(json));
-
-      this.getdatoserv
-        .sp_AppGetDatos(
-          '/GetDatos?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=15&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            this.etiqueta = JSON.parse(resp);
-            console.log(this.etiqueta);
-            resolve(true);
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              500,
-              'warning-outline',
-              'danger'
-            );
-            resolve(false);
-          }
-        );
-    });*/
   }
 
   async buscarColor() {
@@ -182,43 +152,10 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         this.color = dataReturned.data;
+        this.inputcajas.setFocus()
       }
     });
     return await modal.present();
-  }
-
-  buscarColorPorCodigo() {
-    /* return new Promise((resolve) => {
-      var json = { c_codigo_col : this.c_codigo_col};
-      console.log(JSON.stringify(json));
-
-      this.getdatoserv
-        .sp_AppGetDatos(
-          '/GetDatos?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=16&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            this.color = JSON.parse(resp);
-            console.log(this.color);
-            resolve(true);
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              500,
-              'warning-outline',
-              'danger'
-            );
-            resolve(false);
-          }
-        );
-    });*/
   }
 
   removerCodigo() {
@@ -500,8 +437,6 @@ export class PaletvirtualPage implements OnInit {
     this.c_codigo_pal = '';
     this.n_bulxpa_pal = 0;
   }
-  enterkey() {}
-  fn_scanner() {}
-
+  
   ConteoCajas() {}
 }

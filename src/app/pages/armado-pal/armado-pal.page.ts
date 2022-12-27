@@ -226,11 +226,6 @@ export class ArmadoPalPage implements OnInit {
     this.router.navigate(['/paletvirtual'], { queryParams: banda });
   }
 
-  /* message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd + 
-              'Estiba de Proceso: ' + banda.c_codigo_sel + 
-              'Lote: ' + banda.c_codigo_lot + ' - ' + banda.v_nombre_lot + 
-              'Cultivo: ' + banda.c_codigo_cul + ' - ' + banda.v_nombre_cul + 
-              "NOTA: Se dejará libre la banda para \nsignarle una nueva Estiba de Proceso.", */
 
   async Confirmar_Parar_Banda(banda: Bandas) {
     const alert = await this.alertController.create({

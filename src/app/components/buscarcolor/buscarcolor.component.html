@@ -9,14 +9,20 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-item>
+        <ion-item id="buscar">
           <ion-label position="stacked">Solo Colores Activos</ion-label>
           <ion-input
+            autofocus="true"
             (ionChange)="fn_filtro($event)"
             type="number"
+            inputmode="number"
             maxlength="2"
             placeholder="Teclee Codigó para Filtrar Colores"
           ></ion-input>
@@ -26,15 +32,20 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          <ion-item
+          <ion-card
+            (click)="seleccionarColor(color)"
             *ngFor="
               let color of colores | filtro : texto_filtro : 'c_codigo_col'
             "
           >
-            <ion-label (click)="seleccionarColor(color)">
-              {{ color.c_codigo_col }} - {{ color.v_nombre_col }}
-            </ion-label>
-          </ion-item>
+            <ion-item>
+              <p>
+                <strong>
+                  {{ color.c_codigo_col }} - {{ color.v_nombre_col }}
+                </strong>
+              </p>
+            </ion-item>
+          </ion-card>
         </ion-list>
       </ion-col>
     </ion-row>

@@ -33,7 +33,7 @@ temporadas : Temporadas [] = [] ;
           'Ocurrio un error Interno.',
           1500,
           'warning-outline',
-          'danger'
+          'danger','error', true
         );
         console.log('Error 1 :' + JSON.stringify(e));
       });
@@ -54,7 +54,7 @@ temporadas : Temporadas [] = [] ;
           'Ocurrio un error Interno.',
           1500,
           'warning-outline',
-          'danger'
+          'danger','error', true
         );
         console.log('Error 2 :' + JSON.stringify(e));
       });
@@ -82,7 +82,7 @@ temporadas : Temporadas [] = [] ;
           'Ocurrio un error Interno.',
           1500,
           'warning-outline',
-          'danger'
+          'danger','error', true
         );
 
         console.log('Error 3:' + JSON.stringify(e));
@@ -121,7 +121,7 @@ temporadas : Temporadas [] = [] ;
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger','error', true
             );
             resolve(false);
           }

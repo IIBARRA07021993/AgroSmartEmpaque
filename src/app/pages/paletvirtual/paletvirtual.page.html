@@ -5,8 +5,12 @@
         <ion-back-button mode="md" defaultHref="/"> </ion-back-button>
       </ion-buttons>
       <ion-title class="ion-text-center">
-        <h5 *ngIf=" b_nuevo_pal  == true">Pallet Nuevo<br />Estiba:{{banda.c_codigo_sel}}</h5>
-        <h5 *ngIf=" b_nuevo_pal  == false">Pallet Existente <br />Estiba:{{banda.c_codigo_sel}}</h5>
+        <h5 *ngIf=" b_nuevo_pal  == true">
+          Pallet Nuevo<br />Estiba:{{banda.c_codigo_sel}}
+        </h5>
+        <h5 *ngIf=" b_nuevo_pal  == false">
+          Pallet Existente <br />Estiba:{{banda.c_codigo_sel}}
+        </h5>
       </ion-title>
     </ion-toolbar>
   </ion-header>
@@ -33,19 +37,19 @@
             <ion-label class="ion-label-h">Codigó</ion-label>
             <ion-item>
               <ion-input
-                #codpal
+                #inputpallet
+                (keyup.enter)="buscarPalletVirtualCodigo(inputpallet.value)"
                 [(ngModel)]="c_codigo_pal"
                 [value]="c_codigo_pal |uppercase"
-                name="c_codigo_pal"
-                (keydown.enter)="enterkey()"
-                [autofocus]="true"
+                name="ccodigopal"
                 type="text"
                 inputmode="text"
                 maxlength="10"
                 class="search-input"
                 placeholder="Teclee un código de Palet"
               ></ion-input>
-              <ion-icon *ngIf="b_nuevo_pal  == false"
+              <ion-icon
+                *ngIf="b_nuevo_pal  == false"
                 name="close-circle"
                 (click)="removerCodigo()"
               ></ion-icon>
@@ -63,7 +67,8 @@
           <ion-col size="12">
             <ion-chip color="success" *ngIf="pallet.n_totalbulxpa_pme !== 0">
               <ion-label
-                >Total de Cajas/Bultos: {{pallet.n_totalbulxpa_pme}}
+                >Total de Cajas/Bultos: {{pallet.n_totalbulxpa_pme | number :
+                "1.0-0"}}
               </ion-label>
             </ion-chip>
           </ion-col>
@@ -85,14 +90,17 @@
             <ion-label class="ion-label-h">Producto</ion-label>
             <ion-item *ngIf="producto.c_codigo_pro == ''">
               <ion-input
+                #inputproducto
                 [(ngModel)]="c_codigo_pro"
-                name="c_codigo_pro"
-                (keyup.enter)="buscarProductoPorCodigo()"
+                name="ccodigopro"
+                (keyup.enter)="buscarProductoPorCodigo(inputproducto.value)"
                 type="text"
                 inputmode="numeric"
                 class="search-input"
                 maxlength="4"
                 placeholder="Teclee un código de Producto"
+                required
+                pattern="^[0-9]+$"
               ></ion-input>
               <ion-icon
                 (click)="buscarProducto()"
@@ -143,9 +151,10 @@
             <ion-label class="ion-label-h">Etiqueta</ion-label>
             <ion-item *ngIf="etiqueta.c_codigo_eti == ''">
               <ion-input
+                #inputetiqueta
                 [(ngModel)]="c_codigo_eti"
-                name="c_codigo_eti"
-                (keyup.enter)="buscarEtiquetaPorCodigo()"
+                name="ccodigoeti"
+                (keyup.enter)="buscarEtiquetaPorCodigo(inputetiqueta.value)"
                 type="text"
                 inputmode="numeric"
                 maxlength="2"
@@ -182,14 +191,17 @@
             <ion-label class="ion-label-h">Color</ion-label>
             <ion-item *ngIf="color.c_codigo_col == ''">
               <ion-input
+                #inputcolor
                 [(ngModel)]="c_codigo_col"
-                name="c_codigo_col"
+                name="ccodigocol"
                 type="text"
                 inputmode="numeric"
-                (keyup.enter)="buscarColorPorCodigo()"
+                (keyup.enter)="buscarColorPorCodigo(inputcolor.value)"
                 maxlength="2"
                 class="search-input"
                 placeholder="Teclee un código de Color"
+                required
+                pattern="^[0-9]+$"
               ></ion-input>
               <ion-icon
                 (click)="buscarColor()"
@@ -217,12 +229,16 @@
             <ion-label class="ion-label-h">Cajas/Bultos</ion-label>
             <ion-item>
               <ion-input
-                [disabled]="b_conteocajas"
+                #inputcajas
+                [(ngModel)]="n_bulxpa_pal"
                 name="n_bulxpa_pal"
+                [value]="n_bulxpa_pal |number:'1.0-0'"
                 type="text"
                 inputmode="numeric"
-                [(ngModel)]="n_bulxpa_pal"
+                [disabled]="b_conteocajas"
                 placeholder="Teclee la cantidad"
+                required
+                pattern="^[0-9]+$"
               ></ion-input>
               <ion-icon
                 *ngIf="b_conteocajas === true"
@@ -246,7 +262,7 @@
         (click)="newpPal()"
         [disabled]="!formulario.valid"
       >
-        Guardar
+        {{formulario.valid}} Guardar
         <ion-icon slot="end" name="add-circle-outline" size="large"></ion-icon>
       </ion-button>
     </ion-row>

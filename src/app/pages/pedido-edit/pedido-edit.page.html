@@ -1,105 +1,133 @@
 <ion-app>
-
-<ion-header mode="ios" translucent="true">
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-back-button mode="md" defaultHref="/">
-      </ion-back-button>
-    </ion-buttons>
-    <ion-title class="ion-text-capitalize">
-      <ion-label>
-        <h4>{{pedido.v_nombre_dis}}</h4>
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar color="success">
+      <ion-buttons slot="start">
+        <ion-back-button mode="md" defaultHref="/"> </ion-back-button>
+      </ion-buttons>
+      <ion-title class="ion-text-capitalize">
         <ion-label>
-         <h2> {{pedido.c_codigo_pdo}}</h2>
+          <h4>{{pedido.v_nombre_dis}}</h4>
+          <ion-label>
+            <h2>{{pedido.c_codigo_pdo}}</h2>
+          </ion-label>
         </ion-label>
-      </ion-label>
-
-  
-    </ion-title>
-
-  </ion-toolbar>
-  <form  >
-    <ion-item class="ion-no-border">
-      <ion-row>
-        <ion-col size="3" class="ion-padding-top">
-          <ion-icon (click)="fn_scanner()" name="barcode-outline" size="large"></ion-icon>
-        </ion-col>
-        <ion-col size="6">
-          <ion-label position="floating">Código</ion-label>
-          <ion-input #codpal (keydown.enter)="enterkey()" name="codigopal" [(ngModel)]="codigo" [autofocus]="true"
-            type="number" placeholder="0000000001" maxlength="10"></ion-input>
-        </ion-col>
-      </ion-row>
+      </ion-title>
+    </ion-toolbar>
+    <form>
+      <ion-item class="ion-no-border">
+        <ion-row>
+          <ion-col size="3" class="ion-padding-top">
+            <ion-icon
+              (click)="fn_scanner()"
+              name="barcode-outline"
+              size="large"
+            ></ion-icon>
+          </ion-col>
+          <ion-col size="6">
+            <ion-label position="floating">Código</ion-label>
+            <ion-input
+              #codpal
+              (keydown.enter)="enterkey()"
+              name="codigopal"
+              [(ngModel)]="codigo"
+              [autofocus]="true"
+              type="number"
+              placeholder="0000000001"
+              maxlength="10"
+            ></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </form>
+    <ion-item color="primary" class="ion-margin-top">
+      Detalle del Pedido
     </ion-item>
-  </form>
-  <ion-item color="primary" class="ion-margin-top">
-    Detalle del Pedido
-  </ion-item>
-</ion-header>
+  </ion-header>
 
-
-<ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-card  (click)="fn_get_pallet_pededito_det( det )"   *ngFor="let det of pedidos_det"  > 
-      <ion-item    class="itemapp" lines="full">
-        <ion-label>
-          <ion-label id="presentacion">
-            <h4>[{{det.c_codigo_pro}}] -{{det.v_nombre_pro}}</h4>
-            <p>[{{det.c_codigo_eti}}] -{{det.v_nombre_eti}} / [{{det.c_codigo_col}}] -{{det.v_nombre_col}}</p>
-            <p></p>
+  <ion-content [fullscreen]="true">
+    <ion-list>
+      <ion-card
+        (click)="fn_get_pallet_pededito_det( det )"
+        *ngFor="let det of pedidos_det"
+      >
+        <ion-item class="itemapp" lines="full">
+          <ion-label>
+            <ion-label id="presentacion">
+              <h4>[{{det.c_codigo_pro}}] -{{det.v_nombre_pro}}</h4>
+              <p>
+                [{{det.c_codigo_eti}}] -{{det.v_nombre_eti}} /
+                [{{det.c_codigo_col}}] -{{det.v_nombre_col}}
+              </p>
+              <p></p>
+            </ion-label>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="4">
+                  <ion-badge id="ped" color="primary">
+                    Pedidas:{{det.n_cajaspedidas_pdd}}
+                  </ion-badge>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-badge id="sur" color="success">
+                    Surtidas:{{det.n_cajasempacadas_pdd}}</ion-badge
+                  >
+                </ion-col>
+                <ion-col size="4">
+                  <ion-badge id="pal" color="danger">
+                    Pallets:{{det.n_pallets_emp}}</ion-badge
+                  >
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-label>
-          <ion-grid fixed>
-            <ion-row>
-              <ion-col size="4">
-                <ion-badge id="ped" color="primary">
-                  Pedidas:{{det.n_cajaspedidas_pdd}}
-                </ion-badge>
-              </ion-col>
-              <ion-col size="4">
-                <ion-badge id="sur" color="success">
-                  Surtidas:{{det.n_cajasempacadas_pdd}}</ion-badge>
-              </ion-col>
-              <ion-col size="4">
-                <ion-badge id="pal" color="danger">
-                  Pallets:{{det.n_pallets_emp}}</ion-badge>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-  </ion-list>
+        </ion-item>
+      </ion-card>
+    </ion-list>
 
-
-  <ion-list *ngIf="(pedidos_det.length ) == 0">
-    <ion-card *ngFor="let det of [1,1,1,1,1] ">
-      <ion-item class="itemapp" lines="full">
-        <ion-label>
-          <ion-label id="presentacion">
-            <h4>
-              <ion-skeleton-text animated style="width: 100% ;height:20px;"></ion-skeleton-text>
-            </h4>
-            <p>
-              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-            </p>
-            <p></p>
+    <ion-list *ngIf="(pedidos_det.length ) == 0">
+      <ion-card *ngFor="let det of [1,1,1,1,1] ">
+        <ion-item class="itemapp" lines="full">
+          <ion-label>
+            <ion-label id="presentacion">
+              <h4>
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%; height: 20px"
+                ></ion-skeleton-text>
+              </h4>
+              <p>
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </p>
+              <p></p>
+            </ion-label>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="4">
+                  <ion-skeleton-text
+                    animated
+                    style="width: 90%"
+                  ></ion-skeleton-text>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-skeleton-text
+                    animated
+                    style="width: 90%"
+                  ></ion-skeleton-text>
+                </ion-col>
+                <ion-col size="4">
+                  <ion-skeleton-text
+                    animated
+                    style="width: 90%"
+                  ></ion-skeleton-text>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-label>
-          <ion-grid fixed>
-            <ion-row>
-              <ion-col size="4">
-                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-              </ion-col>
-              <ion-col size="4">
-                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-              </ion-col>
-              <ion-col size="4">
-                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-label>
-      </ion-item>
-    </ion-card>
-  </ion-list>
-</ion-content>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </ion-content>
 </ion-app>

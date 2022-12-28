@@ -2,8 +2,7 @@
   <ion-header mode="ios" translucent="true">
     <ion-toolbar class="ion-text-center" color="success">
       <ion-buttons slot="start">
-        <ion-back-button mode="md" defaultHref="/">
-        </ion-back-button>
+        <ion-back-button mode="md" defaultHref="/"> </ion-back-button>
       </ion-buttons>
       <ion-title class="ion-text-center">
         <h5>Armado Rapido Pallet <br />Multiples Estibas</h5>
@@ -44,7 +43,7 @@
               </ion-row>
 
               <ion-row>
-                <ion-col size="8" >
+                <ion-col size="8">
                   <ion-label class="ion-text-start">
                     <h5><strong>Estiba - {{banda.c_codigo_sel}}</strong></h5>
                   </ion-label>
@@ -59,7 +58,7 @@
               </ion-row>
               <ion-row>
                 <ion-row>
-                  <ion-col size="12" >
+                  <ion-col size="12">
                     <ion-label>
                       <p>
                         <strong
@@ -77,12 +76,13 @@
 
                 <ion-col size="6">
                   <ion-badge color="success"
-                    >Kg Totales:{{banda.KilosRec}}</ion-badge
+                    >Kg Totales:{{banda.KilosRec | number : "1.3-3"}}</ion-badge
                   >
                 </ion-col>
                 <ion-col size="6">
                   <ion-badge color="warning"
-                    >Kg Procesado:{{banda.KilosEmp}}</ion-badge
+                    >Kg Procesado:{{banda.KilosEmp | number :
+                    "1.3-3"}}</ion-badge
                   >
                 </ion-col>
               </ion-row>

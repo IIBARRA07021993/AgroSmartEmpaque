@@ -9,8 +9,16 @@ import {
   BarcodeScanner,
   BarcodeScannerOptions,
 } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+<<<<<<< HEAD
 import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+=======
+import { ToastController } from '@ionic/angular';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+import { AudioManagement } from '@ionic-native/audio-management/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
 
 @Component({
   selector: 'app-sorting-est',
@@ -28,8 +36,15 @@ export class SortingEstPage implements OnInit {
     private SorteoService: SorteoService,
     private alertController: AlertController,
     private barcodeScanner: BarcodeScanner,
+<<<<<<< HEAD
     private Vibration: Vibration,
     private nativeAudio: NativeAudio
+=======
+    private toastController: ToastController,
+    private Vibration: Vibration,
+    private nativeAudio: NativeAudio, 
+    private audio: AudioManagement
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
   ) {}
   estibas: any[];
   totalkgs: any;
@@ -62,6 +77,7 @@ export class SortingEstPage implements OnInit {
     this.fn_cargarareas();
     this.fn_cargarcajas();
     this.fn_cargartarimas();
+    this.setRingtone();
   }
 
   fn_cargarareas() {
@@ -268,6 +284,7 @@ export class SortingEstPage implements OnInit {
 
   fn_validarcampos(json) {
     if (json.c_codigo_are == '') {
+<<<<<<< HEAD
       
       this.Vibration.vibrate(500);
       this.ultilService.AlertaOK(
@@ -281,11 +298,25 @@ export class SortingEstPage implements OnInit {
       return 0;
     } else if (json.c_codigo_rec == '') {
       
+=======
+      this.playSingle() 
+      this.Vibration.vibrate(500);
+      this.ultilService.AlertaOK(
+        'Atención ',
+        'Aárea de Sorting! ',
+        'Debe seleccionar un área de sorting.',
+        'OK'
+      );
+      return 0;
+    } else if (json.c_codigo_rec == '') {
+      this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
       this.Vibration.vibrate(500);
       this.ultilService.AlertaOK(
         'Atención ',
         'Palet o recepción! ',
         'Debe ingresar o escanear un codigo.',
+<<<<<<< HEAD
         'OK',
         'alerta',
         true
@@ -293,11 +324,19 @@ export class SortingEstPage implements OnInit {
       return 0;
     } else if (json.n_kilos_dso == '' || json.n_kilos_dso == '0') {
       
+=======
+        'OK'
+      );
+      return 0;
+    } else if (json.n_kilos_dso == '' || json.n_kilos_dso == '0') {
+      this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
       this.Vibration.vibrate(500);
       this.ultilService.AlertaOK(
         'Atención ',
         'Kilos! ',
         'Debe ingresar los kilos.',
+<<<<<<< HEAD
         'OK',
         'alerta',
         true
@@ -305,11 +344,19 @@ export class SortingEstPage implements OnInit {
       return 0;
     } else if (json.n_cajas_dso == '' || json.n_cajas_dso == '0') {
       
+=======
+        'OK'
+      );
+      return 0;
+    } else if (json.n_cajas_dso == '' || json.n_cajas_dso == '0') {
+      this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
       this.Vibration.vibrate(500);
       this.ultilService.AlertaOK(
         'Atención ',
         'Cajas! ',
         'Debe ingresar las cajas.',
+<<<<<<< HEAD
         'OK',
         'alerta',
         true
@@ -317,11 +364,19 @@ export class SortingEstPage implements OnInit {
       return 0;
     } else if (json.c_codigocaja_tcj == '') {
       
+=======
+        'OK'
+      );
+      return 0;
+    } else if (json.c_codigocaja_tcj == '') {
+      this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
       this.Vibration.vibrate(500);
       this.ultilService.AlertaOK(
         'Atención ',
         'Tipo de cajas! ',
         'Debe seleccionar el tipo de caja.',
+<<<<<<< HEAD
         'OK',
         'alerta',
         true
@@ -329,14 +384,25 @@ export class SortingEstPage implements OnInit {
       return 0;
     } else if (json.c_codigotarima_tcj == '') {
       
+=======
+        'OK'
+      );
+      return 0;
+    } else if (json.c_codigotarima_tcj == '') {
+      this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
       this.Vibration.vibrate(500);
       this.ultilService.AlertaOK(
         'Atención ',
         'Tipo de tarimas! ',
         'Debe seleccionar el tipo de tarima.',
+<<<<<<< HEAD
         'OK',
         'alerta',
         true
+=======
+        'OK'
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
       );
       return 0;
     }
@@ -352,6 +418,7 @@ export class SortingEstPage implements OnInit {
 
     await this.fn_cargarlistado();
     await new Promise((f) => setTimeout(f, 1000));
+<<<<<<< HEAD
 
     if (this.lotes.length <= 0) {
       this.Vibration.vibrate(500);
@@ -368,6 +435,22 @@ export class SortingEstPage implements OnInit {
 
     this.Vibration.vibrate(500);
     
+=======
+
+    if (this.lotes.length <= 0) {
+      this.Vibration.vibrate(500);
+      this.playSingle() 
+      return this.ultilService.AlertaOK(
+        'Atención ',
+        'Finalizar vaciado! ',
+        'No hay registros para el Listado o ya fueron vaciados. Favor de revisar.',
+        'OK'
+      );
+    }
+    
+    this.Vibration.vibrate(500);
+    this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
     if (await this.alerta(1, '')) {
       return new Promise((resolve) => {
         this.SorteoService.sp_AppSorteoProcesos(
@@ -574,7 +657,10 @@ export class SortingEstPage implements OnInit {
             },
           ],
         });
+<<<<<<< HEAD
         this.ultilService.playSingle('alerta',true);
+=======
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
         await confirm.present();
       });
     } else if (opcion == 2) {
@@ -598,7 +684,10 @@ export class SortingEstPage implements OnInit {
             },
           ],
         });
+<<<<<<< HEAD
         this.ultilService.playSingle('alerta',true);
+=======
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
         await confirm.present();
       });
     }
@@ -640,7 +729,11 @@ export class SortingEstPage implements OnInit {
       json.c_codigo = c_codigo_pal;
     }
     this.Vibration.vibrate(500);
+<<<<<<< HEAD
     
+=======
+    this.playSingle() 
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
     if (await this.alerta(2, json.c_codigo)) {
       await this.ultilService.showLoading('Eliminando...');
       new Promise((resolve) => {
@@ -660,9 +753,13 @@ export class SortingEstPage implements OnInit {
                     arrayresp[1],
                     2000,
                     'checkmark-done-outline',
+<<<<<<< HEAD
                     'success',
                     'bien',
                     true
+=======
+                    'success'
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
                   );
                   await this.fn_cargarlistado();
                   await new Promise((f) => setTimeout(f, 1000));
@@ -677,9 +774,13 @@ export class SortingEstPage implements OnInit {
                     arrayresp[1],
                     2000,
                     'warning-outline',
+<<<<<<< HEAD
                     'danger',
                     'error',
                     true
+=======
+                    'danger'
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
                   );
                   resolve(false);
                   break;
@@ -689,9 +790,13 @@ export class SortingEstPage implements OnInit {
                     arrayresp[1],
                     2000,
                     'warning-outline',
+<<<<<<< HEAD
                     'danger',
                     'error',
                     true
+=======
+                    'danger'
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
                   );
                   resolve(false);
                   break;
@@ -702,9 +807,13 @@ export class SortingEstPage implements OnInit {
                 'Ocurrio un error Interno.',
                 2000,
                 'warning-outline',
+<<<<<<< HEAD
                 'danger',
                 'error',
                 true
+=======
+                'danger'
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
               );
               resolve(false);
             }
@@ -716,9 +825,13 @@ export class SortingEstPage implements OnInit {
               'Ocurrio un error Interno.',
               2000,
               'warning-outline',
+<<<<<<< HEAD
               'danger',
               'error',
               true
+=======
+              'danger'
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
             );
             resolve(false);
           }
@@ -727,4 +840,20 @@ export class SortingEstPage implements OnInit {
     }
     return await this.ultilService.loading.dismiss();
   }
+<<<<<<< HEAD
+=======
+
+  setRingtone() {/*Precargar el sonido al entrar a la ventana */
+  // Precargar el sonido
+  this.nativeAudio.preloadSimple('uniqueId1', 'assets/SD_ALERT_16.mp3');
+  }
+
+  playSingle() { /*reproduce el sonido 1 vez */
+  this.nativeAudio.play('uniqueId1').then(async () => {
+    console.log('Successfully played');
+  }).catch((err) => {
+    console.log('error', err);
+  });
+  }
+>>>>>>> 818dfd51aad357afec410792a269a30bbc5156e7
 }

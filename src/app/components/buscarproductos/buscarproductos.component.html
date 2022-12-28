@@ -9,14 +9,19 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-item>
+        <ion-item id="buscar">
           <ion-label position="stacked">Solo Productos Activos</ion-label>
-          <ion-input
+          <ion-input  autofocus="true"
             (ionChange)="fn_filtro($event)"
             type="number"
+            inputmode="number"
             maxlength="4"
             placeholder="Teclee Codigó para Filtrar Productos"
           ></ion-input>
@@ -26,15 +31,17 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          <ion-item
-            *ngFor="
-              let producto of productos | filtro : texto_filtro : 'c_codigo_pro'
-            "
-          >
-            <ion-label (click)="seleccionarProducto(producto)">
-              {{ producto.c_codigo_pro }} - {{ producto.v_nombre_pro }}
-            </ion-label>
-          </ion-item>
+          <ion-card
+            (click)="seleccionarProducto(producto)"
+            *ngFor="  let producto of productos | filtro : texto_filtro : 'c_codigo_pro'  "  >
+            <ion-item>
+              <p>
+                <strong
+                  >{{ producto.c_codigo_pro }} - {{ producto.v_nombre_pro }}
+                </strong>
+              </p>
+            </ion-item>
+          </ion-card>
         </ion-list>
       </ion-col>
     </ion-row>

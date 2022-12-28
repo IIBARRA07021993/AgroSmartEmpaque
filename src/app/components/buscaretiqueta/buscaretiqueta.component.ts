@@ -79,6 +79,13 @@ export class BuscaretiquetaComponent implements OnInit {
         );
     });
   }
+  async doRefresh(event) {
+    console.log(event);
+    await this.buscarEtiqueta()
+    console.log('buscarEtiqueta');
+    await event.target.complete();
+    console.log('event.target.complete');
+  }
 
 
 }

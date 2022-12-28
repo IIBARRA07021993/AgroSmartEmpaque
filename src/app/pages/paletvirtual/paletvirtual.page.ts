@@ -5,6 +5,7 @@ import { BuscarcolorComponent } from 'src/app/components/buscarcolor/buscarcolor
 import { BuscaretiquetaComponent } from 'src/app/components/buscaretiqueta/buscaretiqueta.component';
 import { BuscarpalletComponent } from 'src/app/components/buscarpallet/buscarpallet.component';
 import { BuscarproductosComponent } from 'src/app/components/buscarproductos/buscarproductos.component';
+import { ConteocajasComponent } from 'src/app/components/conteocajas/conteocajas.component';
 import { Bandas } from 'src/app/interfaces/interfaces';
 import { EyeColor } from 'src/app/models/color.model';
 import { EyeEtiqueta } from 'src/app/models/etiqueta.model';
@@ -28,7 +29,7 @@ export class PaletvirtualPage implements OnInit {
   @ViewChild('inputcajas', { static: false }) inputcajas!: IonInput;
 
   b_nuevo_pal: boolean = true;
-  b_conteocajas: boolean = false;
+  b_conteocajas: boolean = true;
   banda: Bandas;
   c_codigo_pal: string = '';
   c_codigo_pro: string = '';
@@ -61,6 +62,25 @@ export class PaletvirtualPage implements OnInit {
     this.route.queryParams.subscribe((Params: Bandas) => {
       this.banda = Params;
     });
+  }
+
+  async ConteoCajas() {
+    const modal = await this.modalController.create({
+      component: ConteocajasComponent,
+      componentProps: {
+        c_codigo_pro: this.c_codigo_pro,
+        c_codigo_eti: this.c_codigo_eti,
+        c_codigo_col: this.c_codigo_pro,
+      },
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data) {
+        console.log(dataReturned.data);
+        //this.etiqueta = dataReturned.data;
+        this.inputcolor.setFocus();
+      }
+    });
+    return await modal.present();
   }
 
   async buscarPalletVirtualCodigo(codigo) {
@@ -677,6 +697,4 @@ export class PaletvirtualPage implements OnInit {
     this.n_bulxpa_pal = 0;
     this.inputpallet.setFocus();
   }
-
-  ConteoCajas() {}
 }

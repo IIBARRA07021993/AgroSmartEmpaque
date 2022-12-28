@@ -63,7 +63,7 @@ export class ArmadoPalPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger'  , 'error' , true
             );
             resolve(false);
           }
@@ -122,7 +122,7 @@ export class ArmadoPalPage implements OnInit {
                   arrayresp[1],
                   1500,
                   'warning-outline',
-                  'warning'
+                  'warning' , 'alerta' , true
                 );
                 resolve(false);
               }
@@ -132,7 +132,7 @@ export class ArmadoPalPage implements OnInit {
                 'Ocurrio un error Interno.',
                 1000,
                 'warning-outline',
-                'danger'
+                'danger', 'error' , true
               );
               resolve(false);
             }
@@ -144,7 +144,7 @@ export class ArmadoPalPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger', 'error' , true
             );
             resolve(false);
           }
@@ -182,7 +182,7 @@ export class ArmadoPalPage implements OnInit {
                   arrayresp[1],
                   5000,
                   'checkmark-done-outline',
-                  'success'
+                  'success', 'bien' , true
                 );
                 resolve(true);
               } else {
@@ -191,7 +191,7 @@ export class ArmadoPalPage implements OnInit {
                   arrayresp[1],
                   1500,
                   'warning-outline',
-                  'danger'
+                  'danger', 'alerta' , true
                 );
 
                 resolve(false);
@@ -202,7 +202,7 @@ export class ArmadoPalPage implements OnInit {
                 'Ocurrio un error Interno.',
                 1500,
                 'warning-outline',
-                'danger'
+                'danger', 'error' , true
               );
               resolve(false);
             }
@@ -214,7 +214,7 @@ export class ArmadoPalPage implements OnInit {
               'Ocurrio un error Interno.',
               1500,
               'warning-outline',
-              'danger'
+              'danger', 'error' , true
             );
             resolve(false);
           }

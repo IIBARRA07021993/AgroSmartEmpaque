@@ -22,7 +22,7 @@ export class ConfiguracionesPage implements OnInit {
     private sqliteServ: SqliteService,
     private configServ: ConfiguracionService,
     private device: Device,
-    public navCtrl: NavController
+    public navCtrl: NavController  
   ) {}
 
   async ngOnInit() {

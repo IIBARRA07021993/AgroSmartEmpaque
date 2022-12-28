@@ -79,7 +79,7 @@ export class PedidosPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger','error' , true
             );
             resolve(false);
           }
@@ -288,7 +288,7 @@ export class PedidosPage implements OnInit {
               arrayresp[1],
               2500,
               'checkmark-outline',
-              'success');
+              'success' ,'bien' , true);
             resolve(true);
           } else {
             this.ultilService.presentToastok(
@@ -296,7 +296,7 @@ export class PedidosPage implements OnInit {
               arrayresp[1],
               2500,
               'checkmark-outline',
-              'success');
+              'warning','alerta' , true);
             resolve(false);
           }
         } else {
@@ -306,7 +306,7 @@ export class PedidosPage implements OnInit {
             'No hay datos de respuesta del API',
             1500,
             'warning-outline',
-            'danger');
+            'danger','error' , true);
           resolve(false);
         }
       }, (error) => {
@@ -317,7 +317,7 @@ export class PedidosPage implements OnInit {
           'Ocurrio un error en la Peticion al API',
           1500,
           'warning-outline',
-          'danger');
+          'danger','error' , true);
 
         resolve(false)
 

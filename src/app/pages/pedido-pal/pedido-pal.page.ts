@@ -82,7 +82,7 @@ export class PedidoPalPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger', 'error' , true
             );
             resolve(false);
           }

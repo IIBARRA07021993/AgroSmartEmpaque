@@ -86,7 +86,9 @@ export class PaletTempPage implements OnInit {
             '] ingresada ya existe en el listado.',
           1000,
           'warning-outline',
-          'warning'
+          'warning',
+          'alerta',
+          true
         );
       }
     }
@@ -135,7 +137,9 @@ export class PaletTempPage implements OnInit {
         'Debe ingresar una recepción.',
         1000,
         'warning-outline',
-        'warning'
+        'warning',
+        'alerta',
+        true
       );
       return 0;
     } else if (this.tabla.n_cajas_pte == '') {
@@ -144,7 +148,9 @@ export class PaletTempPage implements OnInit {
         'Debe ingresar la cantidad de cajas.',
         1000,
         'warning-outline',
-        'warning'
+        'warning',
+        'alerta',
+        true
       );
       return 0;
     } else if (this.tabla.n_kilos_pte == '') {
@@ -153,7 +159,9 @@ export class PaletTempPage implements OnInit {
         'Debe ingresar los kilos.',
         1000,
         'warning-outline',
-        'warning'
+        'warning',
+        'alerta',
+        true
       );
       return 0;
     }else if (this.tabla.c_codigo_gdm == '') {
@@ -162,7 +170,9 @@ export class PaletTempPage implements OnInit {
         'Debe seleccionar el grado de maduracicón.',
         1000,
         'warning-outline',
-        'warning'
+        'warning',
+        'alerta',
+        true
       );
       return 0;
     }
@@ -198,7 +208,9 @@ export class PaletTempPage implements OnInit {
                     arrayresp[1],
                     1500,
                     'checkmark-done-outline',
-                    'success'
+                    'success',
+                    'bien',
+                    true
                   );
   
                   resolve(true);
@@ -209,7 +221,9 @@ export class PaletTempPage implements OnInit {
                     arrayresp[1],
                     1000,
                     'warning-outline',
-                    'danger'
+                    'danger',
+                    'error',
+                    true
                   );
                   resolve(false);
                   break;
@@ -219,7 +233,9 @@ export class PaletTempPage implements OnInit {
                     arrayresp[1],
                     1000,
                     'warning-outline',
-                    'danger'
+                    'danger',
+                    'error',
+                    true
                   );
                   resolve(false);
                   break;
@@ -230,7 +246,9 @@ export class PaletTempPage implements OnInit {
                 'Ocurrio un error Interno.',
                 1000,
                 'warning-outline',
-                'danger'
+                'danger',
+                'error',
+                true
               );
               resolve(false);
             }
@@ -242,7 +260,9 @@ export class PaletTempPage implements OnInit {
               'Ocurrio un error Interno.',
               1000,
               'warning-outline',
-              'danger'
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }

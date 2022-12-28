@@ -116,7 +116,7 @@ export class UtilService {
             });
           break;
         case 'error':
-          this.nativeAudio.preloadSimple('uniqueId2', 'assets/audio/error.mp3');
+          this.nativeAudio.preloadSimple('uniqueId2', 'assets/audio/error.wav');
           this.nativeAudio
             .play('uniqueId2')
             .then(async () => {})
@@ -127,7 +127,7 @@ export class UtilService {
         case 'bien':
           this.nativeAudio.preloadSimple(
             'uniqueId3',
-            'assets/audio/succes.mp3'
+            'assets/audio/succes.wav'
           );
           this.nativeAudio
             .play('uniqueId3')

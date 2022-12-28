@@ -160,6 +160,8 @@
                 maxlength="2"
                 class="search-input"
                 placeholder="Teclee un código de Etiqueta"
+                required
+                pattern="^[0-9]+$"
               ></ion-input>
               <ion-icon
                 (click)="buscarEtiqueta()"
@@ -238,7 +240,7 @@
                 [disabled]="b_conteocajas"
                 placeholder="Teclee la cantidad"
                 required
-                pattern="^[0-9]+$"
+                pattern="^[0-9]+$"  
               ></ion-input>
               <ion-icon
                 *ngIf="b_conteocajas === true"
@@ -262,7 +264,7 @@
         (click)="newpPal()"
         [disabled]="!formulario.valid"
       >
-        {{formulario.valid}} Guardar
+        Guardar
         <ion-icon slot="end" name="add-circle-outline" size="large"></ion-icon>
       </ion-button>
     </ion-row>

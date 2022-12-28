@@ -9,6 +9,7 @@ import { BuscaretiquetaComponent } from './buscaretiqueta/buscaretiqueta.compone
 import { BuscarcolorComponent } from './buscarcolor/buscarcolor.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { BuscarpalletComponent } from './buscarpallet/buscarpallet.component';
+import { ConteocajasComponent } from './conteocajas/conteocajas.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { BuscarpalletComponent } from './buscarpallet/buscarpallet.component';
     BuscarproductosComponent,
     BuscaretiquetaComponent,
     BuscarcolorComponent,
-    BuscarpalletComponent
+    BuscarpalletComponent,
+    ConteocajasComponent
   ],
   exports: [
     HeaderComponent,
@@ -25,7 +27,8 @@ import { BuscarpalletComponent } from './buscarpallet/buscarpallet.component';
     BuscarproductosComponent,
     BuscaretiquetaComponent,
     BuscarcolorComponent,
-    BuscarpalletComponent
+    BuscarpalletComponent,
+    ConteocajasComponent
 
   ],
   imports: [CommonModule, IonicModule, RouterModule,PipesModule],

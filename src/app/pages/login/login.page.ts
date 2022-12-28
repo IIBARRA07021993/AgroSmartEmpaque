@@ -39,7 +39,9 @@ export class LoginPage implements OnInit {
         'No se ha configurado servidor host.',
         500,
         'warning-outline',
-        'warning'
+        'warning',
+        'alerta',
+        true
       );
     } else {
       if (environment.codempresa == '') {
@@ -48,7 +50,9 @@ export class LoginPage implements OnInit {
           'Favor de seleccionar una empresa.',
           500,
           'warning-outline',
-          'warning'
+          'warning',
+          'alerta',
+          true
         );
       } else {
         await this.ultilService.showLoading('Validando Usuario...');
@@ -95,7 +99,9 @@ export class LoginPage implements OnInit {
                     arrayresp[1],
                     1000,
                     'checkmark-done-outline',
-                    'success'
+                    'success',
+                    'bien',
+                    true
                   );
                   environment.usuario_login = this.usuario.c_codigo_usu;
                   resolve(true);
@@ -106,7 +112,9 @@ export class LoginPage implements OnInit {
                     arrayresp[1],
                     500,
                     'warning-outline',
-                    'danger'
+                    'danger',
+                    'error',
+                    true
                   );
                   resolve(false);
                   break;
@@ -116,7 +124,9 @@ export class LoginPage implements OnInit {
                     arrayresp[1],
                     500,
                     'warning-outline',
-                    'danger'
+                    'danger',
+                    'error',
+                    true
                   );
                   resolve(false);
                   break;
@@ -127,7 +137,9 @@ export class LoginPage implements OnInit {
                 'Ocurrio un error Interno.',
                 500,
                 'warning-outline',
-                'danger'
+                'danger',
+                'error',
+                true
               );
               resolve(false);
             }
@@ -139,7 +151,9 @@ export class LoginPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }
@@ -167,7 +181,9 @@ export class LoginPage implements OnInit {
           'No se ha configurado servidor host.',
           1000,
           'warning-outline',
-          'warning'
+          'warning',
+          'alerta',
+          true
         );
         resolve(false);
 
@@ -185,7 +201,9 @@ export class LoginPage implements OnInit {
                 'No se cargaron empresas.',
                 500,
                 'warning-outline',
-                'warning'
+                'warning',
+                'alerta',
+                true
               );
               resolve(false);
             }
@@ -198,7 +216,9 @@ export class LoginPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger'
+              'danger',
+              'error',
+              true
             );
            
             resolve(false);

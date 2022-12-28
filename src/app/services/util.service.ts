@@ -4,6 +4,7 @@ import {
   LoadingController,
   ToastController,
 } from '@ionic/angular';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class UtilService {
   constructor(
     public toastController: ToastController,
     public alertController: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private nativeAudio: NativeAudio
   ) {}
 
   async presentToast(
@@ -22,7 +24,9 @@ export class UtilService {
     mensaje: string,
     timpo: number,
     icon: string,
-    color: string
+    color: string,
+    sonido: string,
+    sonar: boolean
   ) {
     const toast = await this.toastController.create({
       mode: 'ios',
@@ -33,6 +37,7 @@ export class UtilService {
       position: 'bottom',
       color: color,
     });
+    this.playSingle(sonido,sonar);
     toast.present();
   }
 
@@ -41,7 +46,9 @@ export class UtilService {
     mensaje: string,
     timpo: number,
     icon: string,
-    color: string
+    color: string,
+    sonido: string,
+    sonar: boolean
   ) {
     const toast = await this.toastController.create({
       header: header,
@@ -57,6 +64,7 @@ export class UtilService {
         },
       ],
     });
+    this.playSingle(sonido,sonar);
     toast.present();
   }
 
@@ -74,7 +82,9 @@ export class UtilService {
     header: string,
     subHeader: string,
     mensaje: string,
-    buttons: string
+    buttons: string,
+    sonido: string,
+    sonar: boolean
   ) {
     const alert = await this.alertController.create({
       mode: 'ios',
@@ -85,12 +95,50 @@ export class UtilService {
       backdropDismiss: false,
       buttons: [buttons],
     });
-
+    this.playSingle(sonido,sonar);
     await alert.present();
   }
 
-
-
-
-
+  playSingle(opcion: string, sonar: boolean) {
+    /*reproduce el sonido 1 vez */
+    if (sonar) {
+      switch (opcion) {
+        case 'alerta':
+          this.nativeAudio.preloadSimple(
+            'uniqueId1',
+            'assets/audio/alerta.mp3'
+          );
+          this.nativeAudio
+            .play('uniqueId1')
+            .then(async () => {})
+            .catch((err) => {
+              console.log('error', err);
+            });
+          break;
+        case 'error':
+          this.nativeAudio.preloadSimple('uniqueId2', 'assets/audio/error.mp3');
+          this.nativeAudio
+            .play('uniqueId2')
+            .then(async () => {})
+            .catch((err) => {
+              console.log('error', err);
+            });
+          break;
+        case 'bien':
+          this.nativeAudio.preloadSimple(
+            'uniqueId3',
+            'assets/audio/succes.mp3'
+          );
+          this.nativeAudio
+            .play('uniqueId3')
+            .then(async () => {})
+            .catch((err) => {
+              console.log('error', err);
+            });
+          break;
+        default:
+          break; 
+      }
+    }   
+  }
 }

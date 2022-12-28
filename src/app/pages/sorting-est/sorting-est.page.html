@@ -34,6 +34,8 @@
           class="custom"
           [(ngModel)]="tabla.c_codigo"
           name="c_reccon"
+          type="number"
+          maxlength="10"
         ></ion-input>
       </ion-item>
 
@@ -52,6 +54,7 @@
           type="number"
           [(ngModel)]="tabla.n_cajas_dso"
           name="n_cajas"
+          (keydown.enter)="fn_guardarsorteo()"
         ></ion-input>
       </ion-item>
 

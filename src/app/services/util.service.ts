@@ -138,7 +138,7 @@ export class UtilService {
           break;
         default:
           break; 
-      }  
+      }
     }   
   }
 }

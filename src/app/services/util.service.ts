@@ -99,8 +99,8 @@ export class UtilService {
     await alert.present();
   }
 
-  playSingle(opcion: string, sonar: boolean) {
-    /*reproduce el sonido 1 vez */
+  playSingle(opcion: string, sonar: boolean) { 
+    /*reproduce el sonido 1 vez*/
     if (sonar) {
       switch (opcion) {
         case 'alerta':

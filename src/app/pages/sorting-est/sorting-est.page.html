@@ -31,11 +31,11 @@
           (click)="scanBarcode()"
         ></ion-icon>
         <ion-input
+          #codigo
           class="custom"
           [(ngModel)]="tabla.c_codigo"
           name="c_reccon"
-          type="number"
-          maxlength="10"
+          (keydown.enter)="enterkeydown()"
         ></ion-input>
       </ion-item>
 

@@ -20,6 +20,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 export class SortingEstPage implements OnInit {
   titulo = 'Sorting Maduración(Estiba)';
   @ViewChild('kilogramos', { static: false }) kilogramos!: IonInput;
+  @ViewChild('codigo', { static: false }) codigo!: IonInput;
   public alertMode: any;
   public loopMode: any;
   constructor(
@@ -145,6 +146,7 @@ export class SortingEstPage implements OnInit {
             this.tabla.c_codigo = '';
             this.tabla.n_cajas_dso = '';
             this.tabla.n_kilos_dso = '';
+            this.codigo.setFocus();
           }
         });
       }
@@ -720,5 +722,8 @@ export class SortingEstPage implements OnInit {
       });
     }
     return await this.ultilService.loading.dismiss();
+  }
+  enterkeydown(){
+    this.kilogramos.setFocus();
   }
 }

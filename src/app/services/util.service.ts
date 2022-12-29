@@ -127,7 +127,7 @@ export class UtilService {
         case 'bien':
           this.nativeAudio.preloadSimple(
             'uniqueId3',
-            'assets/audio/succes.wav'
+            'assets/audio/succes.mp3'
           );
           this.nativeAudio
             .play('uniqueId3')

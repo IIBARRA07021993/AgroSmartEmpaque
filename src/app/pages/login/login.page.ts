@@ -61,7 +61,7 @@ export class LoginPage implements OnInit {
         console.log('getappconfig');
         await this.fn_login().then((resolve) => {
           if (resolve) {
-            
+          
             this.router.navigateByUrl('inicio');
           }
         });
@@ -101,7 +101,7 @@ export class LoginPage implements OnInit {
                     'checkmark-done-outline',
                     'success',
                     'bien',
-                    true
+                    true  
                   );
                   environment.usuario_login = this.usuario.c_codigo_usu;
                   resolve(true);

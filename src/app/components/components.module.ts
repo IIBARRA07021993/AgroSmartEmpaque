@@ -31,6 +31,6 @@ import { ConteocajasComponent } from './conteocajas/conteocajas.component';
     ConteocajasComponent
 
   ],
-  imports: [CommonModule, IonicModule, RouterModule,PipesModule],
+  imports: [CommonModule, IonicModule, RouterModule,PipesModule ],
 })
 export class ComponentsModule {}

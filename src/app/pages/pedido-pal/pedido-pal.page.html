@@ -13,6 +13,8 @@
         <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
             <ion-refresher-content> </ion-refresher-content>
         </ion-refresher>
+
+        
         <ion-list>
             <ion-grid class="ion-text-sm" fixed="true">
                 <ion-row>
@@ -25,7 +27,7 @@
                     <ion-col id="col-cab" size="3" class="ion-text-center">
                         <ion-label>Kilos</ion-label>
                     </ion-col>
-                    <ion-col id="col-cab" vsize="2" class="ion-text-center" class="ion-text-left">
+                    <ion-col id="col-cab" size="2" class="ion-text-center" class="ion-text-left">
                     </ion-col>
                 </ion-row>
                 <ion-row *ngFor="let pal of palletpedido">
@@ -55,7 +57,7 @@
                     <ion-col id="col-cab" size="3" class="ion-text-center">
                         <ion-label>{{ palletpedido | total:'n_peso_pal' | number}}</ion-label>
                     </ion-col>
-                    <ion-col id="col-cab" vsize="2" class="ion-text-center">
+                    <ion-col id="col-cab" size="2" class="ion-text-center">
 
                     </ion-col>
                 </ion-row>

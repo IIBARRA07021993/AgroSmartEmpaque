@@ -131,3 +131,12 @@ export interface Temporadas {
   d_fin_tem: Date;
 }
 
+export interface CajaConteo {
+  c_terminal_ccp: string;
+  c_idcaja_ccp: string;
+  c_empleado_ccp: string;
+  d_fecha_ccp: Date;
+  c_hrconteo_ccp: string;
+  n_bulxpa_ccp: string;
+  c_codigo_usu: string;
+}

@@ -28,7 +28,6 @@ export class ConteocajasComponent implements OnInit {
     await this.ultilService.showLoading('Cargando Cajas...');
     await this.GetConteoCajasTemp();
     await this.ultilService.loading.dismiss();
-
     this.inputidcaja.setFocus();
   }
 
@@ -53,7 +52,7 @@ export class ConteocajasComponent implements OnInit {
   }
 
   cerrar() {
-    this.modalController.dismiss('ok');
+    this.modalController.dismiss( this.cajasconteo.length  );
   }
 
   trashClick() {}

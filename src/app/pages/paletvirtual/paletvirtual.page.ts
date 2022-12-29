@@ -76,8 +76,8 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         console.log(dataReturned.data);
-        //this.etiqueta = dataReturned.data;
-        this.inputcolor.setFocus();
+        this.n_bulxpa_pal = dataReturned.data;
+        this.inputproducto.setFocus();
       }
     });
     return await modal.present();

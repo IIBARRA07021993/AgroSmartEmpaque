@@ -8,7 +8,9 @@
     <ion-title class="ion-text-capitalize">Conteo de Cajas</ion-title>
 
     <ion-icon
+      class="ion-padding-horizontal"
       (click)="EliminarCajas('%%')"
+      size="large"
       class="ion-padding-horizontal"
       slot="end"
       name="trash-bin-outline"
@@ -18,7 +20,7 @@
 
 <ion-content [fullscreen]="true">
   <form #formulario="ngForm">
-    <ion-row class="ion-padding-top">
+    <ion-row class="ion-padding-top ion-padding-end">
       <ion-col size="10">
         <ion-label class="ion-label-h">Codigó</ion-label>
         <ion-item>
@@ -34,7 +36,11 @@
         </ion-item>
       </ion-col>
       <ion-col size="2">
-        <ion-button (click)="scanner()" color="success">
+        <ion-button
+         
+          (click)="scanner()"
+          color="success"
+        >
           <ion-icon
             slot="icon-only"
             name="scan-outline"

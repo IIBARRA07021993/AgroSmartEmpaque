@@ -94,7 +94,7 @@ export class LoginPage implements OnInit {
               console.log(arrayresp[0]);
               switch (arrayresp[0]) {
                 case '1':
-                  this.ultilService.presentToastok(
+                  this.ultilService.presentToast(
                     'Inicio!',
                     arrayresp[1],
                     1000,

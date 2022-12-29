@@ -10,6 +10,7 @@ import { BuscarcolorComponent } from './buscarcolor/buscarcolor.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { BuscarpalletComponent } from './buscarpallet/buscarpallet.component';
 import { ConteocajasComponent } from './conteocajas/conteocajas.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,6 @@ import { ConteocajasComponent } from './conteocajas/conteocajas.component';
     ConteocajasComponent
 
   ],
-  imports: [CommonModule, IonicModule, RouterModule,PipesModule ],
+  imports: [CommonModule, IonicModule, RouterModule,PipesModule ,FormsModule],
 })
 export class ComponentsModule {}

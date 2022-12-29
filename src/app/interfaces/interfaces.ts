@@ -133,6 +133,7 @@ export interface Temporadas {
 
 export interface CajaConteo {
   c_terminal_ccp: string;
+  c_codigo_emp: string;
   c_idcaja_ccp: string;
   c_empleado_ccp: string;
   d_fecha_ccp: Date;

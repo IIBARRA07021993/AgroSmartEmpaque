@@ -34,7 +34,7 @@ export class UtilService {
       message: mensaje,
       duration: timpo,
       icon: icon,
-      position: 'bottom',
+      position:"middle",
       color: color,
     });
     this.playSingle(sonido,sonar);

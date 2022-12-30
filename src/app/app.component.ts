@@ -27,11 +27,10 @@ export class AppComponent {
   async ngOnInit() {
     if ( await this.platform.ready()){
         console.log('App OK');
+        await this.ultilService.cargarsonidos();
         await this.sqliteServices.fn_crear_db();
         await this.configServ.fn_crear_appconfig();
-        await this.ultilService.cargarsonidos();
         await this.usuloginService.fn_crear_appusulogin();
-        //await this.usuloginService.getappusulogin();
     } ;
 
 

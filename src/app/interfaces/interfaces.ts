@@ -141,3 +141,9 @@ export interface CajaConteo {
   n_bulxpa_ccp: string;
   c_codigo_usu: string;
 }
+
+export interface PuntoEmpaque {
+  c_codigo_pem: string;
+  v_nombre_pem: string;
+  v_codigoaux_pem: String;
+}

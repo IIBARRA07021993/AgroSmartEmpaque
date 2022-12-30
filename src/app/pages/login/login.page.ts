@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Empresas } from 'src/app/interfaces/interfaces';
 
@@ -19,7 +19,11 @@ export class LoginPage implements OnInit {
   };
   empresas: Empresas[] = [];
   versionapp: string = '';
-
+  @ViewChild('passwordEyeRegister', { read: ElementRef }) passwordEye: ElementRef;
+  // Seleccionamos el elemento con el nombre que le pusimos con el #
+  passwordTypeInput  =  'password';
+  // Variable para cambiar dinamicamente el tipo de Input que por defecto sera 'password'
+  
   constructor(
     private router: Router,
     private loginservi: LoginService,
@@ -29,7 +33,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.versionapp = environment.version;
- 
+    this.Getempresas()
   }
 
   async login() {
@@ -231,5 +235,14 @@ export class LoginPage implements OnInit {
   handleChange(evento) {
     environment.codempresa = evento.detail.value;
     console.log(environment.codempresa);
+  }
+  // Esta función verifica si el tipo de campo es texto lo cambia a password y viceversa, además verificara el icono si es 'eye-off' lo cambiara a 'eye' y viceversa
+  togglePasswordMode() {
+    //cambiar tipo input
+    this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'password' : 'text';
+  }
+
+  enterkeydown(){
+    this.login()
   }
 }

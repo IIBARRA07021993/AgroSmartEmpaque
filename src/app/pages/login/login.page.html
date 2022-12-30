@@ -65,16 +65,23 @@
         </ion-input>
       </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Contraseña</ion-label>
+      <ion-item lines="none">
+        <ion-label position="stacked">Contraseña</ion-label>
         <ion-input
-          type="password"
-          name="password"
-          [(ngModel)]="usuario.v_passwo_usu"
+          #passwordEyeRegister
+          [type]="passwordTypeInput"
+          Name="password"
+          clearOnEdit="false"
           placeholder="Contraseña"
-          required
+          [value]="usuario.v_passwo_usu"
+          (keydown.enter)="togglePasswordMode()"
         >
         </ion-input>
+        <button item-end class="btn_eye_icon" (click)="togglePasswordMode()">
+          <ion-icon
+            [name]="(passwordTypeInput === 'text')?'eye-off':'eye'"
+          ></ion-icon>
+        </button>
       </ion-item>
 
       <ion-item class="ion-padding-top">
@@ -86,12 +93,10 @@
           class="ion-text-center"
           placeholder="Seleccionar Empresa"
           (ionChange)="handleChange($event)"
-          
         >
           <ion-select-option
             *ngFor="let emp of empresas"
             value="{{emp.C_codigo_emp}}"
-          
             >{{emp.V_nombre_emp}}</ion-select-option
           >
         </ion-select>

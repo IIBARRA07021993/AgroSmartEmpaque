@@ -10,7 +10,6 @@ import {
   BarcodeScannerOptions,
 } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
-import { NativeAudio } from '@ionic-native/native-audio/ngx';
 
 @Component({
   selector: 'app-sorting-est',
@@ -30,7 +29,6 @@ export class SortingEstPage implements OnInit {
     private alertController: AlertController,
     private barcodeScanner: BarcodeScanner,
     private Vibration: Vibration,
-    private nativeAudio: NativeAudio
   ) {}
   estibas: any[];
   totalkgs: any;
@@ -270,7 +268,7 @@ export class SortingEstPage implements OnInit {
 
   fn_validarcampos(json) {
     if (json.c_codigo_are == '') {
-      this.Vibration.vibrate(500);
+      
       this.ultilService.AlertaOK(
         'Atención ',
         'Área de Sorting! ',
@@ -281,7 +279,7 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.c_codigo_rec == '') {
-      this.Vibration.vibrate(500);
+      
       this.ultilService.AlertaOK(
         'Atención ',
         'Palet o recepción! ',
@@ -292,7 +290,7 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.n_kilos_dso == '' || json.n_kilos_dso == '0') {
-      this.Vibration.vibrate(500);
+      
       this.ultilService.AlertaOK(
         'Atención ',
         'Kilos! ',
@@ -303,7 +301,7 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.n_cajas_dso == '' || json.n_cajas_dso == '0') {
-      this.Vibration.vibrate(500);
+      
       this.ultilService.AlertaOK(
         'Atención ',
         'Cajas! ',
@@ -314,7 +312,7 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.c_codigocaja_tcj == '') {
-      this.Vibration.vibrate(500);
+      
       this.ultilService.AlertaOK(
         'Atención ',
         'Tipo de cajas! ',
@@ -325,7 +323,7 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.c_codigotarima_tcj == '') {
-      this.Vibration.vibrate(500);
+      
       this.ultilService.AlertaOK(
         'Atención ',
         'Tipo de tarimas! ',
@@ -350,7 +348,7 @@ export class SortingEstPage implements OnInit {
     await new Promise((f) => setTimeout(f, 1000));
 
     if (this.lotes.length <= 0) {
-      this.Vibration.vibrate(500);
+      
 
       return this.ultilService.AlertaOK(
         'Atención ',
@@ -362,7 +360,7 @@ export class SortingEstPage implements OnInit {
       );
     }
 
-    this.Vibration.vibrate(500);
+    
 
     if (await this.alerta(1, '')) {
       return new Promise((resolve) => {
@@ -549,6 +547,7 @@ export class SortingEstPage implements OnInit {
   }
 
   async alerta(opcion, codigo) {
+    this.ultilService.vibracion(1)
     if (opcion == 1) {
       return new Promise(async (resolve) => {
         const confirm = await this.alertController.create({
@@ -635,7 +634,7 @@ export class SortingEstPage implements OnInit {
     } else if (this.tabla.tipo == 'P') {
       json.c_codigo = c_codigo_pal;
     }
-    this.Vibration.vibrate(500);
+    
 
     if (await this.alerta(2, json.c_codigo)) {
       await this.ultilService.showLoading('Eliminando...');

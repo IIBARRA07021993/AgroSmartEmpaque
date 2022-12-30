@@ -5,6 +5,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,8 @@ export class UtilService {
     public toastController: ToastController,
     public alertController: AlertController,
     private loadingCtrl: LoadingController,
-    private nativeAudio: NativeAudio
+    private nativeAudio: NativeAudio,
+    private Vibration: Vibration,
   ) {}
 
   async presentToast(
@@ -37,7 +39,10 @@ export class UtilService {
       position:"middle",
       color: color,
     });
-    this.playSingle(sonido,sonar);
+    if (color != 'success'){
+      this.vibracion(1)
+    }
+    this.playSingle(sonido, sonar);
     toast.present();
   }
 
@@ -64,7 +69,7 @@ export class UtilService {
         },
       ],
     });
-    this.playSingle(sonido,sonar);
+    this.playSingle(sonido, sonar);
     toast.present();
   }
 
@@ -95,20 +100,17 @@ export class UtilService {
       backdropDismiss: false,
       buttons: [buttons],
     });
-    this.playSingle(sonido,sonar);
+    this.playSingle(sonido, sonar);
+    this.vibracion(1)
     await alert.present();
   }
 
-  playSingle(opcion: string, sonar: boolean) { 
+  async playSingle(opcion: string, sonar: boolean) {
     /*reproduce el sonido 1 vez*/
     if (sonar) {
       switch (opcion) {
         case 'alerta':
-          this.nativeAudio.preloadSimple(
-            'uniqueId1',
-            'assets/audio/alerta.mp3'
-          );
-          this.nativeAudio
+            this.nativeAudio
             .play('uniqueId1')
             .then(async () => {})
             .catch((err) => {
@@ -116,8 +118,7 @@ export class UtilService {
             });
           break;
         case 'error':
-          this.nativeAudio.preloadSimple('uniqueId2', 'assets/audio/error.wav');
-          this.nativeAudio
+           this.nativeAudio
             .play('uniqueId2')
             .then(async () => {})
             .catch((err) => {
@@ -125,11 +126,7 @@ export class UtilService {
             });
           break;
         case 'bien':
-          this.nativeAudio.preloadSimple(
-            'uniqueId3',
-            'assets/audio/succes.mp3'
-          );
-          this.nativeAudio
+           this.nativeAudio
             .play('uniqueId3')
             .then(async () => {})
             .catch((err) => {
@@ -137,8 +134,28 @@ export class UtilService {
             });
           break;
         default:
-          break;   
+          break;
       }
-    }   
+    }
+  }
+
+  cargarsonidos(){
+    this.nativeAudio.preloadSimple(
+      'uniqueId1',
+      'assets/audio/alerta.mp3'
+    );
+    this.nativeAudio.preloadSimple(
+      'uniqueId2',
+      'assets/audio/error.wav'
+    );
+    this.nativeAudio.preloadSimple(
+      'uniqueId3',
+      'assets/audio/succes.mp3'
+    );
+  }
+  
+  vibracion(tiempo: number){
+    tiempo = tiempo * 1000 
+    this.Vibration.vibrate(tiempo);
   }
 }

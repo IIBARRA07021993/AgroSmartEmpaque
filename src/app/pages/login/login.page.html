@@ -75,6 +75,7 @@
           placeholder="Contraseña"
           [value]="usuario.v_passwo_usu"
           (keydown.enter)="togglePasswordMode()"
+          required
         >
         </ion-input>
         <button item-end class="btn_eye_icon" (click)="togglePasswordMode()">
@@ -87,12 +88,15 @@
       <ion-item class="ion-padding-top">
         <ion-label position="floating"> Empresa </ion-label>
         <ion-select
+          #empresadroprown
           style="width: 100%"
           mode="ios"
           interface="popover"
           class="ion-text-center"
           placeholder="Seleccionar Empresa"
           (ionChange)="handleChange($event)"
+          [value]="usuario.c_codigo_emp"
+          required
         >
           <ion-select-option
             *ngFor="let emp of empresas"

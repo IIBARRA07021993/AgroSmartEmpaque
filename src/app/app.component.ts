@@ -3,7 +3,7 @@ import { Platform } from '@ionic/angular';
 import { ConfiguracionService } from './services/configuracion.service';
 import { SqliteService } from './services/sqlite.service';
 import { UtilService } from 'src/app/services/util.service';
-
+import { UsuloginService } from './services/usulogin.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +17,7 @@ export class AppComponent {
               private sqliteServices:SqliteService,
               private configServ: ConfiguracionService,
               private ultilService: UtilService,
+              private usuloginService: UsuloginService
               ) {
 
 
@@ -29,6 +30,8 @@ export class AppComponent {
         await this.sqliteServices.fn_crear_db();
         await this.configServ.fn_crear_appconfig();
         await this.ultilService.cargarsonidos();
+        await this.usuloginService.fn_crear_appusulogin();
+        //await this.usuloginService.getappusulogin();
     } ;
 
 

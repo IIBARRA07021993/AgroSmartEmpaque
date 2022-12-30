@@ -4,6 +4,8 @@ import { Empresas } from 'src/app/interfaces/interfaces';
 
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { LoginService } from 'src/app/services/login.service';
+import { SqliteService } from 'src/app/services/sqlite.service';
+import { UsuloginService } from 'src/app/services/usulogin.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 
@@ -14,12 +16,14 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginPage implements OnInit {
   usuario = {
-    c_codigo_usu: 'ADMIN',
-    v_passwo_usu: 'ccons',
+    c_codigo_usu: '',
+    v_passwo_usu: '',
+    c_codigo_emp: '',
   };
   empresas: Empresas[] = [];
   versionapp: string = '';
   @ViewChild('passwordEyeRegister', { read: ElementRef }) passwordEye: ElementRef;
+  @ViewChild('empresadroprown', { read: ElementRef }) empresadd: ElementRef;
   // Seleccionamos el elemento con el nombre que le pusimos con el #
   passwordTypeInput  =  'password';
   // Variable para cambiar dinamicamente el tipo de Input que por defecto sera 'password'
@@ -28,12 +32,17 @@ export class LoginPage implements OnInit {
     private router: Router,
     private loginservi: LoginService,
     private ultilService: UtilService,
-    private configServ: ConfiguracionService
+    private configServ: ConfiguracionService,
+    private usuloginService: UsuloginService,
+    private sqliteServ: SqliteService,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.versionapp = environment.version;
-    this.Getempresas()
+    await this.Getempresas()
+    await this.Getusulogin()
+    this.empresadd.nativeElement.value = environment.codempresa
+    
   }
 
   async login() {
@@ -81,9 +90,8 @@ export class LoginPage implements OnInit {
       environment.usuario_login = '';
       var json = {
         c_codigo_usu: this.usuario.c_codigo_usu,
-        v_passwo_usu: this.usuario.v_passwo_usu,
+        v_passwo_usu: this.passwordEye.nativeElement.value,
       };
-
       this.loginservi
         .sp_AppLogin(
           '/login?as_empresa=' +
@@ -107,7 +115,7 @@ export class LoginPage implements OnInit {
                     'bien',
                     true  
                   );
-                  environment.usuario_login = this.usuario.c_codigo_usu;
+                  this.save_usuario();
                   resolve(true);
                   break;
                 case '0':
@@ -242,7 +250,19 @@ export class LoginPage implements OnInit {
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'password' : 'text';
   }
 
-  enterkeydown(){
-    this.login()
+  async Getusulogin(){
+    await this.usuloginService.getappusulogin()
+    console.log(environment.usuario_login);
+    console.log(environment.codempresa);
+    this.usuario.c_codigo_usu = environment.usuario_login
+    this.usuario.c_codigo_emp = environment.c_codigo_emp
+  }
+
+  async save_usuario(){
+    environment.usuario_login = this.usuario.c_codigo_usu;
+    this.empresadd.nativeElement.value = environment.codempresa;
+    this.usuario.c_codigo_emp = environment.codempresa;
+    await this.sqliteServ.fn_delete_table('appusulogin');
+    await this.usuloginService.fn_save_appusulogin(this.usuario)
   }
 }

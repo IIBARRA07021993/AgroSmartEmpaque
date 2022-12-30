@@ -12,15 +12,13 @@
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
-
-
-
   <ion-grid>
     <ion-row>
       <ion-col size="12">
         <ion-item id="buscar">
           <ion-label position="stacked">Solo Palet Activos</ion-label>
-          <ion-input  autofocus="true"
+          <ion-input
+            autofocus="true"
             (ionChange)="fn_filtro($event)"
             type="text"
             inputmode="text"
@@ -34,9 +32,11 @@
       <ion-col size="12">
         <ion-list>
           <ion-card
+           
             (click)="seleccionarPallet(pallet)"
-            *ngFor="let pallet of pallets | filtro : texto_filtro : 'c_codigo'"   >
-            <ion-item   >
+            *ngFor="let pallet of pallets | filtro : texto_filtro : 'c_codigo'"
+          >
+            <ion-item>
               <ion-grid fixed>
                 <ion-row>
                   <ion-col size="8">

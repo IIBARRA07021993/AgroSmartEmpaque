@@ -4,6 +4,7 @@ import { IonInput, ModalController } from '@ionic/angular';
 import { BuscarcolorComponent } from 'src/app/components/buscarcolor/buscarcolor.component';
 import { BuscaretiquetaComponent } from 'src/app/components/buscaretiqueta/buscaretiqueta.component';
 import { BuscarpalletComponent } from 'src/app/components/buscarpallet/buscarpallet.component';
+import { BuscarprecentacionComponent } from 'src/app/components/buscarprecentacion/buscarprecentacion.component';
 import { BuscarproductosComponent } from 'src/app/components/buscarproductos/buscarproductos.component';
 import { ConteocajasComponent } from 'src/app/components/conteocajas/conteocajas.component';
 import { Bandas, CajaConteo } from 'src/app/interfaces/interfaces';
@@ -491,6 +492,7 @@ export class PaletvirtualPage implements OnInit {
         n_bulxpa_pal: this.n_bulxpa_pal,
         c_codigo_usu: environment.usuario_login,
         c_codigo_pal: this.c_codigo_pal,
+        c_terminal_ccp:   environment.terminal_app
       };
       console.log(JSON.stringify(json));
 
@@ -523,6 +525,7 @@ export class PaletvirtualPage implements OnInit {
                 );*/
 
                 this.LimpiarCaptura();
+                this.removerCodigo()
 
                 resolve(true);
               } else {
@@ -794,6 +797,35 @@ export class PaletvirtualPage implements OnInit {
           }
         );
     });
+  }
+
+
+
+  async BuscarPresentacion(){
+
+    var argumentos = {
+      c_codigo_sel: this.banda.c_codigo_sel,
+      c_codigo_bnd: this.banda.c_codigo_bnd
+
+    };
+
+    const modal = await this.modalController.create({
+      component: BuscarprecentacionComponent,
+      componentProps: {
+        argumentos: argumentos,
+      },
+    });
+    modal.onDidDismiss().then((dataReturned) => {
+      if (dataReturned.data) {
+        console.log(dataReturned.data);
+        //this.n_bulxpa_pal = dataReturned.data;
+        //this.inputproducto.setFocus();
+      } else {
+        //this.n_bulxpa_pal = 0;
+       // this.inputproducto.setFocus();
+      }
+    });
+    return await modal.present();
   }
 
 }

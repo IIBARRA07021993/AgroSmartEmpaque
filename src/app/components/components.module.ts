@@ -11,6 +11,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { BuscarpalletComponent } from './buscarpallet/buscarpallet.component';
 import { ConteocajasComponent } from './conteocajas/conteocajas.component';
 import { FormsModule } from '@angular/forms';
+import { BuscarprecentacionComponent } from './buscarprecentacion/buscarprecentacion.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { FormsModule } from '@angular/forms';
     BuscaretiquetaComponent,
     BuscarcolorComponent,
     BuscarpalletComponent,
-    ConteocajasComponent
+    ConteocajasComponent,BuscarprecentacionComponent
   ],
   exports: [
     HeaderComponent,
@@ -29,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     BuscaretiquetaComponent,
     BuscarcolorComponent,
     BuscarpalletComponent,
-    ConteocajasComponent
+    ConteocajasComponent,
+    BuscarprecentacionComponent
 
   ],
   imports: [CommonModule, IonicModule, RouterModule,PipesModule ,FormsModule],

@@ -41,8 +41,12 @@ export class BuscarpalletComponent implements OnInit {
   seleccionarPallet(pallet: EyePalletVirtual) {
     console.log('Pallet Seleccionado');
     console.log(pallet);
-    this.pallet = pallet;
-    this.cerrar();
+    if (pallet.c_codigo_pal == '') {
+      this.pallet = pallet;
+      this.cerrar();
+    }else{
+      this.ultilService.AlertaOK('Pallet Confirmado','' ,'El Código de Pallet ['+this.pallet.c_codigo+'] ya fue confirmado como pallet final.','OK' ,'',false)
+    }
   }
 
   buscarPalletvirtual() {
@@ -76,7 +80,9 @@ export class BuscarpalletComponent implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger','error' , true
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }

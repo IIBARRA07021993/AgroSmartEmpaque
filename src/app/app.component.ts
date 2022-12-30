@@ -31,6 +31,7 @@ export class AppComponent {
         await this.sqliteServices.fn_crear_db();
         await this.configServ.fn_crear_appconfig();
         await this.usuloginService.fn_crear_appusulogin();
+        await this.configServ.getappconfig();
     } ;
 
 

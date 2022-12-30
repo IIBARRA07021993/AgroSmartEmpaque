@@ -5,11 +5,103 @@
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-capitalize">Buscar Palets</ion-title>
+    <ion-title class="ion-text-capitalize">Conteo de Cajas</ion-title>
+
+    <ion-icon
+      class="ion-padding-horizontal"
+      (click)="EliminarCajas('%%')"
+      size="large"
+      class="ion-padding-horizontal"
+      slot="end"
+      name="trash-bin-outline"
+    ></ion-icon>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true" >
-
-
+<ion-content [fullscreen]="true">
+  <form #formulario="ngForm">
+    <ion-row class="ion-padding-top ion-padding-end">
+      <ion-col size="10">
+        <ion-label class="ion-label-h">Codigó</ion-label>
+        <ion-item>
+          <ion-input
+            #inputidcaja
+            type="text"
+            (keyup.enter)="GuardarCajaTemp(inputidcaja.value)"
+            inputmode="numeric"
+            maxlength="10"
+            class="search-input"
+            placeholder="Teclee un código de Caja"
+          ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button
+         
+          (click)="scanner()"
+          color="success"
+        >
+          <ion-icon
+            slot="icon-only"
+            name="scan-outline"
+            class="search-button"
+          ></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+  <ion-row>
+    <ion-col id="col-tot" size="12" class="ion-text-center">
+      <h2>
+        Total Cajas =
+        {{ cajasconteo | total : "n_bulxpa_ccp" | number : "1.0-0" }}
+      </h2>
+    </ion-col>
+  </ion-row>
+  <ion-list>
+    <ion-grid class="ion-text-sm" fixed="true">
+      <ion-row>
+        <ion-col id="col-cab" size="4" class="ion-text-start">
+          <ion-label>ID Caja</ion-label>
+        </ion-col>
+        <ion-col id="col-cab" size="3" class="ion-text-center">
+          <ion-label>Empleado</ion-label>
+        </ion-col>
+        <ion-col id="col-cab" size="3" class="ion-text-center">
+          <ion-label>Cajas</ion-label>
+        </ion-col>
+        <ion-col
+          id="col-cab"
+          size="2"
+          class="ion-text-center"
+          class="ion-text-left"
+        >
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let caja of cajasconteo">
+        <ion-col id="col-det" size="4" class="ion-text-start">
+          <ion-label> {{ caja.c_idcaja_ccp }}</ion-label>
+        </ion-col>
+        <ion-col id="col-det" size="3" class="ion-text-center">
+          <ion-label> {{ caja.c_empleado_ccp }}</ion-label>
+        </ion-col>
+        <ion-col id="col-det" size="3" class="ion-text-center">
+          <ion-label> {{ caja.n_bulxpa_ccp }}</ion-label>
+        </ion-col>
+        <ion-col id="col-det" size="2" class="ion-text-center">
+          <ion-button
+            (click)="EliminarCajas(caja.c_idcaja_ccp)"
+            fill="clear"
+            size="small"
+          >
+            <ion-icon
+              id="icontrash"
+              name="trash-outline"
+              color="danger"
+            ></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>

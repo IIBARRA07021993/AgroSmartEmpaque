@@ -64,7 +64,7 @@
         </ion-row>
 
         <ion-row>
-          <ion-col  size="12">
+          <ion-col size="12">
             <ion-chip color="success" *ngIf="pallet.n_totalbulxpa_pme !== 0">
               <ion-label
                 >Total de Cajas/Bultos: {{pallet.n_totalbulxpa_pme | number :
@@ -240,16 +240,22 @@
                 [disabled]="b_conteocajas"
                 placeholder="Teclee la cantidad"
                 required
-                pattern="^[0-9]+$"  
+                pattern="^[0-9]+$"
               ></ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col size="4">
+            <ion-button
+              color="success"
+              *ngIf="b_conteocajas === true"
+              (click)="ConteoCajas()"
+            >
               <ion-icon
-                *ngIf="b_conteocajas === true"
-                (click)="ConteoCajas()"
-                slot="end"
+                slot="icon-only"
                 name="barcode-outline"
                 class="search-button"
               ></ion-icon>
-            </ion-item>
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

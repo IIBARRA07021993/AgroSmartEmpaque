@@ -76,8 +76,8 @@ export class PaletvirtualPage implements OnInit {
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         console.log(dataReturned.data);
-        //this.etiqueta = dataReturned.data;
-        this.inputcolor.setFocus();
+        this.n_bulxpa_pal = dataReturned.data;
+        this.inputproducto.setFocus();
       }
     });
     return await modal.present();
@@ -468,13 +468,13 @@ export class PaletvirtualPage implements OnInit {
       console.log(JSON.stringify(json));
 
       this.armadopal
-        .sp_AppControlEstiba(
+        .sp_AppControlEstiba_Put(
           '/ControlEstiba?as_empresa=' +
             environment.codempresa +
             '&as_operation=5&as_json=' +
             JSON.stringify(json)
         )
-        .subscribe(
+        .subscribe(  
           (resp: string) => {
             var arrayresp = resp.split('|');
             if (arrayresp.length > 0) {

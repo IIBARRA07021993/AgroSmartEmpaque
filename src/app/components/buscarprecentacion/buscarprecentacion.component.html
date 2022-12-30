@@ -1,11 +1,16 @@
 <ion-header mode="ios" translucent="true">
-  <ion-toolbar color="success">
+  <ion-toolbar style="height: 60px" color="success">
     <ion-buttons slot="start">
       <ion-button (click)="cerrar()">
         <ion-icon name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-capitalize">Buscar Presentación </ion-title>
+    <ion-title class="ion-text-capitalize">
+      <ion-label>
+        Buscar <br />
+        Presentación
+      </ion-label>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -20,15 +25,16 @@
             (click)="seleccionarPresentacion(presentacion)"
             *ngFor="let presentacion of presentacions"
           >
-            <ion-item>
-              <p>
-                <strong
-                  >{{ presentacion.c_codigo_pro }} -
-                  {{ presentacion.c_codigo_eti }}-
-                  {{ presentacion.c_codigo_col }}
-                </strong>
-              </p>
-            </ion-item>
+            <ion-card-header>
+              <ion-card-title
+                >{{ presentacion.c_codigo_pro }} -
+                {{ presentacion.c_codigo_eti }}-
+                {{ presentacion.c_codigo_col }}</ion-card-title
+              >
+            </ion-card-header>
+            <ion-card-content>
+              <ion-label>Tomate Rroma / Natural / Red</ion-label>
+            </ion-card-content>
           </ion-card>
         </ion-list>
       </ion-col>

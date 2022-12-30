@@ -28,7 +28,7 @@ export class BuscarprecentacionComponent implements OnInit {
   }
 
   async ionViewWillEnter() {
-    await this.ultilService.showLoading('Cargando Productos...');
+    await this.ultilService.showLoading('Cargando Presentaciónes...');
     await this.buscarPresentacion();
     await this.ultilService.loading.dismiss();
   }

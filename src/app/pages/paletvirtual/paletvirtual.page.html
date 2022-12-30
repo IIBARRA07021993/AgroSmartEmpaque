@@ -269,7 +269,7 @@
         style="height: 50px"
         color="success"
         (click)="newpPal()"
-        [disabled]="!formulario.valid &&  n_bulxpa_pal > 0"
+        [disabled]="!formulario.valid &&  n_bulxpa_pal == 0"
       >
         Guardar
         <ion-icon slot="end" name="add-circle-outline" size="large"></ion-icon>

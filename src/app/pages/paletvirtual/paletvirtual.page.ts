@@ -6,7 +6,7 @@ import { BuscaretiquetaComponent } from 'src/app/components/buscaretiqueta/busca
 import { BuscarpalletComponent } from 'src/app/components/buscarpallet/buscarpallet.component';
 import { BuscarproductosComponent } from 'src/app/components/buscarproductos/buscarproductos.component';
 import { ConteocajasComponent } from 'src/app/components/conteocajas/conteocajas.component';
-import { Bandas } from 'src/app/interfaces/interfaces';
+import { Bandas, CajaConteo } from 'src/app/interfaces/interfaces';
 import { EyeColor } from 'src/app/models/color.model';
 import { EyeEtiqueta } from 'src/app/models/etiqueta.model';
 import { EyePalletVirtual } from 'src/app/models/palletvir.model';
@@ -44,6 +44,7 @@ export class PaletvirtualPage implements OnInit {
   colores: EyeColor[] = [];
   pallet: EyePalletVirtual = new EyePalletVirtual();
   pallets: EyePalletVirtual[] = [];
+  cajasconteo: CajaConteo[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -52,10 +53,11 @@ export class PaletvirtualPage implements OnInit {
     private ultilService: UtilService,
     private armadopal: ArmadopaletService
   ) {}
- 
+
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
     await this.inputpallet.setFocus();
+    await this.GetConteoCajasTemp()
   }
 
   ngOnInit() {
@@ -65,18 +67,25 @@ export class PaletvirtualPage implements OnInit {
   }
 
   async ConteoCajas() {
+    var argumentos = {
+      c_codigo_pro: this.c_codigo_pro,
+      c_codigo_eti: this.c_codigo_eti,
+      c_codigo_col: this.c_codigo_pro,
+    };
+
     const modal = await this.modalController.create({
       component: ConteocajasComponent,
       componentProps: {
-        c_codigo_pro: this.c_codigo_pro,
-        c_codigo_eti: this.c_codigo_eti,
-        c_codigo_col: this.c_codigo_pro,
+        argumentos: argumentos,
       },
     });
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned.data) {
         console.log(dataReturned.data);
         this.n_bulxpa_pal = dataReturned.data;
+        this.inputproducto.setFocus();
+      } else {
+        this.n_bulxpa_pal = 0;
         this.inputproducto.setFocus();
       }
     });
@@ -124,7 +133,9 @@ export class PaletvirtualPage implements OnInit {
 
                   1500,
                   'warning-outline',
-                  'warning', 'alerta' , true 
+                  'warning',
+                  'alerta',
+                  true
                 );
                 this.removerCodigo();
                 resolve(false);
@@ -144,7 +155,9 @@ export class PaletvirtualPage implements OnInit {
 
                 1500,
                 'warning-outline',
-                'warning', 'alerta' , true 
+                'warning',
+                'alerta',
+                true
               );
               this.removerCodigo();
               resolve(false);
@@ -157,7 +170,9 @@ export class PaletvirtualPage implements OnInit {
               'Ocurrio un error Interno.',
               500,
               'warning-outline',
-              'danger','error' , true 
+              'danger',
+              'error',
+              true
             );
             this.removerCodigo();
             resolve(false);
@@ -202,7 +217,9 @@ export class PaletvirtualPage implements OnInit {
                   '] NO existe o esta Inactivo en el catálogo.',
                 1500,
                 'warning-outline',
-                'warning', 'alerta' , true 
+                'warning',
+                'alerta',
+                true
               );
               this.removerProducto();
               resolve(false);
@@ -215,7 +232,9 @@ export class PaletvirtualPage implements OnInit {
               'Ocurrio un error Interno.',
               1500,
               'warning-outline',
-              'danger', 'error' , true 
+              'danger',
+              'error',
+              true
             );
             this.removerProducto();
             resolve(false);
@@ -260,7 +279,9 @@ export class PaletvirtualPage implements OnInit {
                   '] NO existe o esta Inactivo en el catálogo.',
                 1500,
                 'warning-outline',
-                'warning', 'alerta' , true 
+                'warning',
+                'alerta',
+                true
               );
               this.removerEtiqueta();
               resolve(false);
@@ -273,7 +294,9 @@ export class PaletvirtualPage implements OnInit {
               'Ocurrio un error Interno.',
               1500,
               'warning-outline',
-              'danger', 'error' , true 
+              'danger',
+              'error',
+              true
             );
             this.removerEtiqueta();
             resolve(false);
@@ -320,7 +343,9 @@ export class PaletvirtualPage implements OnInit {
                   '] NO existe o esta Inactivo en el catálogo.',
                 1500,
                 'warning-outline',
-                'warning' , 'alerta' , true 
+                'warning',
+                'alerta',
+                true
               );
               this.removerColor();
               resolve(false);
@@ -333,7 +358,9 @@ export class PaletvirtualPage implements OnInit {
               'Ocurrio un error Interno.',
               1500,
               'warning-outline',
-              'danger', 'error' , true 
+              'danger',
+              'error',
+              true
             );
             this.removerColor();
             resolve(false);
@@ -474,7 +501,7 @@ export class PaletvirtualPage implements OnInit {
             '&as_operation=5&as_json=' +
             JSON.stringify(json)
         )
-        .subscribe(  
+        .subscribe(
           (resp: string) => {
             var arrayresp = resp.split('|');
             if (arrayresp.length > 0) {
@@ -483,7 +510,9 @@ export class PaletvirtualPage implements OnInit {
                   'Guardado',
                   'Guardado de Pallet',
                   arrayresp[1],
-                  'OK', 'bien' , true 
+                  'OK',
+                  'bien',
+                  true
                 );
                 /* this.ultilService.presentToastok(
                   'Atención!',
@@ -502,7 +531,9 @@ export class PaletvirtualPage implements OnInit {
                   arrayresp[1],
                   1500,
                   'warning-outline',
-                  'warning', 'alerta' , true 
+                  'warning',
+                  'alerta',
+                  true
                 );
                 resolve(false);
               }
@@ -512,7 +543,9 @@ export class PaletvirtualPage implements OnInit {
                 'Ocurrio un error Interno.',
                 1500,
                 'warning-outline',
-                'danger', 'error' , true 
+                'danger',
+                'error',
+                true
               );
               resolve(false);
             }
@@ -524,7 +557,9 @@ export class PaletvirtualPage implements OnInit {
               'Ocurrio un error Interno.',
               1500,
               'warning-outline',
-              'danger','error' , true 
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }
@@ -548,7 +583,9 @@ export class PaletvirtualPage implements OnInit {
           'Debe especificar el número de Cajas/Bultos a empacar.',
           1500,
           'warning-outline',
-          'warning','alerta' , true 
+          'warning',
+          'alerta',
+          true
         );
         resolve(false);
       } else if (this.producto.c_codigo_pro === '') {
@@ -557,7 +594,9 @@ export class PaletvirtualPage implements OnInit {
           'Debe especificar el codigó de Producto a empacar.',
           1500,
           'warning-outline',
-          'warning','alerta' , true 
+          'warning',
+          'alerta',
+          true
         );
         resolve(false);
       } else if (this.etiqueta.c_codigo_eti === '') {
@@ -566,7 +605,9 @@ export class PaletvirtualPage implements OnInit {
           'Debe especificar el codigó de Etiqueta a empacar.',
           1500,
           'warning-outline',
-          'warning','alerta' , true 
+          'warning',
+          'alerta',
+          true
         );
         resolve(false);
       } else if (this.color.c_codigo_col === '') {
@@ -575,7 +616,9 @@ export class PaletvirtualPage implements OnInit {
           'Debe especificar el codigó de Color a empacar.',
           1500,
           'warning-outline',
-          'warning','alerta' , true 
+          'warning',
+          'alerta',
+          true
         );
         resolve(false);
       } else {
@@ -599,7 +642,9 @@ export class PaletvirtualPage implements OnInit {
                     arrayresp[1],
                     1500,
                     'warning-outline',
-                    'warning','alerta' , true 
+                    'warning',
+                    'alerta',
+                    true
                   );
                   resolve(false);
                 }
@@ -609,7 +654,9 @@ export class PaletvirtualPage implements OnInit {
                   'Ocurrio un error Interno.',
                   1500,
                   'warning-outline',
-                  'danger','error' , true 
+                  'danger',
+                  'error',
+                  true
                 );
                 resolve(false);
               }
@@ -621,7 +668,9 @@ export class PaletvirtualPage implements OnInit {
                 'Ocurrio un error Interno.',
                 1500,
                 'warning-outline',
-                'danger','error' , true 
+                'danger',
+                'error',
+                true
               );
               resolve(false);
             }
@@ -658,7 +707,9 @@ export class PaletvirtualPage implements OnInit {
                   arrayresp[1],
                   1500,
                   'warning-outline',
-                  'warning','alerta' , true 
+                  'warning',
+                  'alerta',
+                  true
                 );
                 resolve(false);
               }
@@ -668,7 +719,9 @@ export class PaletvirtualPage implements OnInit {
                 'Ocurrio un error Interno.',
                 1500,
                 'warning-outline',
-                'danger','error' , true 
+                'danger',
+                'error',
+                true
               );
               resolve(false);
             }
@@ -680,7 +733,9 @@ export class PaletvirtualPage implements OnInit {
               'Ocurrio un error Interno.',
               1500,
               'warning-outline',
-              'danger','error' , true 
+              'danger',
+              'error',
+              true
             );
             resolve(false);
           }
@@ -697,4 +752,48 @@ export class PaletvirtualPage implements OnInit {
     this.n_bulxpa_pal = 0;
     this.inputpallet.setFocus();
   }
+
+
+
+  GetConteoCajasTemp() {
+    return new Promise((resolve) => {
+      var json = {
+        c_terminal_ccp: environment.terminal_app,
+        c_codigo_emp: environment.c_codigo_emp,
+      };
+
+      console.log(JSON.stringify(json));
+
+      this.getdatoserv
+        .sp_AppGetDatos(
+          '/GetDatos?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=18&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            console.log(resp);
+            this.cajasconteo = JSON.parse(resp);
+            console.log(this.cajasconteo);
+            this.n_bulxpa_pal = this.cajasconteo.length
+            resolve(true);
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              500,
+              'warning-outline',
+              'danger',
+              'error',
+              true
+            );
+            resolve(false);
+          }
+        );
+    });
+  }
+
 }

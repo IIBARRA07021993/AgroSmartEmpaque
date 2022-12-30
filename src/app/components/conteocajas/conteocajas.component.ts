@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
-import { IonInput, ModalController } from '@ionic/angular';
+import { AlertController, IonInput, ModalController } from '@ionic/angular';
 import { CajaConteo } from 'src/app/interfaces/interfaces';
 import { ArmadopaletService } from 'src/app/services/armadopalet.service';
 import { GetdatosService } from 'src/app/services/getdatos.service';
@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./conteocajas.component.scss'],
 })
 export class ConteocajasComponent implements OnInit {
+  @Input() argumentos: any;
   @ViewChild('inputidcaja', { static: false }) inputidcaja!: IonInput;
   cajasconteo: CajaConteo[] = [];
 
@@ -21,7 +22,8 @@ export class ConteocajasComponent implements OnInit {
     private getdatoserv: GetdatosService,
     private ultilService: UtilService,
     private armadopal: ArmadopaletService,
-    private barcodeScanner: BarcodeScanner
+    private barcodeScanner: BarcodeScanner,
+    public alertController: AlertController
   ) {}
 
   async ionViewWillEnter() {
@@ -31,7 +33,9 @@ export class ConteocajasComponent implements OnInit {
     this.inputidcaja.setFocus();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.argumentos);
+  }
 
   async scanner() {
     await this.barcodeScanner
@@ -52,15 +56,14 @@ export class ConteocajasComponent implements OnInit {
   }
 
   cerrar() {
-    this.modalController.dismiss( this.cajasconteo.length  );
+    console.log(this.cajasconteo.length);
+    this.modalController.dismiss(this.cajasconteo.length);
   }
-
-  trashClick() {}
 
   GuardarCajaTemp(idcaja: any) {
     console.log(idcaja);
 
-    return new Promise((resolve) => {
+    return new Promise(async (resolve) => {
       var json = {
         c_codigo_tem: environment.c_codigo_tem,
         c_codigo_emp: environment.c_codigo_emp,
@@ -107,6 +110,8 @@ export class ConteocajasComponent implements OnInit {
                   'alerta',
                   true
                 );
+                this.inputidcaja.value = '';
+                this.inputidcaja.setFocus();
                 resolve(false);
               }
             } else {
@@ -133,6 +138,8 @@ export class ConteocajasComponent implements OnInit {
               'error',
               true
             );
+            this.inputidcaja.value = '';
+            this.inputidcaja.setFocus();
             resolve(false);
           }
         );
@@ -142,80 +149,109 @@ export class ConteocajasComponent implements OnInit {
   EliminarCajas(idcaja: any) {
     console.log(idcaja);
 
-    return new Promise((resolve) => {
-      var json = {
-        c_codigo_tem: environment.c_codigo_tem,
-        c_codigo_emp: environment.c_codigo_emp,
-        c_terminal_ccp: environment.terminal_app,
-        c_idcaja_ccp: idcaja,
-      };
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        mode: 'ios',
+        cssClass: 'custom-alert',
+        header: '¿DESEA ELIMINAR CAJAS DEL CONTEO?',
+        subHeader: 'Eliminar cajas Conteo',
+        message:
+          'Se eliminarían las cajas según la opción de eliminación seleccionada del conteo que lleva la terminal.',
 
-      console.log(JSON.stringify(json));
-
-      this.armadopal
-        .sp_AppControlEstiba_Put(
-          '/ControlEstiba?as_empresa=' +
-            environment.codempresa +
-            '&as_operation=7&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            var arrayresp = resp.split('|');
-            if (arrayresp.length > 0) {
-              if (arrayresp[0] == '1') {
-                this.GetConteoCajasTemp();
-                this.ultilService.presentToast(
-                  'Eliminado',
-                  arrayresp[1],
-                  1500,
-                  'checkmark-done-outline',
-                  'danger',
-                  'bien',
-                  true
-                );
-                this.inputidcaja.value = '';
-                this.inputidcaja.setFocus();
-                resolve(true);
-              } else {
-                this.ultilService.presentToastok(
-                  'Atención!',
-                  arrayresp[1],
-                  1500,
-                  'warning-outline',
-                  'warning',
-                  'alerta',
-                  true
-                );
-                resolve(false);
-              }
-            } else {
-              this.ultilService.presentToast(
-                'Error!',
-                'Ocurrio un error Interno.',
-                1500,
-                'warning-outline',
-                'danger',
-                'error', 
-                true
-              );
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: async () => {
               resolve(false);
-            }
+            },
           },
-          (error) => {
-            console.error(JSON.stringify(error));
-            this.ultilService.presentToast(
-              'Error!',
-              'Ocurrio un error Interno.',
-              1500,
-              'warning-outline',
-              'danger',
-              'error',
-              true
-            );
-            resolve(false);
-          }
-        );
+          {
+            text: 'Si',
+            role: 'confirm',
+            handler: async () => {
+              var json = {
+                c_codigo_tem: environment.c_codigo_tem,
+                c_codigo_emp: environment.c_codigo_emp,
+                c_terminal_ccp: environment.terminal_app,
+                c_idcaja_ccp: idcaja,
+              };
+
+              console.log(JSON.stringify(json));
+
+              this.armadopal
+                .sp_AppControlEstiba_Put(
+                  '/ControlEstiba?as_empresa=' +
+                    environment.codempresa +
+                    '&as_operation=7&as_json=' +
+                    JSON.stringify(json)
+                )
+                .subscribe(
+                  (resp: string) => {
+                    var arrayresp = resp.split('|');
+                    if (arrayresp.length > 0) {
+                      if (arrayresp[0] == '1') {
+                        this.GetConteoCajasTemp();
+                        this.ultilService.presentToast(
+                          'Eliminado',
+                          arrayresp[1],
+                          1500,
+                          'checkmark-done-outline',
+                          'danger',
+                          'bien',
+                          true
+                        );
+                        this.inputidcaja.value = '';
+                        this.inputidcaja.setFocus();
+                        resolve(true);
+                      } else {
+                        this.ultilService.presentToastok(
+                          'Atención!',
+                          arrayresp[1],
+                          1500,
+                          'warning-outline',
+                          'warning',
+                          'alerta',
+                          true
+                        );
+                        resolve(false);
+                      }
+                    } else {
+                      this.ultilService.presentToast(
+                        'Error!',
+                        'Ocurrio un error Interno.',
+                        1500,
+                        'warning-outline',
+                        'danger',
+                        'error',
+                        true
+                      );
+                      resolve(false);
+                    }
+                  },
+                  (error) => {
+                    console.error(JSON.stringify(error));
+                    this.ultilService.presentToast(
+                      'Error!',
+                      'Ocurrio un error Interno.',
+                      1500,
+                      'warning-outline',
+                      'danger',
+                      'error',
+                      true
+                    );
+                    resolve(false);
+                  }
+                );
+            },
+          },
+        ],
+      });
+
+      await alert.present();
+
+      const { role } = await alert.onDidDismiss();
+      console.log(`Dismissed with role: ${role}`);
     });
   }
 

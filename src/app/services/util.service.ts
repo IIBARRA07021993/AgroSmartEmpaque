@@ -139,19 +139,28 @@ export class UtilService {
     }
   }
 
-  cargarsonidos(){
-    this.nativeAudio.preloadSimple(
+  async cargarsonidos(){    
+    await this.nativeAudio.preloadComplex(
       'uniqueId1',
-      'assets/audio/alerta.mp3'
-    );
-    this.nativeAudio.preloadSimple(
+      'assets/audio/alerta.mp3',
+      1,
+      1,
+      0
+      );
+    await this.nativeAudio.preloadComplex(
       'uniqueId2',
-      'assets/audio/error.wav'
-    );
-    this.nativeAudio.preloadSimple(
+      'assets/audio/error.wav',
+      1,
+      1,
+      0
+      );
+    await this.nativeAudio.preloadComplex(
       'uniqueId3',
-      'assets/audio/succes.mp3'
-    );
+      'assets/audio/succes.mp3',
+      1,
+      1,
+      0
+      );
   }
   
   vibracion(tiempo: number){

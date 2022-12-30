@@ -41,12 +41,15 @@ export class LoginPage implements OnInit {
     private getdatos: GetdatosService,
   ) {}
 
+  async ionViewWillEnter() {
+    this.empresadd.nativeElement.value = environment.codempresa
+    this.usuario.c_codigo_usu = environment.usuario_login
+    this.usuario.c_codigo_emp = environment.codempresa
+  }
+
   async ngOnInit() {
     this.versionapp = environment.version;
     await this.Getempresas()
-    await this.Getusulogin()
-    this.empresadd.nativeElement.value = environment.codempresa
-    
   }
 
   async login() {
@@ -255,14 +258,6 @@ export class LoginPage implements OnInit {
   togglePasswordMode() {
     //cambiar tipo input
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'password' : 'text';
-  }
-
-  async Getusulogin(){
-    await this.usuloginService.getappusulogin()
-    console.log(environment.usuario_login);
-    console.log(environment.codempresa);
-    this.usuario.c_codigo_usu = environment.usuario_login
-    this.usuario.c_codigo_emp = environment.c_codigo_emp
   }
 
   async save_usuario(){

@@ -4,7 +4,7 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx';
 import { AlertController, IonInput } from '@ionic/angular';
 import { Pedidosdet, Pellet } from 'src/app/interfaces/interfaces';
-import { ApiService } from 'src/app/services/api.service';
+import { ControlpedidoService } from 'src/app/services/controlpedido.service';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
@@ -30,34 +30,34 @@ export class PedidoEditPage implements OnInit {
   precentacion_add: string[] = [];
 
   constructor(
-    private apiserv: ApiService,
     private getdatoserv: GetdatosService,
     private ultilService: UtilService,
     private barcodeScanner: BarcodeScanner,
     public alertController: AlertController,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private keyboard: Keyboard
+    private keyboard: Keyboard,
+    private ControlpedidoService: ControlpedidoService
   ) {}
 
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
-    await this.fn_getPedidos_det();
+    await this.GetDetallePedido();
     await this.codpal.setFocus();
   }
 
   async ngOnInit() {
     console.log('ngOnInit');
-    await this.f_get_parametros();
+    await this.GetParametros();
     console.log('f_get_parametros');
     await this.ultilService.showLoading('Cargando detalle..');
-    await this.fn_getPedidos_det();
+    await this.GetDetallePedido();
     await this.ultilService.loading.dismiss();
     console.log('f_get_parametros');
     await this.codpal.setFocus();
   }
 
-  f_get_parametros() {
+  GetParametros() {  
     return new Promise(async (resolve) => {
       this.pedido.c_codigo_tem =
         this.activatedRoute.snapshot.paramMap.get('tem');
@@ -71,12 +71,13 @@ export class PedidoEditPage implements OnInit {
     });
   }
 
-  fn_get_pallet_pededito_det(det: Pedidosdet) {
+  GoPalletsPedidos(det: Pedidosdet) {
     let ls_precentacion =
       det.c_codigo_pro.trim() +
       det.c_codigo_eti.trim() +
       det.c_codigo_col.trim();
     console.log(ls_precentacion);
+
     if (det.n_pallets_emp > 0) {
       this.router.navigateByUrl(
         'pedido-pal/' +
@@ -117,14 +118,14 @@ export class PedidoEditPage implements OnInit {
       console.log('paso 1');
       await this.ultilService.showLoading('Valiando Pallet...');
       console.log('showLoading');
-      await this.fn_usp_control_pedidos_app('1');
+      await this.ProcesarPallet('1');
       console.log('paso 3');
       await this.ultilService.loading.dismiss();
       console.log('dismiss');
     }
   }
 
-  fn_usp_control_pedidos_app(Operacion: string) {
+  ProcesarPallet(Operacion: string) {
     return new Promise(async (resolve) => {
       var json = {
         c_codigo_tem: this.pedido.c_codigo_tem,
@@ -135,107 +136,90 @@ export class PedidoEditPage implements OnInit {
 
       console.log(json);
       console.log(JSON.stringify(json));
-      this.apiserv
-        .StoredProcedureput(
-          'usp_control_pedidos_app?as_operation=' +
-            Operacion +
-            '&as_json=' +
-            JSON.stringify(json)
-        )
-        .subscribe(
-          (resp: string) => {
-            console.log(resp);
-            var arrayresp = resp.split('|');
-            console.log(arrayresp);
+      this.ControlpedidoService.sp_Appcontrolpedido(
+        '/ControlPedidos?as_empresa=' +
+          environment.codempresa +
+          '&as_operation=' +
+          Operacion +
+          '&as_json=' +
+          JSON.stringify(json)
+      ).subscribe(
+        (resp: string) => {
+          console.log(resp);
+          var arrayresp = resp.split('|');
+          console.log(arrayresp);
 
-            if (arrayresp.length > 0) {
-              if (arrayresp[0] == '1') {
-                this.ultilService.presentToastok(
-                  'Pallet Agregado!',
-                  arrayresp[1],
-                  2500,
-                  'checkmark-outline',
-                  'success',
-                  'bien',
-                  true
-                );
-
-                this.fn_getPedidos_det();
-
-                this.codigo = '';
-                this.codpal.setFocus();
-                resolve(true);
-              } else {
-                switch (arrayresp[0]) {
-                  case '2':
-                    this.codigo = '';
-                    this.codpal.setFocus();
-                    this.ultilService.AlertaOK(
-                      'Atención ',
-                      'Pallet No Existe! ',
-                      arrayresp[1],
-                      'OK',
-                      'alerta',
-                      true
-                    );
-                    break;
-                  case '3':
-                    this.codigo = '';
-                    this.codpal.setFocus();
-                    this.ultilService.AlertaOK(
-                      'Atención ',
-                      'Pallet Con Pedido!',
-                      arrayresp[1],
-                      'OK',
-                      'alerta',
-                      true
-                    );
-                    break;
-                  case '4':
-                    this.Alerta_exedecajas();
-                    break;
-                  case '5':
-                    this.Alerta_Presentacion();
-                    break;
-                  default:
-                    this.codigo = '';
-                    this.codpal.setFocus();
-                    this.ultilService.AlertaOK(
-                      'Atención ',
-                      'Error!',
-                      arrayresp[1],
-                      'OK',
-                      'error',
-                      true
-                    );
-                    break;
-                }
-
-                resolve(true);
-              }
-            } else {
-              this.codigo = '';
-              this.codpal.setFocus();
-              this.ultilService.presentToast(
-                'Error!',
-                'No hay datos de respuesta del API',
-                1500,
-                'warning-outline',
-                'danger',
-                'error',
+          if (arrayresp.length > 0) {
+            if (arrayresp[0] == '1') {
+              this.ultilService.presentToastok(
+                'Pallet Agregado!',
+                arrayresp[1],
+                2500,  
+                'checkmark-outline',
+                'success',
+                'bien',
                 true
               );
 
-              resolve(false);
+              this.GetDetallePedido();
+
+              this.codigo = '';
+              this.codpal.setFocus();
+              resolve(true);
+            } else {
+              switch (arrayresp[0]) {
+                case '2':
+                  this.codigo = '';
+                  this.codpal.setFocus();
+                  this.ultilService.AlertaOK(
+                    'Atención ',
+                    'Pallet No Existe! ',
+                    arrayresp[1],
+                    'OK',
+                    'alerta',
+                    true
+                  );
+                  break;
+                case '3':
+                  this.codigo = '';
+                  this.codpal.setFocus();
+                  this.ultilService.AlertaOK(
+                    'Atención ',
+                    'Pallet Con Pedido!',
+                    arrayresp[1],
+                    'OK',
+                    'alerta',
+                    true
+                  );
+                  break;
+                case '4':
+                  this.Alerta_exedecajas();
+                  break;
+                case '5':
+                  this.Alerta_Presentacion();
+                  break;
+                default:
+                  this.codigo = '';
+                  this.codpal.setFocus();
+                  this.ultilService.AlertaOK(
+                    'Atención ',
+                    'Error!',
+                    arrayresp[1],
+                    'OK',
+                    'error',
+                    true
+                  );
+                  break;
+              }
+
+              resolve(true);
             }
-          },
-          (error) => {
-            console.error(JSON.stringify(error));
+          } else {
             this.codigo = '';
             this.codpal.setFocus();
             this.ultilService.presentToast(
               'Error!',
-              'Ocurrio un error en la Peticion al API',
+              'No hay datos de respuesta del API',
               1500,
               'warning-outline',
               'danger',
@@ -245,7 +229,24 @@ export class PedidoEditPage implements OnInit {
 
             resolve(false);
           }
-        );
+        },
+        (error) => {
+          console.error(JSON.stringify(error));
+          this.codigo = '';
+          this.codpal.setFocus();
+          this.ultilService.presentToast(
+            'Error!',
+            'Ocurrio un error en la Peticion al API',
+            1500,
+            'warning-outline',
+            'danger',
+            'error',
+            true
+          );
+
+          resolve(false);
+        }
+      );
     });
   }
 
@@ -253,9 +254,11 @@ export class PedidoEditPage implements OnInit {
     await this.barcodeScanner
       .scan()
       .then(async (barcodeData) => {
-        this.codigo = barcodeData.text;
-        console.log('Barcode data', barcodeData);
-        await this.enterkey();
+        if (barcodeData.text !== '') {
+          this.codigo = barcodeData.text;
+          console.log('Barcode data', barcodeData);
+          await this.enterkey();
+        }
       })
       .catch((err) => {
         console.log('Error', err);
@@ -263,7 +266,7 @@ export class PedidoEditPage implements OnInit {
       });
   }
 
-  fn_getPedidos_det() {
+  GetDetallePedido() {
     return new Promise((resolve) => {
       var json = {
         c_codigo_pdo: this.pedido.c_codigo_pdo,
@@ -327,7 +330,7 @@ export class PedidoEditPage implements OnInit {
             console.log('paso 1');
             await this.ultilService.showLoading('Valiando Pallet...');
             console.log('showLoading');
-            await this.fn_usp_control_pedidos_app('2');
+            await this.ProcesarPallet('2');
             console.log('paso 3');
             await this.ultilService.loading.dismiss();
             console.log('dismiss');
@@ -369,7 +372,7 @@ export class PedidoEditPage implements OnInit {
             console.log('paso 1');
             await this.ultilService.showLoading('Valiando Pallet...');
             console.log('showLoading');
-            await this.fn_usp_control_pedidos_app('3');
+            await this.ProcesarPallet('3');
             console.log('paso 3');
             await this.ultilService.loading.dismiss();
             console.log('dismiss');

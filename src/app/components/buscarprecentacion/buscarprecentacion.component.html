@@ -6,7 +6,7 @@
       </ion-button>
     </ion-buttons>
     <ion-title class="ion-text-capitalize">
-      <ion-label>
+      <ion-label class="ion-padding-top">
         Buscar <br />
         Presentación
       </ion-label>
@@ -33,7 +33,11 @@
               >
             </ion-card-header>
             <ion-card-content>
-              <ion-label>Tomate Rroma / Natural / Red</ion-label>
+              <ion-label
+                >{{ presentacion.v_nombre_pro }} /
+                {{ presentacion.v_nombre_eti }} /
+                {{ presentacion.v_nombre_col }}</ion-label
+              >
             </ion-card-content>
           </ion-card>
         </ion-list>

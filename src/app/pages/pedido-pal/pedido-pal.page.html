@@ -31,7 +31,7 @@
                     </ion-col>
                 </ion-row>
                 <ion-row *ngFor="let pal of palletpedido">
-                    <ion-col id="col-det" size="4" class="ion-text-start">
+                    <ion-col id="col-det" size="4" class="ion-text-start">  
                         <ion-label> {{pal.c_codigo_pal}}</ion-label>
                     </ion-col>
                     <ion-col id="col-det" size="3" class="ion-text-center">
@@ -41,7 +41,7 @@
                         <ion-label> {{pal.n_peso_pal}}</ion-label>
                     </ion-col>
                     <ion-col id="col-det" size="2" class="ion-text-center">
-                        <ion-button (click)="trashClick()" fill="clear" size="small">
+                        <ion-button (click)="LiberarPallet(pal.c_codigo_pal)" fill="clear" size="small">
                             <ion-icon name="trash-outline" color="danger"></ion-icon>
                         </ion-button>
 

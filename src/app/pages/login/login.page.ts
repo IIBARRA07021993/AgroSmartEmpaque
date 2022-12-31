@@ -41,14 +41,6 @@ export class LoginPage implements OnInit {
     private getdatos: GetdatosService,
   ) {}
 
- /* async ionViewWillEnter() {
-    await this.usuloginService.getappusulogin().then((resolve) => {
-      this.empresadd.nativeElement.value = environment.codempresa
-      this.usuario.c_codigo_usu = environment.usuario_login
-      this.usuario.c_codigo_emp = environment.codempresa
-    });
-  }*/
-
   async ngOnInit() {
     this.versionapp = environment.version;
     await this.Getempresas()

@@ -14,34 +14,41 @@
       </ion-title>
     </ion-toolbar>
     <form>
-      <ion-item class="ion-no-border">
-        <ion-row>
-          <ion-col size="3" class="ion-padding-top">
-            <ion-icon
-              (click)="fn_scanner()"
-              name="scan-outline"
-              size="large"
-            ></ion-icon>
-          </ion-col>
-          <ion-col size="6">
-            <ion-label position="floating">Código</ion-label>
+      <ion-row class="ion-padding-top">
+        <ion-col size="12">
+          <ion-label  class="ion-label-h">Codigó Pallet</ion-label>
+          <ion-item >
             <ion-input
               #codpal
               (keydown.enter)="enterkey()"
               name="codigopal"
               [(ngModel)]="codigo"
-              [autofocus]="true"
-              type="number"
+              type="text"
+              inputmode="text"
               placeholder="0000000001"
               maxlength="10"
             ></ion-input>
-          </ion-col>
-        </ion-row>
-      </ion-item>
+
+            <ion-icon class="ion-padding-start"
+              (click)="fn_scanner()"
+              name="scan-outline"
+              size="large"
+            ></ion-icon>
+          </ion-item>
+        </ion-col>
+      </ion-row>
     </form>
-    <ion-item color="primary" class="ion-margin-top">
-      Detalle del Pedido
-    </ion-item>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-item
+          style="border-radius: 15px; border: solid 2px green"
+          color="success"
+        >
+          <ion-label> Detalle del Pedido</ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
   </ion-header>
 
   <ion-content [fullscreen]="true">

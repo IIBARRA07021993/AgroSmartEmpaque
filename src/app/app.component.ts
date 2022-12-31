@@ -34,6 +34,7 @@ export class AppComponent {
         await this.configServ.getappconfig();
         await this.usuloginService.getappusulogin();
         await this.ultilService.cargarsonidos();
+        await new Promise((f) => setTimeout(f, 1000));
     } ;
 
 

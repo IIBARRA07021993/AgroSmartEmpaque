@@ -28,7 +28,6 @@ export class SortingEstPage implements OnInit {
     private SorteoService: SorteoService,
     private alertController: AlertController,
     private barcodeScanner: BarcodeScanner,
-    private Vibration: Vibration,
   ) {}
   estibas: any[];
   totalkgs: any;
@@ -268,7 +267,6 @@ export class SortingEstPage implements OnInit {
 
   fn_validarcampos(json) {
     if (json.c_codigo_are == '') {
-      
       this.ultilService.AlertaOK(
         'Atención ',
         'Área de Sorting! ',
@@ -279,7 +277,6 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.c_codigo_rec == '') {
-      
       this.ultilService.AlertaOK(
         'Atención ',
         'Palet o recepción! ',
@@ -290,7 +287,6 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.n_kilos_dso == '' || json.n_kilos_dso == '0') {
-      
       this.ultilService.AlertaOK(
         'Atención ',
         'Kilos! ',
@@ -301,7 +297,6 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.n_cajas_dso == '' || json.n_cajas_dso == '0') {
-      
       this.ultilService.AlertaOK(
         'Atención ',
         'Cajas! ',
@@ -312,7 +307,6 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.c_codigocaja_tcj == '') {
-      
       this.ultilService.AlertaOK(
         'Atención ',
         'Tipo de cajas! ',
@@ -323,7 +317,6 @@ export class SortingEstPage implements OnInit {
       );
       return 0;
     } else if (json.c_codigotarima_tcj == '') {
-      
       this.ultilService.AlertaOK(
         'Atención ',
         'Tipo de tarimas! ',
@@ -348,8 +341,6 @@ export class SortingEstPage implements OnInit {
     await new Promise((f) => setTimeout(f, 1000));
 
     if (this.lotes.length <= 0) {
-      
-
       return this.ultilService.AlertaOK(
         'Atención ',
         'Finalizar vaciado! ',
@@ -359,8 +350,6 @@ export class SortingEstPage implements OnInit {
         true
       );
     }
-
-    
 
     if (await this.alerta(1, '')) {
       return new Promise((resolve) => {
@@ -495,7 +484,7 @@ export class SortingEstPage implements OnInit {
               );
               this.ultilService.presentToast(
                 'Alerta!',
-                'El registro que quiere ingresar no es del mismo tipo que los del listado o esta no existe.',
+                'El registro que quiere ingresar no es del mismo tipo que los del listado o no existe.',
                 2000,
                 'warning-outline',
                 'warning',
@@ -547,7 +536,7 @@ export class SortingEstPage implements OnInit {
   }
 
   async alerta(opcion, codigo) {
-    this.ultilService.vibracion(1)
+    this.ultilService.vibracion(1);
     if (opcion == 1) {
       return new Promise(async (resolve) => {
         const confirm = await this.alertController.create({
@@ -607,7 +596,7 @@ export class SortingEstPage implements OnInit {
       torchOn: false,
       prompt: 'Pase el codigo de barras por el área',
       resultDisplayDuration: 500,
-      formats: 'EAN_13,EAN_8,QR_CODE,PDF_417 ',
+      //formats: 'EAN_13,EAN_8,QR_CODE,PDF_417 ',
       orientation: 'portrait',
     };
 
@@ -634,7 +623,6 @@ export class SortingEstPage implements OnInit {
     } else if (this.tabla.tipo == 'P') {
       json.c_codigo = c_codigo_pal;
     }
-    
 
     if (await this.alerta(2, json.c_codigo)) {
       await this.ultilService.showLoading('Eliminando...');
@@ -722,7 +710,7 @@ export class SortingEstPage implements OnInit {
     }
     return await this.ultilService.loading.dismiss();
   }
-  enterkeydown(){
+  enterkeydown() {
     this.kilogramos.setFocus();
   }
 }

@@ -1,0 +1,68 @@
+
+ion-card {
+    border-radius: 15px;
+    border: solid 2px green;
+}
+
+
+.ion-label-h
+{
+    position: absolute;    
+    top: 0px;
+    left: 2em;
+    background-color: white;
+    z-index: 3;
+    color: #47525E;
+    font-size: .9em;
+	padding: 0 8px;
+}
+
+
+.search-button
+{
+    right: 1em;
+    z-index: 9;
+    --background: transparent;
+}
+
+.search-input {
+
+
+   /* --padding-end: 3em !important;
+    position: absolute;*/
+    background-color: gray;
+}
+
+
+.item-input.sc-ion-label-md-h, .item-input .sc-ion-label-md-h {
+    -ms-flex: initial;
+    flex: initial;
+    max-width: 300px;
+    pointer-events: none;
+}
+
+.shadow{
+    box-shadow: 10px 10px 15px gainsboro;
+    border-radius: 2px;
+}
+
+.item-interactive, .item-has-focus, .item-label
+{
+    --border-style:none;
+    /*--highlight-background: transparent;*/
+    font-family: 'Lato';    
+}
+
+
+
+ion-input[type="text"], ion-input[type="password"], ion-input[type="number"]
+{
+    border: 1px solid #9e9e9e !important;
+    border-radius: 5px !important;    
+    --padding-start: .5em;
+    height: 3em;
+    font-size: 1em;
+    margin:0 !important;
+    background-color:white !important
+}
+

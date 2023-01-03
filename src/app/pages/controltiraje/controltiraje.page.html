@@ -1,0 +1,104 @@
+<ion-app>
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar style="height: 80px" class="ion-text-center" color="success">
+      <ion-buttons slot="start">
+        <ion-back-button mode="md" defaultHref="/"> </ion-back-button>
+      </ion-buttons>
+      <ion-title class="ion-text-center">
+        <h5>Control Tiraje <br>(Asignación a Empleado)</h5>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true"  >
+    <form #formulario="ngForm">
+      <ion-grid>
+        <ion-row class="ion-padding-top">
+          <ion-col size="12">
+            <ion-label class="ion-label-h">Codigó Empleado</ion-label>
+            <ion-item>
+              <ion-input
+                #inputempleado
+                [(ngModel)]="c_empleado_cte"
+                [value]="c_empleado_cte"
+                name="cempleadocte"
+                type="number"
+                inputmode="numeric"
+                maxlength="6"
+                class="search-input"
+                placeholder="Teclee un código de Empleado"
+                required
+              ></ion-input>
+              <ion-icon
+                slot="end"
+                name="search"
+                class="search-button"
+              ></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-padding-top">
+          <ion-col size="12">
+            <ion-label class="ion-label-h">Codigó Empleado</ion-label>
+            <ion-item>
+              <ion-input
+                #inputfolioini
+                [(ngModel)]="c_folioinicial_cte"
+                [value]="c_folioinicial_cte| fill:10 : '0'"
+                name="cfolioinicialcte"
+                type="number"
+                inputmode="numeric"
+                maxlength="10"
+                class="search-input"
+                placeholder="Teclee un Folio Inicial"
+                required
+              ></ion-input>
+              <ion-icon
+                slot="end"
+                name="close-circle-outline"
+                class="search-button"
+              ></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-padding-top">
+          <ion-col size="12">
+            <ion-label class="ion-label-h">Codigó Empleado</ion-label>
+            <ion-item>
+              <ion-input
+                #inputfoliofin
+                [(ngModel)]="c_foliofinal_cte"
+                [value]="c_foliofinal_cte| fill:10 : '0'"
+                name="cfoliofinalcte"
+                type="number"
+                inputmode="numeric"
+                maxlength="10"
+                class="search-input"
+                placeholder="Teclee un Folio Final"
+                required
+              ></ion-input>
+              <ion-icon
+                slot="end"
+                name="close-circle-outline"
+                class="search-button"
+              ></ion-icon>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+    <ion-row style="display: grid" class="ion-padding">
+      <ion-button
+      
+        expand="full"
+        shape="round"
+        style="height: 50px"
+        color="success"
+        [disabled]="!formulario.valid"
+      >
+        Guardar
+        <ion-icon slot="end" name="save-outline" size="large"></ion-icon>
+      </ion-button>
+    </ion-row> </ion-content
+></ion-app>

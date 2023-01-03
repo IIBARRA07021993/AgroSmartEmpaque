@@ -826,7 +826,8 @@ export class PaletvirtualPage implements OnInit {
     return await modal.present();
   }
 
-  async GetPermisos() {
+   GetPermisos() {
+    return new Promise(async (resolve) => {
     /*Consultamos si lleva conteo de cajas */
     await this.menuserv
       .GetPermisoEspeciales('70', '0199')
@@ -845,6 +846,9 @@ export class PaletvirtualPage implements OnInit {
           true
         );
         this.b_conteocajas = false;
+        resolve(false);
       });
+      resolve(true);
+    });
   }
 }

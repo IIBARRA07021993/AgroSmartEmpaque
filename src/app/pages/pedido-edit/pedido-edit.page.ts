@@ -53,7 +53,9 @@ export class PedidoEditPage implements OnInit {
     await this.codpal.setFocus();
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.GetPermisos();
+  }
 
   GetParametros() {
     return new Promise(async (resolve) => {
@@ -65,6 +67,52 @@ export class PedidoEditPage implements OnInit {
         this.activatedRoute.snapshot.paramMap.get('ped');
       this.pedido.v_nombre_dis =
         this.activatedRoute.snapshot.paramMap.get('dis');
+      resolve(true);
+    });
+  }
+ GetPermisos() {
+    return new Promise(async (resolve) => {
+      /*lb_exedercajas = false 
+      lb_agregarpresentacion  = false */
+      await this.menuserv
+        .GetPermisoEspeciales('70', '0198')
+        .then((resolve: boolean) => {
+          this.lb_exedercajas = resolve;
+        })
+        .catch((error) => {
+          console.error(JSON.stringify(error));
+          this.ultilService.presentToast(
+            'Error!',
+            'Ocurrio un error Interno.',
+            1500,
+            'warning-outline',
+            'danger',
+            'error',
+            true
+          );
+          this.lb_exedercajas = false;
+          resolve(false);
+        });
+
+      await this.menuserv
+        .GetPermisoEspeciales('70', '0197')
+        .then((resolve: boolean) => {
+          this.lb_agregarpresentacion = resolve;
+        })
+        .catch((error) => {
+          console.error(JSON.stringify(error));
+          this.ultilService.presentToast(
+            'Error!',
+            'Ocurrio un error Interno.',
+            1500,
+            'warning-outline',
+            'danger',
+            'error',
+            true
+          );
+          this.lb_agregarpresentacion = false;
+          resolve(false);
+        });
       resolve(true);
     });
   }
@@ -353,15 +401,9 @@ export class PedidoEditPage implements OnInit {
           text: 'Si',
           role: 'confirm',
           handler: async () => {
-            console.log('paso 1');
             await this.ultilService.showLoading('Valiando Pallet...');
-            console.log('showLoading');
             await this.ProcesarPallet('2');
-            console.log('paso 3');
             await this.ultilService.loading.dismiss();
-            console.log('dismiss');
-            console.log('Agregar Presentacion');
-            console.log('Agregar pallet');
           },
         },
       ],
@@ -395,14 +437,9 @@ export class PedidoEditPage implements OnInit {
           text: 'Si',
           role: 'confirm',
           handler: async () => {
-            console.log('paso 1');
             await this.ultilService.showLoading('Valiando Pallet...');
-            console.log('showLoading');
             await this.ProcesarPallet('3');
-            console.log('paso 3');
             await this.ultilService.loading.dismiss();
-            console.log('dismiss');
-            console.log('Agregar Presentacion');
           },
         },
       ],
@@ -412,47 +449,5 @@ export class PedidoEditPage implements OnInit {
 
     const { role } = await alert.onDidDismiss();
     console.log(`Dismissed with role: ${role}`);
-  }
-
-  async GetPermisos() {
-    /*lb_exedercajas = false 
-      lb_agregarpresentacion  = false */
-    await this.menuserv
-      .GetPermisoEspeciales('70', '0198')
-      .then((resolve: boolean) => {
-        this.lb_exedercajas = resolve;
-      })
-      .catch((error) => {
-        console.error(JSON.stringify(error));
-        this.ultilService.presentToast(
-          'Error!',
-          'Ocurrio un error Interno.',
-          1500,
-          'warning-outline',
-          'danger',
-          'error',
-          true
-        );
-        this.lb_exedercajas = false;
-      });
-
-    await this.menuserv
-      .GetPermisoEspeciales('70', '0197')
-      .then((resolve: boolean) => {
-        this.lb_agregarpresentacion = resolve;
-      })
-      .catch((error) => {
-        console.error(JSON.stringify(error));
-        this.ultilService.presentToast(
-          'Error!',
-          'Ocurrio un error Interno.',
-          1500,
-          'warning-outline',
-          'danger',
-          'error',
-          true
-        );
-        this.lb_agregarpresentacion = false;
-      });
   }
 }

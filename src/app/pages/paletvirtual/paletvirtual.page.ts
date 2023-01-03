@@ -68,25 +68,7 @@ export class PaletvirtualPage implements OnInit {
       this.banda = Params;
     });
 
-    /*Consultamos si lleva conteo de cajas */
-    await this.menuserv
-      .GetPermisoEspeciales('70', '0199')
-      .then((resolve: boolean) => {
-        this.b_conteocajas = resolve;
-      })
-      .catch((error) => {
-        console.error(JSON.stringify(error));
-        this.ultilService.presentToast(
-          'Error!',
-          'Ocurrio un error Interno.',
-          1500,
-          'warning-outline',
-          'danger',
-          'error',
-          true
-        );
-        this.b_conteocajas = false;
-      });
+    await this.GetPermisos();
   }
 
   async ConteoCajas() {
@@ -842,5 +824,27 @@ export class PaletvirtualPage implements OnInit {
       }
     });
     return await modal.present();
+  }
+
+  async GetPermisos() {
+    /*Consultamos si lleva conteo de cajas */
+    await this.menuserv
+      .GetPermisoEspeciales('70', '0199')
+      .then((resolve: boolean) => {
+        this.b_conteocajas = resolve;
+      })
+      .catch((error) => {
+        console.error(JSON.stringify(error));
+        this.ultilService.presentToast(
+          'Error!',
+          'Ocurrio un error Interno.',
+          1500,
+          'warning-outline',
+          'danger',
+          'error',
+          true
+        );
+        this.b_conteocajas = false;
+      });
   }
 }

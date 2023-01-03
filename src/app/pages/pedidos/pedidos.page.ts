@@ -96,9 +96,7 @@ export class PedidosPage implements OnInit {
   async doRefresh(event) {
     console.log(event);
     await this.getPedidos();
-    console.log('getPedidos');
     await event.target.complete();
-    console.log('event.target.complete');
   }
 
   setTitulo() {
@@ -229,7 +227,7 @@ export class PedidosPage implements OnInit {
       mode: 'ios',
       cssClass: 'custom-alert',
       header: 'Atención',
-      subHeader: 'Pedido',
+      subHeader: 'Estatus de Pedido',
       message: msj,
       buttons: [
         {
@@ -245,13 +243,9 @@ export class PedidosPage implements OnInit {
           handler: async () => {
             console.log('Si');
             await this.ultilService.showLoading('Actualizando estatus...');
-            console.log('showLoading');
             await this.fn_update_estatus_ped(pedido, estatus_new);
-            console.log('fn_update_estatus_ped');
             await this.ultilService.loading.dismiss();
-            console.log('dismiss');
             await this.getPedidos();
-            console.log('getPedidos');
           },
         },
       ],

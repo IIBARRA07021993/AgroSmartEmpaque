@@ -6,6 +6,7 @@ import { AlertController, IonInput } from '@ionic/angular';
 import { Pedidosdet, Pellet } from 'src/app/interfaces/interfaces';
 import { ControlpedidoService } from 'src/app/services/controlpedido.service';
 import { GetdatosService } from 'src/app/services/getdatos.service';
+import { MenuService } from 'src/app/services/menu.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 
@@ -29,6 +30,8 @@ export class PedidoEditPage implements OnInit {
   pallet: Pellet[] = [];
   precentacion_add: string[] = [];
 
+  lb_exedercajas = false;
+  lb_agregarpresentacion = false;
   constructor(
     private getdatoserv: GetdatosService,
     private ultilService: UtilService,
@@ -37,7 +40,8 @@ export class PedidoEditPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private keyboard: Keyboard,
-    private ControlpedidoService: ControlpedidoService
+    private ControlpedidoService: ControlpedidoService,
+    private menuserv: MenuService
   ) {}
 
   async ionViewWillEnter() {
@@ -49,11 +53,9 @@ export class PedidoEditPage implements OnInit {
     await this.codpal.setFocus();
   }
 
-   ngOnInit() {
+  ngOnInit() {}
 
-  }
-
-  GetParametros() {  
+  GetParametros() {
     return new Promise(async (resolve) => {
       this.pedido.c_codigo_tem =
         this.activatedRoute.snapshot.paramMap.get('tem');
@@ -150,7 +152,7 @@ export class PedidoEditPage implements OnInit {
               this.ultilService.presentToastok(
                 'Pallet Agregado!',
                 arrayresp[1],
-                2500,  
+                2500,
                 'checkmark-outline',
                 'success',
                 'bien',
@@ -189,10 +191,38 @@ export class PedidoEditPage implements OnInit {
                   );
                   break;
                 case '4':
-                  this.Alerta_exedecajas();
+                  if (this.lb_exedercajas) {
+                    this.Alerta_exedecajas();
+                  } else {
+                    this.codigo = '';
+                    this.codpal.setFocus();
+                    this.ultilService.AlertaOK(
+                      'Atención ',
+                      'Excedió cajas!',
+                      arrayresp[1],
+                      'OK',
+                      'alerta',
+                      true
+                    );
+                  }
+
                   break;
                 case '5':
-                  this.Alerta_Presentacion();
+                  if (this.lb_agregarpresentacion) {
+                    this.Alerta_Presentacion();
+                  } else {
+                    this.codigo = '';
+                    this.codpal.setFocus();
+                    this.ultilService.AlertaOK(
+                      'Atención ',
+                      'Otra Presentación!',
+                      arrayresp[1],
+                      'OK',
+                      'alerta',
+                      true
+                    );
+                  }
+
                   break;
                 default:
                   this.codigo = '';
@@ -382,5 +412,47 @@ export class PedidoEditPage implements OnInit {
 
     const { role } = await alert.onDidDismiss();
     console.log(`Dismissed with role: ${role}`);
+  }
+
+  async GetPermisos() {
+    /*lb_exedercajas = false 
+      lb_agregarpresentacion  = false */
+    await this.menuserv
+      .GetPermisoEspeciales('70', '0198')
+      .then((resolve: boolean) => {
+        this.lb_exedercajas = resolve;
+      })
+      .catch((error) => {
+        console.error(JSON.stringify(error));
+        this.ultilService.presentToast(
+          'Error!',
+          'Ocurrio un error Interno.',
+          1500,
+          'warning-outline',
+          'danger',
+          'error',
+          true
+        );
+        this.lb_exedercajas = false;
+      });
+
+    await this.menuserv
+      .GetPermisoEspeciales('70', '0197')
+      .then((resolve: boolean) => {
+        this.lb_agregarpresentacion = resolve;
+      })
+      .catch((error) => {
+        console.error(JSON.stringify(error));
+        this.ultilService.presentToast(
+          'Error!',
+          'Ocurrio un error Interno.',
+          1500,
+          'warning-outline',
+          'danger',
+          'error',
+          true
+        );
+        this.lb_agregarpresentacion = false;
+      });
   }
 }

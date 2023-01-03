@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { element } from 'protractor';
 import { OpcionesMenu } from 'src/app/interfaces/interfaces';
 import { ConfiguracionService } from 'src/app/services/configuracion.service';
 import { MenuService } from 'src/app/services/menu.service';
@@ -12,6 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class InicioPage implements OnInit {
   opcionesmenu: OpcionesMenu[] = [];
+
 
   constructor(
     private menuserv: MenuService,
@@ -84,4 +86,6 @@ export class InicioPage implements OnInit {
         );
     });
   }
+
+  
 }

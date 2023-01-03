@@ -37,6 +37,8 @@ export class ConteocajasComponent implements OnInit {
     console.log(this.argumentos);
   }
 
+  
+
   async scanner() {
     await this.barcodeScanner
       .scan()

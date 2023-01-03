@@ -42,19 +42,15 @@ export class PedidoEditPage implements OnInit {
 
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
-    await this.GetDetallePedido();
-    await this.codpal.setFocus();
-  }
-
-  async ngOnInit() {
-    console.log('ngOnInit');
     await this.GetParametros();
-    console.log('f_get_parametros');
     await this.ultilService.showLoading('Cargando detalle..');
     await this.GetDetallePedido();
     await this.ultilService.loading.dismiss();
-    console.log('f_get_parametros');
     await this.codpal.setFocus();
+  }
+
+   ngOnInit() {
+
   }
 
   GetParametros() {  

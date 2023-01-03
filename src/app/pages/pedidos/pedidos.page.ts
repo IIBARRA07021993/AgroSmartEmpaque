@@ -42,7 +42,11 @@ export class PedidosPage implements OnInit {
 
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
+    await this.ultilService.showLoading('Cargando Pedidos..');
     await this.getPedidos();
+    await this.ultilService.loading.dismiss();
+
+    
   }
 
   async ngOnInit() {

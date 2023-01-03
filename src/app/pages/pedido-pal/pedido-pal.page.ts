@@ -30,13 +30,19 @@ export class PedidoPalPage implements OnInit {
     private ControlpedidoService: ControlpedidoService
   ) {}
 
-  async ngOnInit() {
-    console.log('ngOnInit');
+
+  
+  async ionViewWillEnter() {
+    console.log('ionViewWillEnter');
     await this.f_get_parametros();
-    console.log('f_get_parametros');
-    await this.ultilService.showLoading('Cargando detalle..');
+    await this.ultilService.showLoading('Cargando Pallets..');
     await this.GetPalles_Det_Pedido();
     await this.ultilService.loading.dismiss();
+
+  }
+
+   ngOnInit() {
+   
   }
 
   f_get_parametros() {

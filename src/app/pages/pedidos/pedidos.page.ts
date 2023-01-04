@@ -42,7 +42,9 @@ export class PedidosPage implements OnInit {
 
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
+    await this.ultilService.showLoading('Cargando Pedidos..');
     await this.getPedidos();
+    await this.ultilService.loading.dismiss();
   }
 
   async ngOnInit() {
@@ -56,7 +58,10 @@ export class PedidosPage implements OnInit {
     return new Promise((resolve) => {
       this.setTitulo();
 
-      var json = {};
+      var json = {
+        c_codigo_tem: environment.c_codigo_tem,
+        c_codigo_emp: environment.c_codigo_emp,
+      };
       this.getdatoserv
         .sp_AppGetDatos(
           '/GetDatos?as_empresa=' +
@@ -91,9 +96,7 @@ export class PedidosPage implements OnInit {
   async doRefresh(event) {
     console.log(event);
     await this.getPedidos();
-    console.log('getPedidos');
     await event.target.complete();
-    console.log('event.target.complete');
   }
 
   setTitulo() {
@@ -224,7 +227,7 @@ export class PedidosPage implements OnInit {
       mode: 'ios',
       cssClass: 'custom-alert',
       header: 'Atención',
-      subHeader: 'Pedido',
+      subHeader: 'Estatus de Pedido',
       message: msj,
       buttons: [
         {
@@ -240,13 +243,9 @@ export class PedidosPage implements OnInit {
           handler: async () => {
             console.log('Si');
             await this.ultilService.showLoading('Actualizando estatus...');
-            console.log('showLoading');
             await this.fn_update_estatus_ped(pedido, estatus_new);
-            console.log('fn_update_estatus_ped');
             await this.ultilService.loading.dismiss();
-            console.log('dismiss');
             await this.getPedidos();
-            console.log('getPedidos');
           },
         },
       ],

@@ -60,7 +60,12 @@ const routes: Routes = [
   {
     path: 'paletvirtual',
     loadChildren: () => import('./pages/paletvirtual/paletvirtual.module').then( m => m.PaletvirtualPageModule)
+  },
+  {
+    path: 'controltiraje',
+    loadChildren: () => import('./pages/controltiraje/controltiraje.module').then( m => m.ControltirajePageModule)
   }
+
 ];
 
 @NgModule({

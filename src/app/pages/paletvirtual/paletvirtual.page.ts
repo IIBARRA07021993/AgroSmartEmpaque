@@ -14,6 +14,7 @@ import { EyePalletVirtual } from 'src/app/models/palletvir.model';
 import { EyeProducto } from 'src/app/models/producto.model';
 import { ArmadopaletService } from 'src/app/services/armadopalet.service';
 import { GetdatosService } from 'src/app/services/getdatos.service';
+import { MenuService } from 'src/app/services/menu.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
 
@@ -30,7 +31,7 @@ export class PaletvirtualPage implements OnInit {
   @ViewChild('inputcajas', { static: false }) inputcajas!: IonInput;
 
   b_nuevo_pal: boolean = true;
-  b_conteocajas: boolean = true;
+  b_conteocajas: boolean = false;
   banda: Bandas;
   c_codigo_pal: string = '';
   c_codigo_pro: string = '';
@@ -52,19 +53,22 @@ export class PaletvirtualPage implements OnInit {
     private modalController: ModalController,
     private getdatoserv: GetdatosService,
     private ultilService: UtilService,
-    private armadopal: ArmadopaletService
+    private armadopal: ArmadopaletService,
+    private menuserv: MenuService
   ) {}
 
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
     await this.inputpallet.setFocus();
-    await this.GetConteoCajasTemp()
+    await this.GetConteoCajasTemp();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.route.queryParams.subscribe((Params: Bandas) => {
       this.banda = Params;
     });
+
+    await this.GetPermisos();
   }
 
   async ConteoCajas() {
@@ -492,7 +496,7 @@ export class PaletvirtualPage implements OnInit {
         n_bulxpa_pal: this.n_bulxpa_pal,
         c_codigo_usu: environment.usuario_login,
         c_codigo_pal: this.c_codigo_pal,
-        c_terminal_ccp:   environment.terminal_app
+        c_terminal_ccp: environment.terminal_app,
       };
       console.log(JSON.stringify(json));
 
@@ -525,7 +529,7 @@ export class PaletvirtualPage implements OnInit {
                 );*/
 
                 this.LimpiarCaptura();
-                this.removerCodigo()
+                this.removerCodigo();
 
                 resolve(true);
               } else {
@@ -756,8 +760,6 @@ export class PaletvirtualPage implements OnInit {
     this.inputpallet.setFocus();
   }
 
-
-
   GetConteoCajasTemp() {
     return new Promise((resolve) => {
       var json = {
@@ -779,7 +781,7 @@ export class PaletvirtualPage implements OnInit {
             console.log(resp);
             this.cajasconteo = JSON.parse(resp);
             console.log(this.cajasconteo);
-            this.n_bulxpa_pal = this.cajasconteo.length
+            this.n_bulxpa_pal = this.cajasconteo.length;
             resolve(true);
           },
           (error) => {
@@ -799,14 +801,10 @@ export class PaletvirtualPage implements OnInit {
     });
   }
 
-
-
-  async BuscarPresentacion(){
-
+  async BuscarPresentacion() {
     var argumentos = {
       c_codigo_sel: this.banda.c_codigo_sel,
-      c_codigo_bnd: this.banda.c_codigo_bnd
-
+      c_codigo_bnd: this.banda.c_codigo_bnd,
     };
 
     const modal = await this.modalController.create({
@@ -822,10 +820,35 @@ export class PaletvirtualPage implements OnInit {
         //this.inputproducto.setFocus();
       } else {
         //this.n_bulxpa_pal = 0;
-       // this.inputproducto.setFocus();
+        // this.inputproducto.setFocus();
       }
     });
     return await modal.present();
   }
 
+   GetPermisos() {
+    return new Promise(async (resolve) => {
+    /*Consultamos si lleva conteo de cajas */
+    await this.menuserv
+      .GetPermisoEspeciales('70', '0199')
+      .then((resolve: boolean) => {
+        this.b_conteocajas = resolve;
+      })
+      .catch((error) => {
+        console.error(JSON.stringify(error));
+        this.ultilService.presentToast(
+          'Error!',
+          'Ocurrio un error Interno.',
+          1500,
+          'warning-outline',
+          'danger',
+          'error',
+          true
+        );
+        this.b_conteocajas = false;
+        resolve(false);
+      });
+      resolve(true);
+    });
+  }
 }

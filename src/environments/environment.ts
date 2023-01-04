@@ -9,9 +9,9 @@ export const environment = {
   usuario_login: '',
   api_token: '123456',
   codempresa: '',
-  version :'1.1.1',
-  c_codigo_tem : '',
-  c_codigo_emp : ''
+  version: '1.1.1',
+  c_codigo_tem: '',
+  c_codigo_emp: ''
 };
 
 /*

@@ -8,7 +8,7 @@ import {  Component, OnInit  } from '@angular/core';
 })
 export class PaletUbiPage implements OnInit  {
   
-  titulo = 'Posición en Cuarto Frio'
+  titulo = 'Posición en Cuarto Frío'
   constructor() { }
 
   ngOnInit() {

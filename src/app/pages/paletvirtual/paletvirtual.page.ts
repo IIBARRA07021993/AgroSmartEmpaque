@@ -598,7 +598,7 @@ export class PaletvirtualPage implements OnInit {
       } else if (this.producto.c_codigo_pro === '') {
         this.ultilService.presentToast(
           'Atención!',
-          'Debe especificar el codigó de Producto a empacar.',
+          'Debe especificar el Código de Producto a empacar.',
           1500,
           'warning-outline',
           'warning',
@@ -609,7 +609,7 @@ export class PaletvirtualPage implements OnInit {
       } else if (this.etiqueta.c_codigo_eti === '') {
         this.ultilService.presentToast(
           'Atención!',
-          'Debe especificar el codigó de Etiqueta a empacar.',
+          'Debe especificar el Código de Etiqueta a empacar.',
           1500,
           'warning-outline',
           'warning',
@@ -620,7 +620,7 @@ export class PaletvirtualPage implements OnInit {
       } else if (this.color.c_codigo_col === '') {
         this.ultilService.presentToast(
           'Atención!',
-          'Debe especificar el codigó de Color a empacar.',
+          'Debe especificar el Código de Color a empacar.',
           1500,
           'warning-outline',
           'warning',

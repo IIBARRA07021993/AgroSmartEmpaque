@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ActionSheetController,
+  AlertController,
+  IonList,
+  ModalController,
+} from '@ionic/angular';
 import { EyePalletVirtual } from 'src/app/models/palletvir.model';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -11,16 +16,18 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./buscarpallet.component.scss'],
 })
 export class BuscarpalletComponent implements OnInit {
+  @ViewChild('listapallets') listabandas: IonList;
   pallet: EyePalletVirtual;
   pallets: EyePalletVirtual[] = [];
   texto_filtro: string = '';
-  ls_confirmado : string  = 'N'
+  ls_confirmado: string = 'N';
 
   constructor(
     private modalController: ModalController,
     private getdatoserv: GetdatosService,
     private ultilService: UtilService,
     private actionSheetController: ActionSheetController,
+    public alertController: AlertController
   ) {}
 
   async ionViewWillEnter() {
@@ -31,6 +38,52 @@ export class BuscarpalletComponent implements OnInit {
 
   ngOnInit() {}
 
+  Eliminarpallet(pallet) {
+    console.log('eliminar pallet')
+    console.log(pallet)
+  }
+
+  async Eliminar(pallet: any) {
+    const alert = await this.alertController.create({
+      mode: 'ios',
+      cssClass: 'custom-alert',
+      header: '¿DESEA ELIMINAR EL PALLET TEMPORAL?',
+      subHeader: 'Pallet #: ' + pallet.c_codigo_pal + '-' + pallet.c_codsec_pal,
+      message:
+        'Se Eliminaran los Regitros Ligados al Pallet [' +
+        pallet.c_codigo_pal +
+        '-' +
+        pallet.c_codsec_pal +
+        '] Temporal',
+      /*  message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd + 
+              ' <br/><br/>Estiba de Proceso: ' + banda.c_codigo_sel + 
+              ' <br/><br/>Lote: ' + banda.c_codigo_lot + ' - ' + banda.v_nombre_lot + 
+              ' <br/><br/>Cultivo: ' + banda.c_codigo_cul + ' - ' + banda.v_nombre_cul + 
+              " <br/><br/>NOTA: Se dejará libre la banda para signarle una nueva Estiba de Proceso.",*/
+
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: async () => {
+            await this.listabandas.closeSlidingItems();
+          },
+        },
+        {
+          text: 'Si',
+          role: 'confirm',
+          handler: async () => {
+            await this.Eliminarpallet(pallet);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    console.log(`Dismissed with role: ${role}`);
+  }
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -55,7 +108,7 @@ export class BuscarpalletComponent implements OnInit {
           handler: () => {
             console.log('Confirmados clicked');
           },
-        }
+        },
       ],
     });
     await actionSheet.present();
@@ -63,7 +116,7 @@ export class BuscarpalletComponent implements OnInit {
     const { data } = await actionSheet.onDidDismiss();
     console.log('estatus = ' + data);
     this.ls_confirmado = data;
-    await this.buscarPalletvirtual()
+    await this.buscarPalletvirtual();
     console.log('buscarPalletvirtual');
   }
 
@@ -82,8 +135,17 @@ export class BuscarpalletComponent implements OnInit {
     if (pallet.c_codigo_pal == '') {
       this.pallet = pallet;
       this.cerrar();
-    }else{
-      this.ultilService.AlertaOK('Pallet Confirmado','' ,'El Código de Pallet ['+this.pallet.c_codigo+'] ya fue confirmado como pallet final.','OK' ,'',false)
+    } else {
+      this.ultilService.AlertaOK(
+        'Pallet Confirmado',
+        '',
+        'El Código de Pallet [' +
+          this.pallet.c_codigo +
+          '] ya fue confirmado como pallet final.',
+        'OK',
+        '',
+        false
+      );
     }
   }
 
@@ -94,6 +156,7 @@ export class BuscarpalletComponent implements OnInit {
         c_codigo_emp: environment.c_codigo_emp,
         c_codigo_pal: '%%',
         c_codsec_pal: '%%',
+        c_tipo: this.ls_confirmado,
       };
       console.log(JSON.stringify(json));
 
@@ -128,7 +191,7 @@ export class BuscarpalletComponent implements OnInit {
     });
   }
 
-  async doRefresh(event) {
+  async doRefresh(event: any) {
     console.log(event);
     await this.buscarPalletvirtual();
     console.log('buscarPalletvirtual');

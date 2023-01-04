@@ -150,7 +150,6 @@ export class ConteocajasComponent implements OnInit {
 
   EliminarCajas(idcaja: any) {
     console.log(idcaja);
-
     return new Promise(async (resolve) => {
       const alert = await this.alertController.create({
         mode: 'ios',

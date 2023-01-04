@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { EyePalletVirtual } from 'src/app/models/palletvir.model';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -14,11 +14,13 @@ export class BuscarpalletComponent implements OnInit {
   pallet: EyePalletVirtual;
   pallets: EyePalletVirtual[] = [];
   texto_filtro: string = '';
+  ls_confirmado : string  = 'N'
 
   constructor(
     private modalController: ModalController,
     private getdatoserv: GetdatosService,
-    private ultilService: UtilService
+    private ultilService: UtilService,
+    private actionSheetController: ActionSheetController,
   ) {}
 
   async ionViewWillEnter() {
@@ -28,6 +30,42 @@ export class BuscarpalletComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      mode: 'ios',
+      header: 'Estatus del Pallet',
+      subHeader: 'Seleccione un Estatus',
+      buttons: [
+        {
+          text: 'Pendiente',
+          icon: 'copy-outline',
+          cssClass: 'pendiente',
+          data: 'N',
+          handler: () => {
+            console.log('Pendiente clicked');
+          },
+        },
+        {
+          text: 'Confirmados',
+          icon: 'duplicate-outline',
+          cssClass: 'surtiendo',
+          data: 'S',
+          handler: () => {
+            console.log('Confirmados clicked');
+          },
+        }
+      ],
+    });
+    await actionSheet.present();
+
+    const { data } = await actionSheet.onDidDismiss();
+    console.log('estatus = ' + data);
+    this.ls_confirmado = data;
+    await this.buscarPalletvirtual()
+    console.log('buscarPalletvirtual');
+  }
 
   fn_filtro(evento: any) {
     console.log(evento);

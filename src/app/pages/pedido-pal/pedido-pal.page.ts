@@ -30,20 +30,15 @@ export class PedidoPalPage implements OnInit {
     private ControlpedidoService: ControlpedidoService
   ) {}
 
-
-  
   async ionViewWillEnter() {
     console.log('ionViewWillEnter');
     await this.f_get_parametros();
     await this.ultilService.showLoading('Cargando Pallets..');
     await this.GetPalles_Det_Pedido();
     await this.ultilService.loading.dismiss();
-
   }
 
-   ngOnInit() {
-   
-  }
+  ngOnInit() {}
 
   f_get_parametros() {
     return new Promise(async (resolve) => {
@@ -124,10 +119,10 @@ export class PedidoPalPage implements OnInit {
             role: 'confirm',
             handler: async () => {
               var json = {
-                c_codigo_tem: environment.c_codigo_tem,
-                c_codigo_emp: environment.c_codigo_emp,
-                c_terminal_ccp: environment.terminal_app,
-                c_idcaja_ccp: c_codigo_pal,
+                c_codigo_tem: this.pedido.c_codigo_tem,
+                c_codigo_emp: this.pedido.c_codigo_emp,
+                c_codigo_pal: c_codigo_pal,
+                c_codigo_pdo: this.pedido.c_codigo_pdo,
               };
 
               console.log(JSON.stringify(json));

@@ -70,7 +70,7 @@ export class PedidoEditPage implements OnInit {
       resolve(true);
     });
   }
- GetPermisos() {
+  GetPermisos() {
     return new Promise(async (resolve) => {
       /*lb_exedercajas = false 
       lb_agregarpresentacion  = false */
@@ -167,6 +167,7 @@ export class PedidoEditPage implements OnInit {
       await this.ProcesarPallet('1');
       console.log('paso 3');
       await this.ultilService.loading.dismiss();
+      this.codpal.setFocus();
       console.log('dismiss');
     }
   }

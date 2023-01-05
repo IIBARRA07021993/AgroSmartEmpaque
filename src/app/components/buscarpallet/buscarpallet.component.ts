@@ -6,6 +6,7 @@ import {
   ModalController,
 } from '@ionic/angular';
 import { EyePalletVirtual } from 'src/app/models/palletvir.model';
+import { ArmadopaletService } from 'src/app/services/armadopalet.service';
 import { GetdatosService } from 'src/app/services/getdatos.service';
 import { UtilService } from 'src/app/services/util.service';
 import { environment } from 'src/environments/environment';
@@ -27,7 +28,8 @@ export class BuscarpalletComponent implements OnInit {
     private getdatoserv: GetdatosService,
     private ultilService: UtilService,
     private actionSheetController: ActionSheetController,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private armadopal: ArmadopaletService
   ) {}
 
   async ionViewWillEnter() {
@@ -38,28 +40,18 @@ export class BuscarpalletComponent implements OnInit {
 
   ngOnInit() {}
 
-  Eliminarpallet(pallet) {
-    console.log('eliminar pallet')
-    console.log(pallet)
-  }
-
-  async Eliminar(pallet: any) {
+  async ConfirmarEliminar(pallet: EyePalletVirtual) {
     const alert = await this.alertController.create({
       mode: 'ios',
       cssClass: 'custom-alert',
       header: '¿DESEA ELIMINAR EL PALLET TEMPORAL?',
       subHeader: 'Pallet #: ' + pallet.c_codigo_pal + '-' + pallet.c_codsec_pal,
       message:
-        'Se Eliminaran los Regitros Ligados al Pallet [' +
+        'Se eliminarán los registros ligados al pallet temporal [' +
         pallet.c_codigo_pal +
         '-' +
         pallet.c_codsec_pal +
-        '] Temporal',
-      /*  message: 'Banda: ' + banda.c_codigo_bnd + ' - ' + banda.v_nombre_bnd + 
-              ' <br/><br/>Estiba de Proceso: ' + banda.c_codigo_sel + 
-              ' <br/><br/>Lote: ' + banda.c_codigo_lot + ' - ' + banda.v_nombre_lot + 
-              ' <br/><br/>Cultivo: ' + banda.c_codigo_cul + ' - ' + banda.v_nombre_cul + 
-              " <br/><br/>NOTA: Se dejará libre la banda para signarle una nueva Estiba de Proceso.",*/
+        ']',
 
       buttons: [
         {
@@ -73,7 +65,9 @@ export class BuscarpalletComponent implements OnInit {
           text: 'Si',
           role: 'confirm',
           handler: async () => {
+            await this.listabandas.closeSlidingItems();
             await this.Eliminarpallet(pallet);
+            await this.buscarPalletvirtual();
           },
         },
       ],
@@ -83,6 +77,83 @@ export class BuscarpalletComponent implements OnInit {
 
     const { role } = await alert.onDidDismiss();
     console.log(`Dismissed with role: ${role}`);
+  }
+
+  Eliminarpallet(pallet: EyePalletVirtual) {
+    return new Promise((resolve) => {
+      var json = {
+        c_codigo_tem: pallet.c_codigo_tem,
+        c_codigo_emp: pallet.c_codigo_emp,
+        c_terminal_ccp: pallet.c_terminal_pme,
+        c_codigo: pallet.c_codigo,
+        c_codsec_pal: pallet.c_codsec_pal,
+      };
+
+      console.log(JSON.stringify(pallet));
+
+      this.armadopal
+        .sp_AppControlEstiba_Put(
+          '/ControlEstiba?as_empresa=' +
+            environment.codempresa +
+            '&as_operation=8&as_json=' +
+            JSON.stringify(json)
+        )
+        .subscribe(
+          (resp: string) => {
+            var arrayresp = resp.split('|');
+            if (arrayresp.length > 0) {
+              if (arrayresp[0] == '1') {
+                this.ultilService.presentToastok(
+                  'Atención!',
+                  arrayresp[1],
+                  5000,
+                  'checkmark-done-outline',
+                  'success',
+                  'bien',
+                  true
+                );
+                resolve(true);
+              } else {
+                this.ultilService.presentToast(
+                  'Error!',
+                  arrayresp[1],
+                  1500,
+                  'warning-outline',
+                  'danger',
+                  'alerta',
+                  true
+                );
+
+                resolve(false);
+              }
+            } else {
+              this.ultilService.presentToast(
+                'Error!',
+                'Ocurrio un error Interno.',
+                1500,
+                'warning-outline',
+                'danger',
+                'error',
+                true
+              );
+              resolve(false);
+            }
+          },
+          (error) => {
+            console.error(JSON.stringify(error));
+            this.ultilService.presentToast(
+              'Error!',
+              'Ocurrio un error Interno.',
+              1500,
+              'warning-outline',
+              'danger',
+              'error',
+              true
+            );
+            resolve(false);
+          }
+        );
+    });
   }
 
   async presentActionSheet() {

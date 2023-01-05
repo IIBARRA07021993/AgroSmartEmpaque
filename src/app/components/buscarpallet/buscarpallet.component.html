@@ -1,109 +1,124 @@
-<ion-header mode="ios" translucent="true">
-  <ion-toolbar color="success">
-    <ion-buttons slot="start">
-      <ion-button (click)="cerrar()">
-        <ion-icon name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title class="ion-text-capitalize">Buscar Palets</ion-title>
-    <ion-icon
-      (click)="presentActionSheet()"
-      class="ion-padding"
-      size="large"
-      slot="end"
-      name="funnel-outline"
-    >
-    </ion-icon>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content> </ion-refresher-content>
-  </ion-refresher>
+<ion-app>
+  <ion-header mode="ios" translucent="true">
+    <ion-toolbar color="success">
+      <ion-buttons slot="start">
+        <ion-button (click)="cerrar()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title class="ion-text-capitalize">Buscar Palets</ion-title>
+      <ion-icon
+        (click)="presentActionSheet()"
+        class="ion-padding"
+        size="large"
+        slot="end"
+        name="funnel-outline"
+      >
+      </ion-icon>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content> </ion-refresher-content>
+    </ion-refresher>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12">
-        <ion-item id="buscar">
-          <ion-label position="stacked">Solo Palet Activos</ion-label>
-          <ion-input
-            autofocus="true"
-            (ionChange)="fn_filtro($event)"
-            type="text"
-            inputmode="text"
-            maxlength="10"
-            placeholder="Teclee Código para Filtrar Palet Virtual"
-          ></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-list #listapallets>
-          <ion-card
-            *ngFor="let pallet of pallets | filtro : texto_filtro : 'c_codigo'"
-          >
-            <ion-item-sliding>
-              <ion-item-options  side="end">
-                <ion-item-option color="danger" (click)="Eliminar(pallet)">
-                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-item-option>
-              </ion-item-options>
-              <ion-item-options side="start">
-                <ion-item-option  color="success"(click)="seleccionarPallet(pallet)">
-                  <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
-                </ion-item-option>
-              </ion-item-options>
-              <ion-item>
-                <ion-grid fixed>
-                  <ion-row>
-                    <ion-col size="8">
-                      <ion-label class="ion-text-start">
-                        <h2>
-                          <strong
-                            >{{ pallet.c_codigo }}-{{
-                              pallet.c_codsec_pal
-                            }}</strong
-                          >
-                        </h2>
-                      </ion-label>
-                    </ion-col>
-                    <ion-col size="4">
-                      <ion-label class="ion-text-end">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item id="buscar">
+            <ion-label position="stacked">Solo Palet Activos</ion-label>
+            <ion-input
+              autofocus="true"
+              (ionChange)="fn_filtro($event)"
+              type="text"
+              inputmode="text"
+              maxlength="10"
+              placeholder="Teclee Código para Filtrar Palet Virtual"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-list #listapallets>
+            <ion-card
+              *ngFor="
+                let pallet of pallets | filtro : texto_filtro : 'c_codigo'
+              "
+            >
+              <ion-item-sliding>
+                <ion-item-options side="end">
+                  <ion-item-option
+                    *ngIf="pallet.c_codigo_pal == ''"
+                    color="danger"
+                    (click)="ConfirmarEliminar(pallet)"
+                  >
+                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                  </ion-item-option>
+                </ion-item-options>
+                <ion-item-options side="start">
+                  <ion-item-option
+                    *ngIf="pallet.c_codigo_pal == ''"
+                    color="success"
+                    (click)="seleccionarPallet(pallet)"
+                  >
+                    <ion-icon
+                      slot="icon-only"
+                      name="checkmark-done-outline"
+                    ></ion-icon>
+                  </ion-item-option>
+                </ion-item-options>
+                <ion-item>
+                  <ion-grid fixed>
+                    <ion-row>
+                      <ion-col size="8">
+                        <ion-label class="ion-text-start">
+                          <h2>
+                            <strong
+                              >{{ pallet.c_codigo }}-{{
+                                pallet.c_codsec_pal
+                              }}</strong
+                            >
+                          </h2>
+                        </ion-label>
+                      </ion-col>
+                      <ion-col size="4">
+                        <ion-label class="ion-text-end">
+                          <p>
+                            <strong>{{
+                              pallet.d_empaque_pal | date : "dd/MM/yyyy"
+                            }}</strong>
+                          </p>
+                        </ion-label>
+                      </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                      <ion-col size="12">
                         <p>
-                          <strong>{{
-                            pallet.d_empaque_pal | date : "dd/MM/yyyy"
-                          }}</strong>
+                          <strong
+                            >{{ pallet.v_nombre_pro }} /{{
+                              pallet.v_nombre_eti
+                            }}/{{ pallet.v_nombre_col }}
+                          </strong>
                         </p>
-                      </ion-label>
-                    </ion-col>
-                  </ion-row>
-
-                  <ion-row>
-                    <ion-col size="12">
-                      <p>
-                        <strong
-                          >{{ pallet.v_nombre_pro }} /{{
-                            pallet.v_nombre_eti
-                          }}/{{ pallet.v_nombre_col }}
-                        </strong>
-                      </p>
-                      <p>
-                        <strong
-                          >Pallet: {{ pallet.c_codigo_pal }} / Bultos:{{
-                            pallet.n_bulxpa_pal | number : "1.0-0"
-                          }}
-                          / Kilos:{{ pallet.n_peso_pme | number : "1.3-3" }}
-                        </strong>
-                      </p>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
-            </ion-item-sliding>
-          </ion-card>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+                        <p>
+                          <strong
+                            >Pallet: {{ pallet.c_codigo_pal }} / Bultos:{{
+                              pallet.n_bulxpa_pal | number : "1.0-0"
+                            }}
+                            / Kilos:{{ pallet.n_peso_pme | number : "1.3-3" }}
+                          </strong>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-item>
+              </ion-item-sliding>
+            </ion-card>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-app>

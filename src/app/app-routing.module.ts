@@ -62,9 +62,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/paletvirtual/paletvirtual.module').then( m => m.PaletvirtualPageModule)
   },
   {
-    path: 'controltiraje',
-    loadChildren: () => import('./pages/controltiraje/controltiraje.module').then( m => m.ControltirajePageModule)
+    path: 'tiraje-empleado',
+    loadChildren: () => import('./pages/tiraje-empleado/tiraje-empleado.module').then( m => m.TirajeEmpleadoPageModule)
   }
+
 
 ];
 

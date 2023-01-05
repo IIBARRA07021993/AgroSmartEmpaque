@@ -31,6 +31,7 @@ export class EyePalletVirtual {
   c_activo: string;
   n_totalbulxpa_pme: number;
   n_totalpeso_pme: number;
+  c_terminal_pme : string
 
   constructor() {
     this.c_codigo_tem ='' ,
@@ -64,6 +65,7 @@ export class EyePalletVirtual {
     this.d_modifi =null ,
     this.c_activo ='' ,
     this.n_totalbulxpa_pme =0 ,
-    this.n_totalpeso_pme  =0 
+    this.n_totalpeso_pme  =0 ,
+    this.c_terminal_pme = ''
   }
 }

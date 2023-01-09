@@ -38,7 +38,7 @@
             <ion-item>
               <ion-input
                 #inputpallet
-                (keyup.enter)="buscarPalletVirtualCodigo(inputpallet.value)"
+                (keyup.enter)="buscarPalletVirtualCodigo(inputpallet.value.toString())"
                 [(ngModel)]="c_codigo_pal"
                 [value]="c_codigo_pal |uppercase"
                 name="ccodigopal"
@@ -98,7 +98,7 @@
                 #inputproducto
                 [(ngModel)]="c_codigo_pro"
                 name="ccodigopro"
-                (keyup.enter)="buscarProductoPorCodigo(inputproducto.value)"
+                (keyup.enter)="buscarProductoPorCodigo(inputproducto.value.toString())"
                 type="text"
                 inputmode="numeric"
                 class="search-input"
@@ -159,7 +159,7 @@
                 #inputetiqueta
                 [(ngModel)]="c_codigo_eti"
                 name="ccodigoeti"
-                (keyup.enter)="buscarEtiquetaPorCodigo(inputetiqueta.value)"
+                (keyup.enter)="buscarEtiquetaPorCodigo(inputetiqueta.value.toString())"
                 type="text"
                 inputmode="numeric"
                 maxlength="2"
@@ -203,7 +203,7 @@
                 name="ccodigocol"
                 type="text"
                 inputmode="numeric"
-                (keyup.enter)="buscarColorPorCodigo(inputcolor.value)"
+                (keyup.enter)="buscarColorPorCodigo(inputcolor.value.toString())"
                 maxlength="2"
                 class="search-input"
                 placeholder="Teclee un código de Color"

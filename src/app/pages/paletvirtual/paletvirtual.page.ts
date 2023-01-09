@@ -97,12 +97,11 @@ export class PaletvirtualPage implements OnInit {
     return await modal.present();
   }
 
-  async buscarPalletVirtualCodigo(codigo) {
+  async buscarPalletVirtualCodigo(codigo :  string) {
     console.log('buscarPalletVirtualCodigo');
     console.log(codigo);
     this.c_codigo_pal = codigo;
     console.log(this.c_codigo_pal);
-    // this.inputproducto.setFocus()
 
     return new Promise((resolve) => {
       var json = {
@@ -186,12 +185,11 @@ export class PaletvirtualPage implements OnInit {
     });
   }
 
-  async buscarProductoPorCodigo(codigo) {
+  async buscarProductoPorCodigo(codigo : string) {
     console.log('buscarProductoPorCodigo');
     console.log(codigo);
-    this.c_codigo_pro = codigo;
+    this.c_codigo_pro = codigo.padStart(4, '0');
     console.log(this.c_codigo_pro);
-    //this.inputetiqueta.setFocus()
     return new Promise((resolve) => {
       var json = { c_codigo_pro: this.c_codigo_pro };
       console.log(JSON.stringify(json));
@@ -248,10 +246,10 @@ export class PaletvirtualPage implements OnInit {
     });
   }
 
-  async buscarEtiquetaPorCodigo(codigo) {
+  async buscarEtiquetaPorCodigo(codigo:string) {
     console.log('buscarEtiquetaPorCodigo');
     console.log(codigo);
-    this.c_codigo_eti = codigo;
+    this.c_codigo_eti = codigo.padStart(2, '0');;
     console.log(this.c_codigo_eti);
     //this.inputcolor.setFocus()
     return new Promise((resolve) => {
@@ -310,10 +308,10 @@ export class PaletvirtualPage implements OnInit {
     });
   }
 
-  async buscarColorPorCodigo(codigo) {
+  async buscarColorPorCodigo(codigo:string) {
     console.log('buscarColorPorCodigo');
     console.log(codigo);
-    this.c_codigo_col = codigo;
+    this.c_codigo_col = codigo.padStart(2, '0');;
     console.log(this.c_codigo_col);
     //this.inputcajas.setFocus()
     return new Promise((resolve) => {
@@ -396,7 +394,6 @@ export class PaletvirtualPage implements OnInit {
     return await modal.present();
   }
 
-  async buscarPresentacion() {}
 
   async buscarProducto() {
     const modal = await this.modalController.create({

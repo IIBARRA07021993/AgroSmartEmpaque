@@ -47,7 +47,7 @@ export class BuscarempleadosComponent implements OnInit {
 
   buscarEmpleados( ) {
     return new Promise((resolve) => {
-      var json = { c_codigo_eti : '%%'};
+      var json = { c_codigo_emp : '%%'};
 
       console.log(JSON.stringify(json));
 
@@ -55,7 +55,7 @@ export class BuscarempleadosComponent implements OnInit {
         .sp_AppGetDatos(
           '/GetDatos?as_empresa=' +
             environment.codempresa +
-            '&as_operation=15&as_json=' +
+            '&as_operation=20&as_json=' +
             JSON.stringify(json)
         )
         .subscribe(

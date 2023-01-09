@@ -8,14 +8,18 @@ import { TirajeEmpleadoPageRoutingModule } from './tiraje-empleado-routing.modul
 
 import { TirajeEmpleadoPage } from './tiraje-empleado.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TirajeEmpleadoPageRoutingModule,ComponentsModule
+    TirajeEmpleadoPageRoutingModule,
+    ComponentsModule,
+    PipesModule
+    
   ],
-  declarations: [TirajeEmpleadoPage]
+  declarations: [TirajeEmpleadoPage],
 })
 export class TirajeEmpleadoPageModule {}

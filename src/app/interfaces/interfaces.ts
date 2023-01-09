@@ -145,5 +145,11 @@ export interface CajaConteo {
 export interface PuntoEmpaque {
   c_codigo_pem: string;
   v_nombre_pem: string;
-  v_codigoaux_pem: String;
+  v_codigoaux_pem: string;
+}
+
+export interface TirajeEmpleado {
+  c_empleado_emt: string;
+  c_folioinicial_emt: string;
+  c_foliofinal_emt: string;
 }

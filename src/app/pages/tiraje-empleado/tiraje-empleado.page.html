@@ -4,35 +4,36 @@
   <form #formulario="ngForm">
     <ion-grid>
       <ion-row class="ion-padding-top">
-        <ion-col size="12">
-          <ion-label class="ion-label-h">Codigó Empleado</ion-label>
-          <ion-item>
-            <ion-input
-              #inputempleado
-              [(ngModel)]="controltiraje.c_empleado_cte"
-              [value]="controltiraje.c_empleado_cte"
-              name="cempleadocte"
-              type="number"
-              inputmode="numeric"
-              maxlength="6"
-              class="search-input"
-              placeholder="Teclee un código de Empleado"
-              required
-            ></ion-input>
-            <ion-icon slot="end" name="search" class="search-button"></ion-icon>
-          </ion-item>
+        <ion-col size="8">
+          <ion-chip
+            style="margin-top: 2vh"
+            color="warning"
+            *ngIf="b_empleadoasignado"
+          >
+            <ion-label>
+              Rango seleccionado ya tiene asignado un empleado.
+              <ion-icon slot="start" name="warning-outline"></ion-icon>
+            </ion-label>
+          </ion-chip>
+        </ion-col>
+        <ion-col size="4">
+          <ion-button (click)="Limpiar(0)">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
         </ion-col>
       </ion-row>
+
       <ion-row class="ion-padding-top">
         <ion-col size="12">
           <ion-label class="ion-label-h">Folio Inicial</ion-label>
           <ion-item>
             <ion-input
               #inputfolioini
-              [(ngModel)]="controltiraje.c_folioinicial_cte"
-              [value]="controltiraje.c_folioinicial_cte"
+              (keyup.enter)="buscarFolio(inputfolioini.value.toString() , 1)"
+              [(ngModel)]="c_folioinicial_cte"
+              [value]="c_folioinicial_cte"
               name="cfolioinicialcte"
-              type="number"
+              type="text"
               inputmode="numeric"
               maxlength="10"
               class="search-input"
@@ -40,6 +41,7 @@
               required
             ></ion-input>
             <ion-icon
+            (click)="Limpiar(1)"
               slot="end"
               name="close-circle-outline"
               class="search-button"
@@ -54,10 +56,11 @@
           <ion-item>
             <ion-input
               #inputfoliofin
-              [(ngModel)]="controltiraje.c_foliofinal_cte"
-              [value]="controltiraje.c_foliofinal_cte"
+              (keyup.enter)="buscarFolio(inputfoliofin.value.toString() , 2)"
+              [(ngModel)]="c_foliofinal_cte"
+              [value]="c_foliofinal_cte"
               name="cfoliofinalcte"
-              type="number"
+              type="text"
               inputmode="numeric"
               maxlength="10"
               class="search-input"
@@ -65,6 +68,7 @@
               required
             ></ion-input>
             <ion-icon
+            (click)="Limpiar(2)"
               slot="end"
               name="close-circle-outline"
               class="search-button"
@@ -72,11 +76,52 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row class="ion-padding-top">
+        <ion-col size="12">
+          <ion-label class="ion-label-h">Codigó Empleado</ion-label>
+          <ion-item>
+            <ion-input
+              #inputempleado
+              (keyup.enter)="buscarEmpleadoPorCodigo(inputempleado.value.toString())"
+              [(ngModel)]="c_empleado_cte"
+              [value]="c_empleado_cte"
+              name="cempleadocte"
+              type="text"
+              inputmode="numeric"
+              maxlength="6"
+              class="search-input"
+              placeholder="Teclee un código de Empleado"
+              required
+            ></ion-input>
+           
+            <ion-icon
+              (click)="buscarEmpleado()"
+              slot="end"
+              name="search"
+              class="search-button"
+            ></ion-icon>
+          </ion-item>
+          <ion-chip
+            style="margin-top: 2vh"
+            color="success"
+            *ngIf="empleado.c_codigo_emp !== ''"
+          >
+            <ion-label
+              >{{empleado.c_codigo_emp }} - {{empleado.v_nombre_emp}}
+            </ion-label>
+
+            <ion-icon
+              name="close-circle"
+              (click)="Limpiar(3)"
+            ></ion-icon>
+          </ion-chip>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </form>
   <ion-row style="display: grid" class="ion-padding">
     <ion-button
-    (click)="TirajeEmpleadoSave()"
+      (click)="TirajeEmpleadoSave()"
       expand="full"
       shape="round"
       style="height: 50px"

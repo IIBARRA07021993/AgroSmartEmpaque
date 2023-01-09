@@ -11,10 +11,14 @@ export class TirajeEmpleadoPage implements OnInit {
   @ViewChild('inputfolioini', { static: false }) inputfolioini!: IonInput;
   @ViewChild('inputfoliofin', { static: false }) inputfoliofin!: IonInput;
 
-  c_empleado_cte: string = '';
-  c_folioinicial_cte: string = '';
-  c_foliofinal_cte: string = '';
   titulo: string = 'Control Tiraje';
+
+  controltiraje = {
+    c_empleado_cte: '',
+    c_folioinicial_cte: '',
+    c_foliofinal_cte: '',
+  };
+
   constructor() {}
 
   async ionViewWillEnter() {
@@ -23,5 +27,12 @@ export class TirajeEmpleadoPage implements OnInit {
 
   ngOnInit() {}
 
-  TirajeEmpleadoSave() {}
+  TirajeEmpleadoSave() {
+    console.log(this.controltiraje.c_empleado_cte);
+    console.log(this.controltiraje.c_folioinicial_cte);
+    console.log(this.controltiraje.c_foliofinal_cte);
+
+
+    
+  }
 }

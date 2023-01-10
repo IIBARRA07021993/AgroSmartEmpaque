@@ -41,7 +41,7 @@
               required
             ></ion-input>
             <ion-icon
-            (click)="Limpiar(1)"
+              (click)="Limpiar(1)"
               slot="end"
               name="close-circle-outline"
               class="search-button"
@@ -68,7 +68,7 @@
               required
             ></ion-input>
             <ion-icon
-            (click)="Limpiar(2)"
+              (click)="Limpiar(2)"
               slot="end"
               name="close-circle-outline"
               class="search-button"
@@ -93,7 +93,7 @@
               placeholder="Teclee un código de Empleado"
               required
             ></ion-input>
-           
+
             <ion-icon
               (click)="buscarEmpleado()"
               slot="end"
@@ -110,10 +110,7 @@
               >{{empleado.c_codigo_emp }} - {{empleado.v_nombre_emp}}
             </ion-label>
 
-            <ion-icon
-              name="close-circle"
-              (click)="Limpiar(3)"
-            ></ion-icon>
+            <ion-icon name="close-circle" (click)="Limpiar(3)"></ion-icon>
           </ion-chip>
         </ion-col>
       </ion-row>

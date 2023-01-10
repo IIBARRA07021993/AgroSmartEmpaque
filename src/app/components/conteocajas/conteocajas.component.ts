@@ -37,8 +37,6 @@ export class ConteocajasComponent implements OnInit {
     console.log(this.argumentos);
   }
 
-  
-
   async scanner() {
     await this.barcodeScanner
       .scan()
@@ -62,8 +60,9 @@ export class ConteocajasComponent implements OnInit {
     this.modalController.dismiss(this.cajasconteo.length);
   }
 
-  GuardarCajaTemp(idcaja: any) {
+  async GuardarCajaTemp(idcaja: any) {
     console.log(idcaja);
+    this.inputidcaja.value = '';
 
     return new Promise(async (resolve) => {
       var json = {
@@ -103,17 +102,20 @@ export class ConteocajasComponent implements OnInit {
                 this.inputidcaja.setFocus();
                 resolve(true);
               } else {
-                this.ultilService.presentToastok(
-                  'Atención!',
-                  arrayresp[1],
-                  1500,
-                  'warning-outline',
-                  'warning',
-                  'alerta',
-                  true
-                );
-                this.inputidcaja.value = '';
-                this.inputidcaja.setFocus();
+                this.ultilService
+                  .AlertaOK(
+                    'Atención ',
+                    'Caja ['+idcaja+'] ya Escaneada! ',
+                    arrayresp[1],
+                    'OK',
+                    'alerta',
+                    true
+                  )
+                  .then(() => {
+                    this.inputidcaja.value = '';
+                    this.inputidcaja.setFocus();
+                  });
+
                 resolve(false);
               }
             } else {
@@ -172,7 +174,6 @@ export class ConteocajasComponent implements OnInit {
             role: 'confirm',
             handler: async () => {
               var json = {
-                c_codigo_tem: environment.c_codigo_tem,
                 c_codigo_emp: environment.c_codigo_emp,
                 c_terminal_ccp: environment.terminal_app,
                 c_idcaja_ccp: idcaja,

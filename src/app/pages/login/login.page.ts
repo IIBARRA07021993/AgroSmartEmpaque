@@ -122,7 +122,7 @@ export class LoginPage implements OnInit {
                     'checkmark-done-outline',
                     'success',
                     'bien',
-                    true  
+                    false  
                   );
                   this.save_usuario();
                   resolve(true);
@@ -314,3 +314,4 @@ export class LoginPage implements OnInit {
     });
   }
 }
+  
